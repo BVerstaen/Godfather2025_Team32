@@ -11,7 +11,10 @@ public class SequenceManager : MonoBehaviour
     [SerializeField] private CircularMovementDetector _circularMovementDetector;
 
     [Header("Sequence")]
-    [SerializeField] List<SequenceSO> _sequenceList;
+    [SerializeField] private List<SequenceSO> _possibleSequences;
+    [SerializeField] private int _numberOfSequences;
+
+    private List<SequenceSO> _sequenceList;
 
     private SequenceSO _leftSideSequence;
     private SequenceSO _rightSideSequence;
@@ -41,18 +44,32 @@ public class SequenceManager : MonoBehaviour
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
     }
 
-    private void Start()
+    private void Awake()
     {
-        //Take a random sequence list
-        _leftSideSequence = ChoseRandomSequence();
+        Debug.LogWarning("Step through sequences after giga chad !");
+
+        CreateSequenceSO();
+
+        //Take the first sequence list
+        _leftSideSequence = _sequenceList[0];
         _leftSideCurrentInput = 0;
         _leftSideCurrentRepetition = 0;
         _leftSideCurrentIndex = 0;
 
-        _rightSideSequence = ChoseRandomSequence();
+        _rightSideSequence = _sequenceList[0];
         _rightSideCurrentInput = 0;
         _rightSideCurrentRepetition = 0;
         _rightSideCurrentIndex = 0;
+    }
+
+    private void CreateSequenceSO()
+    {
+        _sequenceList.Clear();
+        for (int i = 0; i < _numberOfSequences; i++)
+        {
+            _sequenceList.Add(_possibleSequences[Random.Range(0, _possibleSequences.Count)]);
+        }
+        return _sequenceList;
     }
 
     private SequenceSO ChoseRandomSequence() => _sequenceList[Random.Range(0, _sequenceList.Count)];
