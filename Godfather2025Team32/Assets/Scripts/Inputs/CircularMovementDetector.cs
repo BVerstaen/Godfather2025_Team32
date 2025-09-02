@@ -1,11 +1,16 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CircularMovementDetector : MonoBehaviour
 {
-    [Header("Inputs")]
-    [SerializeField] private InputActionReference _horizontalInput;
-    [SerializeField] private InputActionReference _verticalInput;
+    [Header("Left stick Inputs")]
+    [SerializeField] private InputActionReference _horizontalLeftStickInput;
+    [SerializeField] private InputActionReference _verticalLeftStickInput;
+
+    [Header("Right stick Inputs")]
+    [SerializeField] private InputActionReference _horizontalRightStickInput;
+    [SerializeField] private InputActionReference _verticalRightStickInput;
 
     public enum RotationDirection
     {
@@ -13,15 +18,53 @@ public class CircularMovementDetector : MonoBehaviour
         CounterClockwise = 1
     }
 
-    private Vector2 _previousDirection;
-    private float _previousAngle = 0f;
-    private float _totalAngle = 0f;
-    private RotationDirection _currentRotationDirection;
+    public enum StickType
+    {
+        LeftStick,
+        RightStick
+    }
+
+    private class CircularStickData
+    {
+        public StickType Type;
+
+        public Vector2 PreviousDirection;
+        public float PreviousAngle = 0;
+        public float TotalAngle = 0;
+        public RotationDirection CurrentDirection;
+    }
+
+    private CircularStickData _leftStickData = new CircularStickData();
+    private CircularStickData _rightStickData = new CircularStickData();
+
+    public Action<StickType, RotationDirection> OnDetectCircularMovement;
+
+    private void Awake()
+    {
+        _leftStickData.Type = StickType.LeftStick;
+        _rightStickData.Type = StickType.RightStick;
+    }
 
     void Update()
     {
-        float x = _horizontalInput.action.ReadValue<float>();
-        float y = _verticalInput.action.ReadValue<float>();
+        CalculateCircularMovement(_leftStickData);
+        CalculateCircularMovement(_rightStickData);
+    }
+
+
+    private void CalculateCircularMovement(CircularStickData stickData)
+    {
+        float x, y;
+        if (stickData.Type == StickType.LeftStick)
+        {
+            x = _horizontalLeftStickInput.action.ReadValue<float>();
+            y = _verticalLeftStickInput.action.ReadValue<float>();
+        }
+        else
+        {
+            x = _horizontalRightStickInput.action.ReadValue<float>();
+            y = _verticalRightStickInput.action.ReadValue<float>();
+        }
         Vector2 input = new Vector2(x, y);
 
         if (input.magnitude > 0.2f) // seuil pour éviter le bruit
@@ -29,45 +72,45 @@ public class CircularMovementDetector : MonoBehaviour
             float angle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
 
             // Calcul du delta angle
-            float deltaAngle = Mathf.DeltaAngle(_previousAngle, angle);
+            float deltaAngle = Mathf.DeltaAngle(stickData.PreviousAngle, angle);
             int deltaSign = (int)Mathf.Sign(deltaAngle);
 
             // Détection de direction de rotation
             if (Mathf.Abs(deltaAngle) > 1f && Mathf.Abs(deltaAngle) < 60f)
             {
-                if (_currentRotationDirection == 0)
+                if (stickData.CurrentDirection == 0)
                 {
-                    _currentRotationDirection = (deltaSign > 0) ? RotationDirection.CounterClockwise : RotationDirection.Clockwise;
-                    Debug.Log($"Détection du sens : {_currentRotationDirection}");
+                    stickData.CurrentDirection = (deltaSign > 0) ? RotationDirection.CounterClockwise : RotationDirection.Clockwise;
                 }
 
-                if (deltaSign == (int)_currentRotationDirection)
+                if (deltaSign == (int)stickData.CurrentDirection)
                 {
-                    _totalAngle += Mathf.Abs(deltaAngle);
+                    stickData.TotalAngle += Mathf.Abs(deltaAngle);
                 }
                 else if (deltaSign != 0)
                 {
                     Debug.Log("Inversé !");
-                    _totalAngle = 0;
-                    _currentRotationDirection = 0;
+                    stickData.TotalAngle = 0;
+                    stickData.CurrentDirection = 0;
                 }
 
-                if (_totalAngle >= 360f)
+                if (stickData.TotalAngle >= 360f)
                 {
                     Debug.Log("Mouvement circulaire détecté !");
-                    _totalAngle = 0;
-                    _currentRotationDirection = 0;
+                    Debug.Log($"{stickData.Type} - {stickData.CurrentDirection}");
+                    OnDetectCircularMovement?.Invoke(stickData.Type, stickData.CurrentDirection);
+                    stickData.TotalAngle = 0;
+                    stickData.CurrentDirection = 0;
                 }
             }
 
-            _previousAngle = angle;
+            stickData.PreviousAngle = angle;
         }
         else
         {
             // Joystick au repos : reset
-            _totalAngle = 0;
-            _currentRotationDirection = 0;
+            stickData.TotalAngle = 0;
+            stickData.CurrentDirection = 0;
         }
     }
-
 }

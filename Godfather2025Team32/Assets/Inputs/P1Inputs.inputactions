@@ -7,7 +7,7 @@
             "id": "24f02e65-c620-48e0-93cc-29e7ce41268c",
             "actions": [
                 {
-                    "name": "Vertical",
+                    "name": "LeftStickVertical",
                     "type": "Value",
                     "id": "9501be38-57a4-45bf-8fc6-afc08665b3ac",
                     "expectedControlType": "Axis",
@@ -16,9 +16,27 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Horizontal",
+                    "name": "LeftStickHorizontal",
                     "type": "Value",
                     "id": "6aab68aa-c935-44cb-8124-e652f068f875",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RightStickHorizontal",
+                    "type": "Value",
+                    "id": "f1b18382-cba8-48e5-9af2-f2c6b422853c",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RightStickVertical",
+                    "type": "Value",
+                    "id": "3447d09a-f340-4379-9ba4-add1ccbd61bd",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
@@ -33,7 +51,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Vertical",
+                    "action": "LeftStickVertical",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -44,7 +62,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Vertical",
+                    "action": "LeftStickVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -55,7 +73,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Vertical",
+                    "action": "LeftStickVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -66,7 +84,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Vertical",
+                    "action": "LeftStickVertical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -77,7 +95,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Horizontal",
+                    "action": "LeftStickHorizontal",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -88,7 +106,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Horizontal",
+                    "action": "LeftStickHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -99,7 +117,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Horizontal",
+                    "action": "LeftStickHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -110,7 +128,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Horizontal",
+                    "action": "LeftStickHorizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5e9efc96-975c-4df6-9f75-180321ea7d2b",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightStickHorizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5b86c52-241c-4ba8-9961-4d60738c7c91",
+                    "path": "<Gamepad>/rightStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightStickVertical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

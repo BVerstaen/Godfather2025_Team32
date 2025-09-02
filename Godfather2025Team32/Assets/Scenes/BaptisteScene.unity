@@ -338,8 +338,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057dd83e441d4704dbfbd06f45dda8fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _horizontalInput: {fileID: -9108893638685509329, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
-  _verticalInput: {fileID: -6473236278862191231, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
+  _horizontalLeftStickInput: {fileID: -9108893638685509329, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
+  _verticalLeftStickInput: {fileID: -6473236278862191231, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
+  _horizontalRightStickInput: {fileID: 7320176622611919992, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
+  _verticalRightStickInput: {fileID: -4099114623905555677, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
 --- !u!4 &1582954219
 Transform:
   m_ObjectHideFlags: 0
