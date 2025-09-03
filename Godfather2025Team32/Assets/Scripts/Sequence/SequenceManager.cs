@@ -51,7 +51,7 @@ public class SequenceManager : MonoBehaviour
 
     private void OnEnable()
     {
-        ControllerManager.Instance.AddSequenceManager(this);
+        //ControllerManager.Instance.AddSequenceManager(this);
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
     }
