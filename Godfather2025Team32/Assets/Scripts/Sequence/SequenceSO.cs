@@ -6,6 +6,15 @@ using static CircularMovementDetector;
 [CreateAssetMenu(fileName = "SequenceSO", menuName = "Scriptable Objects/SequenceSO")]
 public class SequenceSO : ScriptableObject
 {
+    public enum SequenceDifficulty
+    {
+        Easy,
+        Normal,
+        Hard,
+        ChadHard
+    }
+
+
     [System.Serializable]
     public struct Sequence
     {
@@ -13,6 +22,8 @@ public class SequenceSO : ScriptableObject
         [Tooltip("Le nombre de fois qu'il faut répéter cette sequence de touches")]
         public int NumberOfRepeats;
     }
+
+    public SequenceDifficulty Difficulty;
 
     public List<Sequence> ButtonSequenceList;
 

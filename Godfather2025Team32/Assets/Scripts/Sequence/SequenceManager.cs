@@ -15,6 +15,8 @@ public class SequenceManager : MonoBehaviour
     [Header("Sequence")]
     [SerializeField] private List<SequenceSO> _possibleSequences;
     [SerializeField] private int _numberOfSequences;
+    [Space(5)]
+    [SerializeField] private SequenceDifficulty _currentDifficulty;
 
     [Header("Giga chad")]
     [SerializeField] private float _gigaChadDuration;
@@ -37,6 +39,8 @@ public class SequenceManager : MonoBehaviour
     private Coroutine _gigaChadCoroutine;
     private Coroutine _leftInactiveCoolDown;
     private Coroutine _rightInactiveCoolDown;
+
+    public SequenceDifficulty CurrentDifficulty { get => _currentDifficulty; set => _currentDifficulty = value; }
 
     public SequenceSO GigaChadSequence { get => _leftSideSequence; }
 
@@ -70,6 +74,23 @@ public class SequenceManager : MonoBehaviour
     private void GiveNewRandomSequence()
     {
         SequenceSO newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
+        int guardWhile = 0;
+        //Select from difficulty
+        while(newSequence.Difficulty != CurrentDifficulty)
+        {
+            newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
+
+            guardWhile++;
+            if(guardWhile >= 100)
+            {
+                Debug.Log("Couldn't find from difficulty");
+                newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
+                break;
+            }
+
+        }
+
+
         _leftSideSequence = newSequence;
         _rightSideSequence = newSequence;
 

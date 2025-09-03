@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class ButtonsInputs : MonoBehaviour
 {
+
     public enum PlayerSide { Left, Right };
 
     public enum Buttons
