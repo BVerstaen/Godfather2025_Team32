@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,10 +27,13 @@ public class InputUI : MonoBehaviour
 
 
     [Header("Animation")]
-    [SerializeField] private AnimationCurve _buttonSizeCurve;
-    [SerializeField] private float _buttonAnimationDuration;
+    [SerializeField] private AnimationCurve _buttonSizeAnimationCurve;
+    [SerializeField] private float _buttonAnimationSpeed;
     [SerializeField] private float _buttonAnimationMaxSize;
 
+    private RectTransform _rect => GetComponent<RectTransform>();
+    private Coroutine _animationCoroutine;
+    
     private void OnEnable()
     {
         _sequenceManager.OnNewInput += ChangeButton;
@@ -42,6 +46,13 @@ public class InputUI : MonoBehaviour
         _sequenceManager.OnNewInput += ChangeButton;
         _sequenceManager.OnWaitGigaChad -= DisableImage;
         _sequenceManager.OnEnterGigaChadMode -= StartGigaChadUI;
+    }
+
+    private void Update()
+    {
+        float newScale = _buttonSizeAnimationCurve.Evaluate(Mathf.PingPong(Time.time * _buttonAnimationSpeed, 1));
+        newScale = Mathf.Lerp(1,_buttonAnimationMaxSize, newScale);
+        _rect.localScale = new Vector2(newScale, newScale);
     }
 
     private void ChangeButton(PlayerSide side, Buttons newButton)
@@ -71,12 +82,10 @@ public class InputUI : MonoBehaviour
     private void StartGigaChadUI()
     {
         _spriteImage.enabled = true;
-
         switch (_currentSide)
         {
             case PlayerSide.Left:
                 _spriteImage.sprite = _sequenceManager.GigaChadSequence.LeftGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? _gigaChadClockwiseImage : _gigaChadCounterClockwiseImage;
-
                 break;
 
             case PlayerSide.Right:
