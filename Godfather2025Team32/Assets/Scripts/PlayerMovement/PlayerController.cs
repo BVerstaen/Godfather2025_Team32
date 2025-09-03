@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SkiController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float baseSpeed = 12f;
@@ -21,6 +21,10 @@ public class SkiController : MonoBehaviour
 
     [Header("Debug / Helpers")]
     public bool drawDebug = false;
+    
+    [Header("Events")]
+    public EventManager eventManager;
+    public Team currentTeam = Team.None;
 
     Rigidbody rb;
     float currentSpeed;
@@ -29,14 +33,38 @@ public class SkiController : MonoBehaviour
     bool grounded = false;
 
     private bool isStarted = false;
+    
+    
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         currentSpeed = 0;
-
+    }
+    
+    void Start()
+    {
+        if (eventManager != null)
+        {
+            eventManager.OnStart += StartMovement;
+            eventManager.OnAccelerate += Accelerate;
+            eventManager.OnMoveLeft += MoveLeft;
+            eventManager.OnMoveRight += MoveRight;
+        }
+        
         StartMovement();
+    }
+
+    void OnDestroy()
+    {
+        if (eventManager != null)
+        {
+            eventManager.OnStart -= StartMovement;
+            eventManager.OnAccelerate -= Accelerate;
+            eventManager.OnMoveLeft -= MoveLeft;
+            eventManager.OnMoveRight -= MoveRight;
+        }
     }
 
     void FixedUpdate()
