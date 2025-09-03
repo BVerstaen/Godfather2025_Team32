@@ -7,10 +7,10 @@ public class DifficultyTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        SequenceManager foundSequenceManager = other.GetComponent<SequenceManager>();
-        if (foundSequenceManager != null)
+        PlayerController foundPlayerController = other.GetComponent<PlayerController>();
+        if (foundPlayerController != null)
         {
-            foundSequenceManager.CurrentDifficulty = _newDifficulty;
+            EventManager.Instance.ChangeDifficulty(foundPlayerController.currentTeam);
         }
     }
 }

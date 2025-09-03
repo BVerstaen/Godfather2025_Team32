@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 
 public class SequenceManager : MonoBehaviour
 {
+    [SerializeField] private Team currentTeam;
+
     [Header("References")]
     [SerializeField] private ButtonsInputs _buttonInputs;
     [SerializeField] private CircularMovementDetector _circularMovementDetector;
@@ -58,12 +60,20 @@ public class SequenceManager : MonoBehaviour
         //ControllerManager.Instance.AddSequenceManager(this);
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
+
+        EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
     }
 
     private void OnDisable()
     {
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
+
+        EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+    }
+
+    private void ChangeDifficulty(Team team)
+    {
     }
 
     private void Awake()

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
+    public static EventManager Instance;
     
     [SerializeField]
     private SequenceManager sequenceManager;
@@ -19,6 +20,9 @@ public class EventManager : MonoBehaviour
     [HideInInspector]
     public event Action<float> OnMoveRight;
 
+    [HideInInspector]
+    public event Action<Team> OnChangeDifficulty;
+
     public void TriggerStart() => OnStart?.Invoke();
     public void TriggerAccelerate(float amount) => OnAccelerate?.Invoke(amount);
     public void TriggerMoveLeft(float amount) => OnMoveLeft?.Invoke(amount);
@@ -26,8 +30,15 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
+        Instance = this;
+
         sequenceManager.OnCorrectLeftInput += CorrectLeftInput;
         sequenceManager.OnEnterGigaChadMode += GigaChadMode;   
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 
     private void GigaChadMode()
@@ -40,5 +51,9 @@ public class EventManager : MonoBehaviour
     {
         print("CorrectLeftInput");
     }
-    
+
+    public void ChangeDifficulty(Team team)
+    {
+        OnChangeDifficulty?.Invoke(team);
+    }
 }
