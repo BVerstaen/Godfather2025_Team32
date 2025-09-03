@@ -44,11 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc2d1c1e23072f6418fb98d97a6e9347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTeam: 0
   _buttonInputs: {fileID: 5693283897170652203}
   _circularMovementDetector: {fileID: 6409681948303984100}
   _possibleSequences:
   - {fileID: 11400000, guid: 9a1ecb6c36fc7e24ba443639a25679fe, type: 2}
   _numberOfSequences: 1
+  _currentDifficulty: 0
   _gigaChadDuration: 5
   _firstinactiveCoolDown: 1
   _inactiveTimeDelay: 0.5
@@ -61,6 +63,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8028918100132639711}
+  - component: {fileID: 7886278540450834313}
   m_Layer: 0
   m_Name: TeamManager
   m_TagString: Untagged
@@ -85,6 +88,30 @@ Transform:
   - {fileID: 1374932311950500954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7886278540450834313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2520987449586416166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734b11a7fdcdbed49b94f50f10d49d6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _arrayInputActionAssets:
+  - {fileID: -944628639613478452, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
+  - {fileID: -944628639613478452, guid: 1a4de826951b0714daf2972918172ecf, type: 3}
+  _inputActionNames:
+  - Trigger
+  - Shoulder
+  - Up
+  - Down
+  - Left
+  - Right
+  _playerInput: {fileID: 3675366219755279545}
+  _buttonsInputs: {fileID: 5693283897170652203}
 --- !u!1 &6441697565286351118
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +123,7 @@ GameObject:
   - component: {fileID: 6167415676667251783}
   - component: {fileID: 6409681948303984100}
   - component: {fileID: 5693283897170652203}
-  - component: {fileID: 7204941888781972198}
+  - component: {fileID: 3675366219755279545}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -147,17 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f364cccee7b78c448e5f1ffa5a53b23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _allInputActionAssets:
-  - {fileID: -944628639613478452, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
-  - {fileID: -944628639613478452, guid: 2c14b7777c3d04c42b1119bdcb91f7ac, type: 3}
-  _inputsNames:
-  - Trigger
-  - Shoulder
-  - Up
-  - Down
-  - Left
-  - Right
---- !u!114 &7204941888781972198
+--- !u!114 &3675366219755279545
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,6 +201,6 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
