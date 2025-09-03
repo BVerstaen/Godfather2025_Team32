@@ -28,51 +28,54 @@ public class SkiController : MonoBehaviour
     Vector3 lastGroundNormal = Vector3.up;
     bool grounded = false;
 
+    private bool isStarted = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
-        currentSpeed = baseSpeed * speedMultiplier;
+        currentSpeed = 0;
+
+        StartMovement();
     }
 
     void FixedUpdate()
     {
-        // Ground check
-        RaycastHit hit;
-        Vector3 rayStart = transform.position + Vector3.up * 0.2f;
-        grounded = Physics.Raycast(rayStart, Vector3.down, out hit, groundCheckDistance, groundMask);
-        Vector3 groundNormal = grounded ? hit.normal : Vector3.up;
-        lastGroundNormal = groundNormal;
-
-        // Descente
-        Vector3 downhill = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
-        if (downhill.sqrMagnitude < 0.0001f)
-            downhill = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
-
-        Vector3 right = Vector3.Cross(downhill, groundNormal).normalized;
-
-        // Calcul de vitesse
-        float targetSpeed = baseSpeed * speedMultiplier;
-        currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, 1f - Mathf.Exp(-acceleration * Time.fixedDeltaTime));
-
-        Vector3 forwardVel = downhill * currentSpeed;
-        Vector3 lateralVel = right * lateralInput * lateralSpeed;
-
-        Vector3 targetVel = forwardVel + lateralVel;
-        Vector3 normalComp = Vector3.Project(rb.linearVelocity, groundNormal);
-
-        rb.linearVelocity = targetVel + normalComp;
-
-        if (!grounded)
+        if (isStarted)
         {
-            rb.linearVelocity += Physics.gravity * Time.fixedDeltaTime;
-        }
-        else
-        {
-            rb.AddForce(-groundNormal * stickToGroundForce * Time.fixedDeltaTime, ForceMode.VelocityChange);
-        }
+            // Ground check
+            RaycastHit hit;
+            Vector3 rayStart = transform.position + Vector3.up * 0.2f;
+            grounded = Physics.Raycast(rayStart, Vector3.down, out hit, groundCheckDistance, groundMask);
+            Vector3 groundNormal = grounded ? hit.normal : Vector3.up;
+            lastGroundNormal = groundNormal;
 
-        OrientToSlope(groundNormal, downhill);
+            // Descente
+            Vector3 downhill = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
+            if (downhill.sqrMagnitude < 0.0001f)
+                downhill = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
+
+            Vector3 right = Vector3.Cross(downhill, groundNormal).normalized;
+
+            // Calcul de vitesse
+            float targetSpeed = baseSpeed * speedMultiplier;
+            currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, 1f - Mathf.Exp(-acceleration * Time.fixedDeltaTime));
+
+            Vector3 forwardVel = downhill * currentSpeed;
+            Vector3 lateralVel = right * lateralInput * lateralSpeed;
+
+            Vector3 targetVel = forwardVel + lateralVel;
+            Vector3 normalComp = Vector3.Project(rb.linearVelocity, groundNormal);
+
+            rb.linearVelocity = targetVel + normalComp;
+
+            if (!grounded)
+                rb.linearVelocity += Physics.gravity * Time.fixedDeltaTime;
+            else
+                rb.AddForce(-groundNormal * stickToGroundForce * Time.fixedDeltaTime, ForceMode.VelocityChange);
+
+            OrientToSlope(groundNormal, downhill);   
+        }
     }
 
     void OrientToSlope(Vector3 groundNormal, Vector3 downhill)
@@ -95,6 +98,15 @@ public class SkiController : MonoBehaviour
 
     #region Public API (événements)
 
+    public void StartMovement()
+    {
+        if (speedMultiplier <= 0f)
+            speedMultiplier = 1f;
+
+        currentSpeed = baseSpeed * speedMultiplier;
+        isStarted = true;
+    }
+    
     public void Accelerate(float amount)
     {
         speedMultiplier += Mathf.Max(0f, amount);
