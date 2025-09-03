@@ -129,9 +129,6 @@ public class SequenceManager : MonoBehaviour
 
         Debug.Log("Enter Giga Chad !");
         _gigaChadCoroutine = StartCoroutine(GigaChadRoutine());
-
-        _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown());
-        _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown());
     }
 
     private void EndGigaChad()
