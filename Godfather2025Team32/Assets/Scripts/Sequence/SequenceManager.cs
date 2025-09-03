@@ -69,7 +69,6 @@ public class SequenceManager : MonoBehaviour
         {
             _sequenceList.Add(_possibleSequences[Random.Range(0, _possibleSequences.Count)]);
         }
-        return _sequenceList;
     }
 
     private SequenceSO ChoseRandomSequence() => _sequenceList[Random.Range(0, _sequenceList.Count)];
