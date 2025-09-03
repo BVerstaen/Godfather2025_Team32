@@ -45,13 +45,11 @@ public class SoundManager : MonoBehaviour
         {
             if (soundStruct.sound == soundEnum) return soundStruct.audioClip;
         }
-        Debug.Log("none found");
         return null;
     }
 
     public void PlaySound(SoundEnum soundEnum)
     {
-        Debug.Log("PlaySound");
         AudioClip audioClip = GetAudioCLip(soundEnum);
         AudioSource audioSource = GetAnAudioFromPool();
         audioSource.clip = audioClip;
