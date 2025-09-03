@@ -43,6 +43,8 @@ public class CircularMovementDetector : MonoBehaviour
     {
         _leftStickData.Type = StickType.LeftStick;
         _rightStickData.Type = StickType.RightStick;
+        PlayerInput input = GetComponent<PlayerInput>();
+        Debug.Log(input.playerIndex);
     }
 
     void Update()
