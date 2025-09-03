@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ButtonsInputs;
 using static SequenceSO;
 using Random = UnityEngine.Random;
 
@@ -37,11 +38,16 @@ public class SequenceManager : MonoBehaviour
     private Coroutine _leftInactiveCoolDown;
     private Coroutine _rightInactiveCoolDown;
 
+    public SequenceSO GigaChadSequence { get => _leftSideSequence; }
+
     public Action OnCorrectLeftInput;
     public Action OnCorrectRightInput;
 
     public Action OnEnterGigaChadMode;
     public Action OnExitGigaChadMode;
+
+    public Action<PlayerSide, Buttons> OnNewInput;
+    public Action<PlayerSide> OnWaitGigaChad;
 
     private void OnEnable()
     {
@@ -77,11 +83,14 @@ public class SequenceManager : MonoBehaviour
         _rightSideCurrentRepetition = 0;
         _rightSideCurrentIndex = 0;
         _hasRightFinishedSequence = false;
+
+        OnNewInput?.Invoke(PlayerSide.Left, _leftSideSequence.ButtonSequenceList[0].ButtonsSequences[0]);
+        OnNewInput?.Invoke(PlayerSide.Right, _rightSideSequence.ButtonSequenceList[0].ButtonsSequences[0]);
     }
 
-    private void ButtonPressed(ButtonsInputs.PlayerSide side, ButtonsInputs.Buttons buttons)
+    private void ButtonPressed(PlayerSide side, Buttons buttons)
     {
-        bool isLeft = side == ButtonsInputs.PlayerSide.Left;
+        bool isLeft = side == PlayerSide.Left;
 
         if ((isLeft && _hasLeftFinishedSequence) || (!isLeft && _hasRightFinishedSequence))
             return;
@@ -116,9 +125,16 @@ public class SequenceManager : MonoBehaviour
                         currentIndex = 0;
                         hasFinishedSequence = true;
                         CheckToLaunchGigaChad();
+
+                        OnWaitGigaChad?.Invoke(side);
+                        return;
                     }
                 }
             }
+
+            //Update UI
+            Sequence newSequence = sequenceList[currentIndex];
+            OnNewInput?.Invoke(side, newSequence.ButtonsSequences[currentInput]);
         }
     }
 
@@ -129,6 +145,7 @@ public class SequenceManager : MonoBehaviour
             return;
 
         Debug.Log("Enter Giga Chad !");
+        OnEnterGigaChadMode?.Invoke();
         _gigaChadCoroutine = StartCoroutine(GigaChadRoutine());
         _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
         _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));

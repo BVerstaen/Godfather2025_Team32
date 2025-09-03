@@ -1,0 +1,87 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using static ButtonsInputs;
+
+public class InputUI : MonoBehaviour
+{
+    [System.Serializable]
+    private struct SpriteToImage
+    {
+        public Buttons Button;
+        public Sprite Sprite;
+    }
+
+    [Header("References")]
+    [SerializeField] private SequenceManager _sequenceManager;
+    [SerializeField] private Image _spriteImage;
+
+    [Header("Sprites List")]
+    [SerializeField] private PlayerSide _currentSide;
+    [Space(5)]
+    [SerializeField] private List<SpriteToImage> _spriteList;
+    [SerializeField] private Sprite _gigaChadClockwiseImage;
+    [SerializeField] private Sprite _gigaChadCounterClockwiseImage;
+
+
+    [Header("Animation")]
+    [SerializeField] private AnimationCurve _buttonSizeCurve;
+    [SerializeField] private float _buttonAnimationDuration;
+    [SerializeField] private float _buttonAnimationMaxSize;
+
+    private void OnEnable()
+    {
+        _sequenceManager.OnNewInput += ChangeButton;
+        _sequenceManager.OnWaitGigaChad += DisableImage;
+        _sequenceManager.OnEnterGigaChadMode += StartGigaChadUI;
+    }
+
+    private void OnDisable()
+    {
+        _sequenceManager.OnNewInput += ChangeButton;
+        _sequenceManager.OnWaitGigaChad -= DisableImage;
+        _sequenceManager.OnEnterGigaChadMode -= StartGigaChadUI;
+    }
+
+    private void ChangeButton(PlayerSide side, Buttons newButton)
+    {
+        if (side != _currentSide)
+            return;
+
+        _spriteImage.enabled = true;
+        foreach (SpriteToImage spriteToButton in _spriteList)
+        {
+            if(newButton == spriteToButton.Button)
+            {
+                _spriteImage.sprite = spriteToButton.Sprite;
+                return;
+            }
+        }
+    }
+
+    private void DisableImage(PlayerSide side)
+    {
+        if (side != _currentSide)
+            return;
+
+        _spriteImage.enabled = false;
+    }
+
+    private void StartGigaChadUI()
+    {
+        _spriteImage.enabled = true;
+
+        switch (_currentSide)
+        {
+            case PlayerSide.Left:
+                _spriteImage.sprite = _sequenceManager.GigaChadSequence.LeftGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? _gigaChadClockwiseImage : _gigaChadCounterClockwiseImage;
+
+                break;
+
+            case PlayerSide.Right:
+                _spriteImage.sprite = _sequenceManager.GigaChadSequence.RightGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? _gigaChadClockwiseImage : _gigaChadCounterClockwiseImage;
+                break;
+        }
+    }
+}

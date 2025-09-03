@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: Sequence1
   m_EditorClassIdentifier: 
   ButtonSequenceList:
+  - ButtonsSequences: 03000000
+    NumberOfRepeats: 5
+  - ButtonsSequences: 02000000
+    NumberOfRepeats: 3
   - ButtonsSequences: 00000000
-    NumberOfRepeats: 2
+    NumberOfRepeats: 5
   LeftGigaChadRotation: -1
   RightGigaChadRotation: 1
