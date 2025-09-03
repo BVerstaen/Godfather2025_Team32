@@ -17,6 +17,7 @@ public class SequenceManager : MonoBehaviour
 
     [Header("Giga chad")]
     [SerializeField] private float _gigaChadDuration;
+    [SerializeField] private float _firstinactiveCoolDown;
     [SerializeField] private float _inactiveTimeDelay;
 
     private SequenceSO _leftSideSequence;
@@ -129,6 +130,9 @@ public class SequenceManager : MonoBehaviour
 
         Debug.Log("Enter Giga Chad !");
         _gigaChadCoroutine = StartCoroutine(GigaChadRoutine());
+        _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
+        _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
+
     }
 
     private void EndGigaChad()
@@ -136,6 +140,18 @@ public class SequenceManager : MonoBehaviour
         if(_gigaChadCoroutine != null)
         {
             StopCoroutine(_gigaChadCoroutine);
+        }
+
+        if (_leftInactiveCoolDown != null)
+        {
+            StopCoroutine(_leftInactiveCoolDown);
+            _leftInactiveCoolDown = null;
+        }
+
+        if (_rightInactiveCoolDown != null)
+        {
+            StopCoroutine(_rightInactiveCoolDown);
+            _rightInactiveCoolDown = null;
         }
 
         OnExitGigaChadMode?.Invoke();
@@ -161,12 +177,12 @@ public class SequenceManager : MonoBehaviour
         {
             OnCorrectLeftInput?.Invoke();
 
-            if(_leftInactiveCoolDown != null)
+            if (_leftInactiveCoolDown != null)
             {
                 StopCoroutine(_leftInactiveCoolDown);
                 _leftInactiveCoolDown = null;
             }
-            _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown());
+            _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown(_inactiveTimeDelay, ButtonsInputs.PlayerSide.Left));
         }
         else if (!isLeft && direction == _rightSideSequence.RightGigaChadRotation)
         {
@@ -177,14 +193,14 @@ public class SequenceManager : MonoBehaviour
                 StopCoroutine(_rightInactiveCoolDown);
                 _rightInactiveCoolDown = null;
             }
-            _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown());
+            _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown(_inactiveTimeDelay, ButtonsInputs.PlayerSide.Right));
         }
     }
 
-    private IEnumerator InactiveCoolDown()
+    private IEnumerator InactiveCoolDown(float duration, ButtonsInputs.PlayerSide side = ButtonsInputs.PlayerSide.Left)
     {
-        yield return new WaitForSeconds(_inactiveTimeDelay);
-        Debug.Log("Stop Giga Chad (inactive cooldown)!");
+        yield return new WaitForSeconds(duration);
+        Debug.Log($"Stop Giga Chad (inactive cooldown) for {side}!");
         EndGigaChad();
     }
 }

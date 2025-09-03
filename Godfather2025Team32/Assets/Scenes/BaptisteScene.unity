@@ -306,6 +306,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9a1ecb6c36fc7e24ba443639a25679fe, type: 2}
   _numberOfSequences: 1
   _gigaChadDuration: 5
+  _firstinactiveCoolDown: 1
   _inactiveTimeDelay: 0.5
 --- !u!1 &1047929366
 GameObject:
