@@ -71,7 +71,7 @@ public class SoundManager : MonoBehaviour
     private void SetPool()
     {
         AudioSource currentSource;
-        for (int i = 0; i < _audioSourcesPool.Count; i++)
+        for (int i = 0; i < _numAudioSourcesInPool; i++)
         {
             currentSource = _audioSourcesParent.AddComponent<AudioSource>();
             _audioSourcesPool.Add(currentSource);
