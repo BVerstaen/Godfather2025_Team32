@@ -256,110 +256,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!1 &893831365
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 893831367}
-  - component: {fileID: 893831366}
-  m_Layer: 0
-  m_Name: SequenceManagerTeam2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &893831366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893831365}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc2d1c1e23072f6418fb98d97a6e9347, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _buttonInputs: {fileID: 0}
-  _circularMovementDetector: {fileID: 0}
-  _possibleSequences:
-  - {fileID: 11400000, guid: 9a1ecb6c36fc7e24ba443639a25679fe, type: 2}
-  _numberOfSequences: 1
-  _gigaChadDuration: 5
-  _firstinactiveCoolDown: 1
-  _inactiveTimeDelay: 0.5
---- !u!4 &893831367
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893831365}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &971581844
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 971581845}
-  - component: {fileID: 971581846}
-  m_Layer: 0
-  m_Name: SequenceManagerTeam1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &971581845
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971581844}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &971581846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971581844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc2d1c1e23072f6418fb98d97a6e9347, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _buttonInputs: {fileID: 0}
-  _circularMovementDetector: {fileID: 0}
-  _possibleSequences:
-  - {fileID: 11400000, guid: 9a1ecb6c36fc7e24ba443639a25679fe, type: 2}
-  _numberOfSequences: 1
-  _gigaChadDuration: 5
-  _firstinactiveCoolDown: 1
-  _inactiveTimeDelay: 0.5
 --- !u!1 &1047929366
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,7 +408,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_NotificationBehavior: 0
-  m_MaxPlayerCount: -1
+  m_MaxPlayerCount: 2
   m_AllowJoining: 1
   m_JoinBehavior: 0
   m_PlayerJoinedEvent:
@@ -533,7 +429,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 681089492977925562, guid: bd5258d7529508d4da66c3bba5dbdf84, type: 3}
+  m_PlayerPrefab: {fileID: 2520987449586416166, guid: 16a8cce0eb3439f4eafa2876753881b4, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1
@@ -570,14 +466,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cae84a186fe0f34fad0b78a1e612319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sequenceManagerTeam1: {fileID: 971581846}
-  _sequenceManagerTeam2: {fileID: 893831366}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 21365811}
   - {fileID: 1047929368}
-  - {fileID: 971581845}
-  - {fileID: 893831367}
   - {fileID: 1376669648}

@@ -24,14 +24,14 @@ public class SequenceManager : MonoBehaviour
     private SequenceSO _leftSideSequence;
     private SequenceSO _rightSideSequence;
 
-    private int _leftSideCurrentInput; //Quel sequence est joué
-    private int _leftSideCurrentRepetition; //Combien de fois l'input a été répétée
-    private int _leftSideCurrentIndex; //Quel input doit être appuyé
+    private int _leftSideCurrentInput; //Quel sequence est jouÃ©
+    private int _leftSideCurrentRepetition; //Combien de fois l'input a Ã©tÃ© rÃ©pÃ©tÃ©e
+    private int _leftSideCurrentIndex; //Quel input doit Ãªtre appuyÃ©
     private bool _hasLeftFinishedSequence;
 
-    private int _rightSideCurrentInput;//Quel sequence est joué
-    private int _rightSideCurrentRepetition; //Combien de fois l'input a été répétée
-    private int _rightSideCurrentIndex;//Quel input doit être appuyé
+    private int _rightSideCurrentInput;//Quel sequence est jouÃ©
+    private int _rightSideCurrentRepetition; //Combien de fois l'input a Ã©tÃ© rÃ©pÃ©tÃ©e
+    private int _rightSideCurrentIndex;//Quel input doit Ãªtre appuyÃ©
     private bool _hasRightFinishedSequence;
 
     private Coroutine _gigaChadCoroutine;
@@ -51,6 +51,7 @@ public class SequenceManager : MonoBehaviour
 
     private void OnEnable()
     {
+        ControllerManager.Instance.AddSequenceManager(this);
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
     }
@@ -95,7 +96,7 @@ public class SequenceManager : MonoBehaviour
         if ((isLeft && _hasLeftFinishedSequence) || (!isLeft && _hasRightFinishedSequence))
             return;
 
-        // Récupération des variables en fonction du côté
+        // RÃ©cupÃ©ration des variables en fonction du cÃ´tÃ©
         var sequenceList = isLeft ? _leftSideSequence.ButtonSequenceList : _rightSideSequence.ButtonSequenceList;
         ref int currentIndex = ref isLeft ? ref _leftSideCurrentIndex : ref _rightSideCurrentIndex;
         ref int currentInput = ref isLeft ? ref _leftSideCurrentInput : ref _rightSideCurrentInput;
@@ -188,7 +189,7 @@ public class SequenceManager : MonoBehaviour
 
         bool isLeft = type == CircularMovementDetector.StickType.LeftStick;
 
-        // Vérifie la bonne direction et invoque l'événement correspondant
+        // VÃ©rifie la bonne direction et invoque l'Ã©vÃ©nement correspondant
         if (isLeft && direction == _leftSideSequence.LeftGigaChadRotation)
         {
             OnCorrectLeftInput?.Invoke();

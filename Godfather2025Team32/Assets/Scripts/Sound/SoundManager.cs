@@ -6,8 +6,8 @@ public class SoundManager : MonoBehaviour
 {
     //---------- VARIABLES ----------\\
 
-    private SoundManager _instance;
-    public SoundManager Instance { get { return _instance; } private set { _instance = value; } }
+    static private SoundManager _instance;
+    static public SoundManager Instance { get { return _instance; } private set { _instance = value; } }
 
     [SerializeField] private SoundStruct[] _allSoundStructs;
     private List<AudioSource> _audioSourcesPool = new List<AudioSource>();
