@@ -10,10 +10,10 @@ public class SoundManager : MonoBehaviour
     public SoundManager Instance { get { return _instance; } private set { _instance = value; } }
 
     [SerializeField] private SoundStruct[] _allSoundStructs;
-    [SerializeField] private Dictionary<SoundEnum, AudioClip> _allAudioClips;
     private List<AudioSource> _audioSourcesPool = new List<AudioSource>();
     [SerializeField] private int _numAudioSourcesInPool = 10;
     private List<AudioSource> _freeAudioSources = new List<AudioSource>();
+    [SerializeField] private GameObject _audioSourcesParent;
 
     //---------- FUNCTIONS ----------\\
 
@@ -38,14 +38,24 @@ public class SoundManager : MonoBehaviour
     {
         
     }
+    
+    private AudioClip GetAudioCLip(SoundEnum soundEnum)
+    {
+        foreach (SoundStruct soundStruct in _allSoundStructs)
+        {
+            if (soundStruct.sound == soundEnum) return soundStruct.audioClip;
+        }
+        return null;
+    }
 
     public void PlaySound(SoundEnum soundEnum)
     {
-        AudioClip audioClip = _allAudioClips[soundEnum];
+        AudioClip audioClip = GetAudioCLip(soundEnum);
         AudioSource audioSource = GetAnAudioFromPool();
         audioSource.clip = audioClip;
         audioSource.Play();
         AudioSourceCoroutine(audioSource);
+        
     }
 
     private IEnumerable AudioSourceCoroutine(AudioSource audioSource)
@@ -59,9 +69,9 @@ public class SoundManager : MonoBehaviour
     private void SetPool()
     {
         AudioSource currentSource;
-        for (int i = 0; i < _audioSourcesPool.Count; i++)
+        for (int i = 0; i < _numAudioSourcesInPool; i++)
         {
-            currentSource = new AudioSource();
+            currentSource = _audioSourcesParent.AddComponent<AudioSource>();
             _audioSourcesPool.Add(currentSource);
             _freeAudioSources.Add(currentSource);
         }
@@ -70,14 +80,14 @@ public class SoundManager : MonoBehaviour
     private AudioSource GetAnAudioFromPool()
     {
         AudioSource audioSource;
-        if (_audioSourcesPool.Count == 0)
+        if (_freeAudioSources.Count == 0)
         {
-            audioSource = new AudioSource();
+            audioSource = _audioSourcesParent.AddComponent<AudioSource>();
         }
         else
         {
-            audioSource = _audioSourcesPool[0];
-            _audioSourcesPool.Remove(audioSource);
+            audioSource = _freeAudioSources[0];
+            _freeAudioSources.Remove(audioSource);
         }
         return audioSource;
     }

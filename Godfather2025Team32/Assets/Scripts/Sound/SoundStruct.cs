@@ -1,7 +1,8 @@
 using UnityEngine;
 
+[System.Serializable]
 public struct SoundStruct
 {
-    [SerializeField] public SoundEnum soundEnum;
-    [SerializeField] public AudioClip audioClip;
+    public SoundEnum sound;
+    public AudioClip audioClip;
 }
