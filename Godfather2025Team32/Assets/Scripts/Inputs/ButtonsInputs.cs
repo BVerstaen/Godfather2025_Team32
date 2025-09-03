@@ -22,9 +22,6 @@ public class ButtonsInputs : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("EnableButtons");
-        dicoInputActions = GetComponentInParent<MonoTeamManager>().GetButtonsActionsReferences();
-        Debug.Log(dicoInputActions[PlayerSide.Left][Buttons.Shoulder]);
         dicoInputActions[PlayerSide.Left][Buttons.Trigger].started += LeftTrigger;
         dicoInputActions[PlayerSide.Left][Buttons.Shoulder].started += LeftShoulder;
         dicoInputActions[PlayerSide.Left][Buttons.Up].started += LeftUp;
@@ -33,11 +30,11 @@ public class ButtonsInputs : MonoBehaviour
         dicoInputActions[PlayerSide.Left][Buttons.Right].started += LeftRight;
 
         dicoInputActions[PlayerSide.Right][Buttons.Trigger].started += RightTrigger;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started += RightShoulder;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started += RightUp;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started += RightDown;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started += RightLeft;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started += RightRight;
+        dicoInputActions[PlayerSide.Right][Buttons.Shoulder].started += RightShoulder;
+        dicoInputActions[PlayerSide.Right][Buttons.Up].started += RightUp;
+        dicoInputActions[PlayerSide.Right][Buttons.Down].started += RightDown;
+        dicoInputActions[PlayerSide.Right][Buttons.Left].started += RightLeft;
+        dicoInputActions[PlayerSide.Right][Buttons.Right].started += RightRight;
     }
 
     private void OnDisable()
@@ -50,22 +47,17 @@ public class ButtonsInputs : MonoBehaviour
         dicoInputActions[PlayerSide.Left][Buttons.Right].started -= LeftRight;
 
         dicoInputActions[PlayerSide.Right][Buttons.Trigger].started -= RightTrigger;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started -= RightShoulder;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started -= RightUp;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started -= RightDown;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started -= RightLeft;
-        dicoInputActions[PlayerSide.Right][Buttons.Trigger].started -= RightRight;
+        dicoInputActions[PlayerSide.Right][Buttons.Shoulder].started -= RightShoulder;
+        dicoInputActions[PlayerSide.Right][Buttons.Up].started -= RightUp;
+        dicoInputActions[PlayerSide.Right][Buttons.Down].started -= RightDown;
+        dicoInputActions[PlayerSide.Right][Buttons.Left].started -= RightLeft;
+        dicoInputActions[PlayerSide.Right][Buttons.Right].started -= RightRight;
     }
     private void RightRight(InputAction.CallbackContext context) => OnButtonPressed(PlayerSide.Right, Buttons.Right);
 
     private void RightLeft(InputAction.CallbackContext context) => OnButtonPressed(PlayerSide.Right, Buttons.Left);
 
-    //private void RightDown(InputAction.CallbackContext context) => OnButtonPressed(PlayerSide.Right, Buttons.Down);
-    private void RightDown(InputAction.CallbackContext context)
-    {
-        Debug.Log("RioghtDown");
-        OnButtonPressed(PlayerSide.Right, Buttons.Down);
-    }
+    private void RightDown(InputAction.CallbackContext context) => OnButtonPressed(PlayerSide.Right, Buttons.Down);
 
     private void RightUp(InputAction.CallbackContext context) => OnButtonPressed(PlayerSide.Right, Buttons.Up);
 

@@ -7,8 +7,7 @@ public class MonoTeamManager : MonoBehaviour
 {
     //---------- VARIABLES ----------\\
 
-    //[SerializeField] private InputActionAsset _inputActionAssetPrefab;
-    [SerializeField] private InputActionAsset[] _arrayInputActionAssets;
+    [SerializeField] private InputActionAsset _inputActionAssetPrefab;
     [SerializeField] private string[] _inputActionNames;
 
     [SerializeField] private PlayerInput _playerInput;
@@ -30,20 +29,16 @@ public class MonoTeamManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("EnableTeam");
-        //_buttonsInputs.dicoInputActions = GetButtonsActionsReferences();
+        _buttonsInputs.dicoInputActions = GetButtonsActionsReferences();
     }
 
     public Dictionary<PlayerSide, Dictionary<Buttons, InputAction>> GetButtonsActionsReferences()
     {
         // Create a new InputActionAsset from prefab and attach it
         _playerIndex = _playerInput.playerIndex;
-        
-        _currentInputActionAsset = _arrayInputActionAssets[_playerIndex];
+        _currentInputActionAsset = Instantiate(_inputActionAssetPrefab);
         _playerInput.actions = _currentInputActionAsset;
-        /*_currentInputActionAsset = Instantiate(_inputActionAssetPrefab);
-        _playerInput.actions = _currentInputActionAsset;
-        Debug.Log(_currentInputActionAsset);*/
+        _currentInputActionAsset.Enable();
 
         // Set up variables for loop for each Actions
         Buttons currentButton;

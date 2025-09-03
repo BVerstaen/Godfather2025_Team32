@@ -100,9 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734b11a7fdcdbed49b94f50f10d49d6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _arrayInputActionAssets:
-  - {fileID: -944628639613478452, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
-  - {fileID: -944628639613478452, guid: 1a4de826951b0714daf2972918172ecf, type: 3}
+  _inputActionAssetPrefab: {fileID: -944628639613478452, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
   _inputActionNames:
   - Trigger
   - Shoulder
