@@ -197,6 +197,17 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "",
+                    "id": "b210c3bc-a913-4da4-bd88-5fe400fecd5d",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/stick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftStickVertical",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "1D Axis",
                     "id": "71be1402-cb28-41a1-9f54-a63d3c7f43c4",
                     "path": "1DAxis",
@@ -242,8 +253,30 @@
                 },
                 {
                     "name": "",
+                    "id": "67fa1fb4-924d-47da-8781-11e9b1a96684",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/stick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftStickHorizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5e9efc96-975c-4df6-9f75-180321ea7d2b",
                     "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightStickHorizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d6076300-e5ff-42ee-8947-f7650a146b4c",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/rz",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -264,8 +297,30 @@
                 },
                 {
                     "name": "",
+                    "id": "c27ad638-b684-4335-a68e-319da43d1609",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/slider",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightStickVertical",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e6e43cbf-5ba8-422f-b42c-c844dddfca9a",
                     "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpPad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50323bd2-59c1-4c8f-a8b4-5166c1848b96",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/hat/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -286,8 +341,30 @@
                 },
                 {
                     "name": "",
+                    "id": "094a962a-cb25-4946-921c-0574428f81c3",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/hat/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DownPad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "83192e99-2c38-4d3f-9ee7-7b6218d9e3a3",
                     "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftPad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b62ef078-296c-40fb-8355-d32b6ff9ccd1",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/hat/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -308,8 +385,30 @@
                 },
                 {
                     "name": "",
+                    "id": "05c1e2ca-bcbb-4e9e-bff5-8a29e339a540",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/hat/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightPad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6f6a2a50-de35-4ffe-ac84-fe76c069ce4d",
                     "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c93dfcd8-c5be-4f8e-bac1-02c3c9e3f2fa",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/button4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -330,8 +429,30 @@
                 },
                 {
                     "name": "",
+                    "id": "304ab608-86e8-4636-95ca-0c33230c3210",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "e1437ffa-af07-4f0c-9f80-b264c4ad4640",
                     "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9562dd0-de0f-45ab-aa2b-438450b6b00e",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/button3",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -352,8 +473,30 @@
                 },
                 {
                     "name": "",
+                    "id": "8c554a90-493e-4f66-8b18-a3c43f262005",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/trigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DownButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c010bfae-6d03-4ad9-bdbe-3a8ad463d6de",
                     "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftShoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "49a54d8c-42f5-4a77-beee-9900832faeb7",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/button5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -374,6 +517,17 @@
                 },
                 {
                     "name": "",
+                    "id": "374e3333-a932-47f0-8f28-6042555a0340",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/button6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftTrigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "54985569-129d-4c0f-8ebf-87aaf084a22c",
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
@@ -385,8 +539,30 @@
                 },
                 {
                     "name": "",
+                    "id": "50fffa9c-001d-4d08-8ae8-5e70ffb17898",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/button8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightTrigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1c9531e1-c69b-4d5f-bb93-a9d185fe86e9",
                     "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RightShoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "79b262c7-c5c3-4354-8dcc-6c6e3c819818",
+                    "path": "<HID::Thrustmaster Thrustmaster dual analog 3.2>/button7",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static ButtonsInputs;
+using static CircularMovementDetector;
 
 [CreateAssetMenu(fileName = "SequenceSO", menuName = "Scriptable Objects/SequenceSO")]
 public class SequenceSO : ScriptableObject
@@ -14,4 +15,7 @@ public class SequenceSO : ScriptableObject
     }
 
     public List<Sequence> ButtonSequenceList;
+
+    public RotationDirection LeftGigaChadRotation;
+    public RotationDirection RightGigaChadRotation;
 }
