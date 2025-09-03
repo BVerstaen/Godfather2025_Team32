@@ -91,6 +91,8 @@ public class SequenceManager : MonoBehaviour
 
     private void ButtonPressed(PlayerSide side, Buttons buttons)
     {
+        Debug.Log(gameObject.transform.parent.name);
+
         bool isLeft = side == PlayerSide.Left;
 
         if ((isLeft && _hasLeftFinishedSequence) || (!isLeft && _hasRightFinishedSequence))
@@ -192,8 +194,6 @@ public class SequenceManager : MonoBehaviour
         // Vérifie la bonne direction et invoque l'événement correspondant
         if (isLeft && direction == _leftSideSequence.LeftGigaChadRotation)
         {
-            OnCorrectLeftInput?.Invoke();
-
             if (_leftInactiveCoolDown != null)
             {
                 StopCoroutine(_leftInactiveCoolDown);
@@ -203,8 +203,6 @@ public class SequenceManager : MonoBehaviour
         }
         else if (!isLeft && direction == _rightSideSequence.RightGigaChadRotation)
         {
-            OnCorrectRightInput?.Invoke();
-
             if (_rightInactiveCoolDown != null)
             {
                 StopCoroutine(_rightInactiveCoolDown);
