@@ -12,6 +12,8 @@ public class ButtonsInputs : MonoBehaviour
     private string _leftSide = "Left";
     private string _rightSide = "Right";
 
+    public int PlayerIndex { get => _playerIndex; }
+
     public enum PlayerSide { Left, Right };
 
     public enum Buttons

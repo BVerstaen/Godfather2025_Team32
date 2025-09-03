@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static SequenceSO;
 
 public class EventManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class EventManager : MonoBehaviour
     public event Action<float> OnMoveRight;
 
     [HideInInspector]
-    public event Action<Team> OnChangeDifficulty;
+    public event Action<Team, SequenceDifficulty> OnChangeDifficulty;
 
     public void TriggerStart() => OnStart?.Invoke();
     public void TriggerAccelerate(float amount) => OnAccelerate?.Invoke(amount);
@@ -52,8 +53,8 @@ public class EventManager : MonoBehaviour
         print("CorrectLeftInput");
     }
 
-    public void ChangeDifficulty(Team team)
+    public void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
     {
-        OnChangeDifficulty?.Invoke(team);
+        OnChangeDifficulty?.Invoke(team, difficulty);
     }
 }

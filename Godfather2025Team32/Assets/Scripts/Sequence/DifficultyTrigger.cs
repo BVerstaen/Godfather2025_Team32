@@ -10,7 +10,7 @@ public class DifficultyTrigger : MonoBehaviour
         PlayerController foundPlayerController = other.GetComponent<PlayerController>();
         if (foundPlayerController != null)
         {
-            EventManager.Instance.ChangeDifficulty(foundPlayerController.currentTeam);
+            EventManager.Instance.ChangeDifficulty(foundPlayerController.currentTeam, _newDifficulty);
         }
     }
 }
