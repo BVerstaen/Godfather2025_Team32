@@ -83,13 +83,16 @@ public class PlayerController : MonoBehaviour
             if (downhill.sqrMagnitude < 0.0001f)
                 downhill = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
 
-            Vector3 right = Vector3.Cross(downhill, groundNormal).normalized;
+            Vector3 tangent = Vector3.ProjectOnPlane(rb.linearVelocity, groundNormal).normalized;
+            if (tangent.sqrMagnitude < 0.01f)
+                tangent = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
 
-            // Calcul de vitesse
+            Vector3 right = Vector3.Cross(tangent, groundNormal).normalized;
+
             float targetSpeed = baseSpeed * speedMultiplier;
             currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, 1f - Mathf.Exp(-acceleration * Time.fixedDeltaTime));
 
-            Vector3 forwardVel = downhill * currentSpeed;
+            Vector3 forwardVel = tangent * currentSpeed;
             Vector3 lateralVel = right * lateralInput * lateralSpeed;
 
             Vector3 targetVel = forwardVel + lateralVel;
