@@ -67,7 +67,7 @@ public class CircularMovementDetector : MonoBehaviour
         }
         Vector2 input = new Vector2(x, y);
 
-        if (input.magnitude > 0.2f) // seuil pour éviter le bruit
+        if (input.magnitude > 0.2f) // seuil pour Ã©viter le bruit
         {
             float angle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
 
@@ -75,7 +75,7 @@ public class CircularMovementDetector : MonoBehaviour
             float deltaAngle = Mathf.DeltaAngle(stickData.PreviousAngle, angle);
             int deltaSign = (int)Mathf.Sign(deltaAngle);
 
-            // Détection de direction de rotation
+            // DÃ©tection de direction de rotation
             if (Mathf.Abs(deltaAngle) > 1f && Mathf.Abs(deltaAngle) < 60f)
             {
                 if (stickData.CurrentDirection == 0)
@@ -89,14 +89,14 @@ public class CircularMovementDetector : MonoBehaviour
                 }
                 else if (deltaSign != 0)
                 {
-                    //Debug.Log("Inversé !");
+                    //Debug.Log("InversÃ© !");
                     stickData.TotalAngle = 0;
                     stickData.CurrentDirection = 0;
                 }
 
                 if (stickData.TotalAngle >= 360f)
                 {
-                    //Debug.Log("Mouvement circulaire détecté !");
+                    //Debug.Log("Mouvement circulaire dÃ©tectÃ© !");
                     //Debug.Log($"{stickData.Type} - {stickData.CurrentDirection}");
                     OnDetectCircularMovement?.Invoke(stickData.Type, stickData.CurrentDirection);
                     stickData.TotalAngle = 0;
