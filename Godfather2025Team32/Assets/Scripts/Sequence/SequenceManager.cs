@@ -124,9 +124,8 @@ public class SequenceManager : MonoBehaviour
                         Debug.Log($"{side} sequence finished");
                         currentIndex = 0;
                         hasFinishedSequence = true;
-                        CheckToLaunchGigaChad();
-
                         OnWaitGigaChad?.Invoke(side);
+                        CheckToLaunchGigaChad();
                         return;
                     }
                 }
