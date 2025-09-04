@@ -1944,6 +1944,14 @@ PrefabInstance:
       propertyPath: _chadSprite
       value: 
       objectReference: {fileID: 21300000, guid: 7eb7eee6c84e0c94c8ca8bcb395b8cc1, type: 3}
+    - target: {fileID: 5112599629908673497, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+      propertyPath: _LeftFinishedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 99f7ad704e9e3dc4fab86275a1f889a9, type: 3}
+    - target: {fileID: 5112599629908673497, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+      propertyPath: _RightFinishedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 601be4d5641ffc14ea7ee6d55b014d2d, type: 3}
     - target: {fileID: 5782836596794672893, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -2046,6 +2054,7 @@ MonoBehaviour:
   _numberOfRounds: 3
   podiumSceneName: PodiumScene
   gameSceneName: GameScene
+  _publicBrouhaProba: 0.1
 --- !u!4 &908922095
 Transform:
   m_ObjectHideFlags: 0
@@ -4542,6 +4551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1071f09fc78f7614e9eebc723a87157f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStarted: 0
 --- !u!4 &1535293432
 Transform:
   m_ObjectHideFlags: 0
@@ -6248,6 +6258,14 @@ PrefabInstance:
       propertyPath: _nullosSprite
       value: 
       objectReference: {fileID: 21300000, guid: 93246caf42a409741ac06951111422d1, type: 3}
+    - target: {fileID: 5112599629908673497, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+      propertyPath: _LeftFinishedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 80d54016b0be03343ac41dabee682e68, type: 3}
+    - target: {fileID: 5112599629908673497, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+      propertyPath: _RightFinishedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f9cb1ec2a828ce04fbfceb50b3526213, type: 3}
     - target: {fileID: 5782836596794672893, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: m_LocalScale.x
       value: 2

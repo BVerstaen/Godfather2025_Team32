@@ -26,13 +26,33 @@ public class PlayerAnimation : MonoBehaviour
         EventManager.Instance.OnEndGigaChad += ApplyNullosSprite;
         EventManager.Instance.OnStartGigaChad += ApplyRandomChadSprite;
 
-        EventManager.Instance.
+        EventManager.Instance.OnLeftPlayerFinished += ApplyUpperHalfChadSprite;
+        EventManager.Instance.OnRightPlayerFinished += ApplyLowerHalfChadSprite;
+    }
+
+
+    private void ApplyUpperHalfChadSprite(Team team)
+    {
+        if (_playerController.currentTeam != team)
+            return;
+
+        _sr.sprite = _LeftFinishedSprite;
+    }
+    private void ApplyLowerHalfChadSprite(Team team)
+    {
+        if (_playerController.currentTeam != team)
+            return;
+
+        _sr.sprite = _RightFinishedSprite;
     }
 
     private void OnDisable()
     {
         EventManager.Instance.OnEndGigaChad -= ApplyNullosSprite;
         EventManager.Instance.OnStartGigaChad -= ApplyRandomChadSprite;
+
+        EventManager.Instance.OnLeftPlayerFinished -= ApplyUpperHalfChadSprite;
+        EventManager.Instance.OnRightPlayerFinished -= ApplyLowerHalfChadSprite;
     }
 
     private void ApplyNullosSprite(Team team)

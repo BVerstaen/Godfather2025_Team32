@@ -53,6 +53,9 @@ public class EventManager : MonoBehaviour
             _team1SequenceManager.OnEnterGigaChadMode += GigaChadMode;
             _team1SequenceManager.OnNewInput += SendChangeButton;
             _team1SequenceManager.OnWaitGigaChad += SendDisableImage;
+            _team1SequenceManager.OnExitGigaChadMode += ExitGigaChadMode;
+            _team1SequenceManager.OnLeftFinished += LeftFinishedSequence;
+            _team1SequenceManager.OnRightFinished += RightFinishedSequence;
 
             OnLeftPlayerPrepared?.Invoke();
         }
@@ -69,6 +72,9 @@ public class EventManager : MonoBehaviour
             _team2SequenceManager.OnEnterGigaChadMode += GigaChadMode;
             _team2SequenceManager.OnNewInput += SendChangeButton;
             _team2SequenceManager.OnWaitGigaChad += SendDisableImage;
+            _team2SequenceManager.OnExitGigaChadMode += ExitGigaChadMode;
+            _team2SequenceManager.OnLeftFinished += LeftFinishedSequence;
+            _team2SequenceManager.OnRightFinished += RightFinishedSequence;
 
             //Start when second player is connected
             //Assume 2nd player is last to be connected
@@ -104,7 +110,9 @@ public class EventManager : MonoBehaviour
             _team1SequenceManager.OnEnterGigaChadMode -= GigaChadMode;
             _team1SequenceManager.OnNewInput -= SendChangeButton;
             _team1SequenceManager.OnWaitGigaChad -= SendDisableImage;
-            _team1SequenceManager.OnExitGigaChadMode += ExitGigaChadMode;
+            _team1SequenceManager.OnExitGigaChadMode -= ExitGigaChadMode;
+            _team1SequenceManager.OnLeftFinished -= LeftFinishedSequence;
+            _team1SequenceManager.OnRightFinished -= RightFinishedSequence;
         }
 
         if (_team2SequenceManager != null)
@@ -114,7 +122,9 @@ public class EventManager : MonoBehaviour
             _team2SequenceManager.OnEnterGigaChadMode -= GigaChadMode;
             _team2SequenceManager.OnNewInput -= SendChangeButton;
             _team2SequenceManager.OnWaitGigaChad -= SendDisableImage;
-            _team1SequenceManager.OnExitGigaChadMode -= ExitGigaChadMode;
+            _team2SequenceManager.OnExitGigaChadMode -= ExitGigaChadMode;
+            _team2SequenceManager.OnLeftFinished -= LeftFinishedSequence;
+            _team2SequenceManager.OnRightFinished -= RightFinishedSequence;
         }
     }
 
@@ -158,5 +168,14 @@ public class EventManager : MonoBehaviour
         OnNewInput?.Invoke(team, side, buttons);
     }
 
+    private void LeftFinishedSequence(Team team)
+    {
+        OnLeftPlayerFinished?.Invoke(team);
+    }
+
+    private void RightFinishedSequence(Team team)
+    {
+        OnRightPlayerFinished?.Invoke(team);
+    }
     
 }
