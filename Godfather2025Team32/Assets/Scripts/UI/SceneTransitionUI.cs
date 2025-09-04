@@ -12,7 +12,8 @@ public class SceneTransitionUI : MonoBehaviour
     public TextMeshProUGUI loadingText;
 
     [Header("Settings")]
-    public float fadeDuration = 1f;
+    public float fadeDuration = 0.5f;
+    public float holdDuration = 3f;
 
     private void Awake()
     {
@@ -56,6 +57,9 @@ public class SceneTransitionUI : MonoBehaviour
 
             yield return null;
         }
+
+        // Hold sur l’écran une fois la scène chargée
+        yield return new WaitForSeconds(holdDuration);
 
         // Fade out
         yield return Fade(1f, 0f);
