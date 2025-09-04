@@ -42,6 +42,11 @@ public class MonoTeamManager : MonoBehaviour
 
     //---------- FUNCTIONS ----------\\
 
+    private void Awake()
+    {
+        ControllerManager.Instance.NewMonoTeamManager(this);
+    }
+
     private void OnEnable()
     {
         _buttonsInputs.dicoInputActions = GetButtonsActionsReferences();
