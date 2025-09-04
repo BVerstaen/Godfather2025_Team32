@@ -15,7 +15,8 @@ public class InputUI : MonoBehaviour
     }
 
     [Header("References")]
-    [SerializeField] private SequenceManager _sequenceManager;
+    [SerializeField] private Team _currentTeam;
+
     [SerializeField] private Image _spriteImage;
 
     [Header("Sprites List")]
@@ -36,16 +37,16 @@ public class InputUI : MonoBehaviour
     
     private void OnEnable()
     {
-        _sequenceManager.OnNewInput += ChangeButton;
-        _sequenceManager.OnWaitGigaChad += DisableImage;
-        _sequenceManager.OnEnterGigaChadMode += StartGigaChadUI;
+        EventManager.Instance.OnStartGigaChad += StartGigaChadUI;
+        EventManager.Instance.OnNewInput += ChangeButton;
+        EventManager.Instance.OnDisableImage += DisableImage;
     }
 
     private void OnDisable()
     {
-        _sequenceManager.OnNewInput += ChangeButton;
-        _sequenceManager.OnWaitGigaChad -= DisableImage;
-        _sequenceManager.OnEnterGigaChadMode -= StartGigaChadUI;
+        EventManager.Instance.OnStartGigaChad -= StartGigaChadUI;
+        EventManager.Instance.OnNewInput -= ChangeButton;
+        EventManager.Instance.OnDisableImage -= DisableImage;
     }
 
     private void Update()
@@ -55,8 +56,11 @@ public class InputUI : MonoBehaviour
         _rect.localScale = new Vector2(newScale, newScale);
     }
 
-    private void ChangeButton(PlayerSide side, Buttons newButton)
+    private void ChangeButton(Team team, PlayerSide side, Buttons newButton)
     {
+        if (team != _currentTeam)
+            return;
+
         if (side != _currentSide)
             return;
 
@@ -71,25 +75,31 @@ public class InputUI : MonoBehaviour
         }
     }
 
-    private void DisableImage(PlayerSide side)
+    private void DisableImage(Team team, PlayerSide side)
     {
+        if (team != _currentTeam)
+            return;
+
         if (side != _currentSide)
             return;
 
         _spriteImage.enabled = false;
     }
 
-    private void StartGigaChadUI()
+    private void StartGigaChadUI(Team team, SequenceSO sequence)
     {
+        if (team != _currentTeam)
+            return;
+
         _spriteImage.enabled = true;
         switch (_currentSide)
         {
             case PlayerSide.Left:
-                _spriteImage.sprite = _sequenceManager.GigaChadSequence.LeftGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? _gigaChadClockwiseImage : _gigaChadCounterClockwiseImage;
+                _spriteImage.sprite = sequence.LeftGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? _gigaChadClockwiseImage : _gigaChadCounterClockwiseImage;
                 break;
 
             case PlayerSide.Right:
-                _spriteImage.sprite = _sequenceManager.GigaChadSequence.RightGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? _gigaChadClockwiseImage : _gigaChadCounterClockwiseImage;
+                _spriteImage.sprite = sequence.RightGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? _gigaChadClockwiseImage : _gigaChadCounterClockwiseImage;
                 break;
         }
     }

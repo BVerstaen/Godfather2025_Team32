@@ -46,6 +46,12 @@ public class MonoTeamManager : MonoBehaviour
     {
         _buttonsInputs.dicoInputActions = GetButtonsActionsReferences();
         _sticksInputs.dicoSticksActions = GetSticksInputActions();
+
+        //Send SequenceManager to EventManager
+        if (CurrentTeam == Team.Team1)
+            EventManager.Instance.Team1SequenceManager = SequenceManager;
+        else if (CurrentTeam == Team.Team2)
+            EventManager.Instance.Team2SequenceManager = SequenceManager;
     }
 
     public Dictionary<PlayerSide, Dictionary<Buttons, InputAction>> GetButtonsActionsReferences()

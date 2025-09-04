@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     public bool drawDebug = false;
     
     [Header("Events")]
-    public EventManager eventManager;
     public Team currentTeam = Team.None;
 
     Rigidbody rb;
@@ -45,12 +44,12 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
-        if (eventManager != null)
+        if (EventManager.Instance != null)
         {
-            eventManager.OnStart += StartMovement;
-            eventManager.OnAccelerate += Accelerate;
-            eventManager.OnMoveLeft += MoveLeft;
-            eventManager.OnMoveRight += MoveRight;
+            EventManager.Instance.OnStart += StartMovement;
+            EventManager.Instance.OnAccelerate += Accelerate;
+            EventManager.Instance.OnMoveLeft += MoveLeft;
+            EventManager.Instance.OnMoveRight += MoveRight;
         }
         
         StartMovement();
@@ -58,12 +57,12 @@ public class PlayerController : MonoBehaviour
 
     void OnDestroy()
     {
-        if (eventManager != null)
+        if (EventManager.Instance != null)
         {
-            eventManager.OnStart -= StartMovement;
-            eventManager.OnAccelerate -= Accelerate;
-            eventManager.OnMoveLeft -= MoveLeft;
-            eventManager.OnMoveRight -= MoveRight;
+            EventManager.Instance.OnStart -= StartMovement;
+            EventManager.Instance.OnAccelerate -= Accelerate;
+            EventManager.Instance.OnMoveLeft -= MoveLeft;
+            EventManager.Instance.OnMoveRight -= MoveRight;
         }
     }
 
@@ -138,24 +137,36 @@ public class PlayerController : MonoBehaviour
         isStarted = true;
     }
     
-    public void Accelerate(float amount)
+    public void Accelerate(Team team, float amount)
     {
+        if (team != currentTeam)
+            return;
+
         speedMultiplier += Mathf.Max(0f, amount);
     }
 
-    public void Decelerate(float amount)
+    public void Decelerate(Team team, float amount)
     {
+        if (team != currentTeam)
+            return;
+
         speedMultiplier -= Mathf.Max(0f, amount);
         speedMultiplier = Mathf.Max(0f, speedMultiplier);
     }
 
-    public void MoveLeft(float amount)
+    public void MoveLeft(Team team, float amount)
     {
+        if (team != currentTeam)
+            return;
+
         lateralInput = Mathf.Clamp(lateralInput - amount, -maxLateralInput, maxLateralInput);
     }
 
-    public void MoveRight(float amount)
+    public void MoveRight(Team team, float amount)
     {
+        if (team != currentTeam)
+            return;
+
         lateralInput = Mathf.Clamp(lateralInput + amount, -maxLateralInput, maxLateralInput);
     }
 
