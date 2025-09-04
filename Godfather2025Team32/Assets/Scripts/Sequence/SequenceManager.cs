@@ -30,6 +30,8 @@ public class SequenceManager : MonoBehaviour
     
     private Team _currentTeam { get => _teamManager.CurrentTeam; }
 
+    private bool _hasStarted;
+
     private int _leftSideCurrentInput; //Quel sequence est joué
     private int _leftSideCurrentRepetition; //Combien de fois l'input a été répétée
     private int _leftSideCurrentIndex; //Quel input doit être appuyé
@@ -57,19 +59,20 @@ public class SequenceManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //ControllerManager.Instance.AddSequenceManager(this);
+        EventManager.Instance.OnStart += GiveNewRandomSequence;
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
 
-        //EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
+        EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
     }
 
     private void OnDisable()
     {
+        EventManager.Instance.OnStart -= GiveNewRandomSequence;
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
 
-        //EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+        EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
     }
 
     private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
@@ -80,10 +83,6 @@ public class SequenceManager : MonoBehaviour
         _currentDifficulty = difficulty;
     }
 
-    private void Awake()
-    {
-        GiveNewRandomSequence();
-    }
 
     private void GiveNewRandomSequence()
     {
@@ -126,6 +125,9 @@ public class SequenceManager : MonoBehaviour
 
     private void ButtonPressed(PlayerSide side, Buttons buttons)
     {
+        if (!_teamManager.HasStarted)
+            return;
+
         bool isLeft = side == PlayerSide.Left;
 
         if ((isLeft && _hasLeftFinishedSequence) || (!isLeft && _hasRightFinishedSequence))
@@ -224,6 +226,9 @@ public class SequenceManager : MonoBehaviour
 
     private void OnCircularMovement(CircularMovementDetector.StickType type, CircularMovementDetector.RotationDirection direction)
     {
+        if (!_teamManager.HasStarted)
+            return;
+
         if (!_hasLeftFinishedSequence || !_hasRightFinishedSequence)
             return;
 

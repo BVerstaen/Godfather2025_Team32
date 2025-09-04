@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public string podiumSceneName = "PodiumScene";
     public string gameSceneName = "GameScene";
 
-    private bool _hasGameEnded;
+    private bool _hasGameEnded = true;
     private int _currentRound;
     private int _pointsTeam1;
     private int _pointsTeam2;
@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public bool HasGameEnded { get => _hasGameEnded; set => _hasGameEnded = value; }
 
     public Team WinnerTeam { get { return (_pointsTeam1 > _pointsTeam2) ? Team.Team1 : Team.Team2; } }
+
+    public int CurrentRound { get => _currentRound; }
 
     private void Awake()
     {
@@ -30,7 +32,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void ResetGame()
+    public void ResetGame()
     {
         if (!_hasGameEnded)
             return;
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
         _currentRound = 0;
         _pointsTeam1 = 0;
         _pointsTeam2 = 0;
+        _hasGameEnded = false;
     }
 
     public void SetRoundWinner(Team team)
