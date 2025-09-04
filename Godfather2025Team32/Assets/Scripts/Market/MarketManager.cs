@@ -141,15 +141,21 @@ public class MarketManager : MonoBehaviour
         HashSet<string> unlockedSet = (team == Team.Team1) ? unlockedItemsTeam1 : unlockedItemsTeam2;
         List<Sprite> unlockedSprites = new List<Sprite>();
 
-        foreach (var item in itemTeam1)
+        if(team == Team.Team1)
         {
-            if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
-                unlockedSprites.Add(item.spriteToUnlock);
+            foreach (var item in itemTeam1)
+            {
+                if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
+                    unlockedSprites.Add(item.spriteToUnlock);
+            }
         }
-        foreach (var item in itemTeam2)
+        else if(team == Team.Team2)
         {
-            if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
-                unlockedSprites.Add(item.spriteToUnlock);
+            foreach (var item in itemTeam2)
+            {
+                if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
+                    unlockedSprites.Add(item.spriteToUnlock);
+            }
         }
 
         if (unlockedSprites.Count == 0)
