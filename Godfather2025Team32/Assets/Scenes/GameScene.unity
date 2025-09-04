@@ -2014,6 +2014,19 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+--- !u!1 &891198381 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9155181234112885767, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+  m_PrefabInstance: {fileID: 1894330514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!81 &891198382
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891198381}
+  m_Enabled: 1
 --- !u!1 &908922093
 GameObject:
   m_ObjectHideFlags: 0
@@ -2046,6 +2059,7 @@ MonoBehaviour:
   _numberOfRounds: 3
   podiumSceneName: PodiumScene
   gameSceneName: GameScene
+  _publicBrouhaProba: 0.1
 --- !u!4 &908922095
 Transform:
   m_ObjectHideFlags: 0
@@ -4542,6 +4556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1071f09fc78f7614e9eebc723a87157f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStarted: 0
 --- !u!4 &1535293432
 Transform:
   m_ObjectHideFlags: 0
@@ -5416,11 +5431,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7300599195893527832, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: _stickDistance.y
-      value: 5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7300599195893527832, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: _stickDistance.z
-      value: -5
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 7300599195893527832, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: _maxPlayerDistance
@@ -5513,9 +5528,13 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4505007277081751492, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
     - {fileID: 351275556443269741, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+    - {fileID: 5100600667391743371, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9155181234112885767, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 891198382}
   m_SourcePrefab: {fileID: 100100000, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
 --- !u!1 &1910584378
 GameObject:
