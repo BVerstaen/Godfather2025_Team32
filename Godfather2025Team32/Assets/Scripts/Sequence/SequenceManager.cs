@@ -47,7 +47,7 @@ public class SequenceManager : MonoBehaviour
     public Action OnCorrectLeftInput;
     public Action OnCorrectRightInput;
 
-    public Action OnEnterGigaChadMode;
+    public Action<SequenceSO> OnEnterGigaChadMode;
     public Action OnExitGigaChadMode;
 
     public Action<PlayerSide, Buttons> OnNewInput;
@@ -182,7 +182,7 @@ public class SequenceManager : MonoBehaviour
             return;
 
         Debug.Log("Enter Giga Chad !");
-        OnEnterGigaChadMode?.Invoke();
+        OnEnterGigaChadMode?.Invoke(GigaChadSequence);
         _gigaChadCoroutine = StartCoroutine(GigaChadRoutine());
         _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
         _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
