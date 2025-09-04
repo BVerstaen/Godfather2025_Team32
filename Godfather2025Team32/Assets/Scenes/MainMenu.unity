@@ -791,6 +791,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Transition_Canva
       objectReference: {fileID: 0}
+    - target: {fileID: 3838678215815838991, guid: 9d977239401e0dd4aa27a70b03ff556c, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 7619238592922437916, guid: 9d977239401e0dd4aa27a70b03ff556c, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8156832325669319606, guid: 9d977239401e0dd4aa27a70b03ff556c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
