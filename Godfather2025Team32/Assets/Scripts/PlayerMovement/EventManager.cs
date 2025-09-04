@@ -118,7 +118,7 @@ public class EventManager : MonoBehaviour
 
     private void GigaChadMode(Team team, SequenceSO sequence)
     {
-        TriggerAccelerate(team, 10);
+        TriggerAccelerate(team, 2);
         OnStartGigaChad?.Invoke(team, sequence);
         
         print("CHADDDDDDDDDDDDDDDDDDDDD");
