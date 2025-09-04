@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class VictoryZone : MonoBehaviour
 {
@@ -9,6 +8,7 @@ public class VictoryZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print(other.gameObject.name);
         PlayerController player = other.GetComponent<PlayerController>();
         if (player != null)
         {
