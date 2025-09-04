@@ -1,195 +1,189 @@
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Splines;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
-    public float baseSpeed = 12f;
-    public float speedMultiplier = 1f;
+    [Header("Spline")]
+    public SplineContainer spline;
+    public float moveSpeed = 12f;
     public float acceleration = 4f;
-    public float lateralSpeed = 4f;
-    public float maxLateralInput = 1f;
+    public bool loop = true;
+    
+    [Header("Speed Multiplier (acceleration)")]
+    [Tooltip("Multiplicateur appliqué à moveSpeed. Ex: 1 = normal, 1.2 = +20%")]
+    public float speedMultiplier = 1f;
+    public float minSpeedMultiplier = 0.1f;
 
-    [Header("Ground / Slope")]
-    public float groundCheckDistance = 1.2f;
-    public LayerMask groundMask = ~0;
-    public float stickToGroundForce = 5f;
+    [Header("Lateral")]
+    public float lateralRange = 2f;
+    public float maxLateralInput = 1f;
 
     [Header("Orientation")]
     public float orientSpeed = 8f;
-    public float forwardLookSpeed = 8f;
 
     [Header("Debug / Helpers")]
     public bool drawDebug = false;
-    
+
     [Header("Events")]
+    public EventManager eventManager;
     public Team currentTeam = Team.None;
 
-    Rigidbody rb;
-    float currentSpeed;
-    float lateralInput = 0f;
-    Vector3 lastGroundNormal = Vector3.up;
-    bool grounded = false;
+    private float _splinePos = 0f;
+    private float _lateralInput = 0f;
+    private float _currentSpeed;
+    private bool _isStarted = false;
 
-    private bool isStarted = false;
-    
-    
+    private float _cachedLength = 0f;
+    private Rigidbody _rb;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
-        currentSpeed = 0;
+        _rb = GetComponent<Rigidbody>();
+        _rb.isKinematic = true;
     }
-    
+
     void Start()
     {
-        if (EventManager.Instance != null)
+        if (eventManager != null)
         {
-            EventManager.Instance.OnStart += StartMovement;
-            EventManager.Instance.OnAccelerate += Accelerate;
-            EventManager.Instance.OnMoveLeft += MoveLeft;
-            EventManager.Instance.OnMoveRight += MoveRight;
+            eventManager.OnStart += StartMovement;
+            eventManager.OnAccelerate += Accelerate;
+            eventManager.OnMoveLeft += MoveLeft;
+            eventManager.OnMoveRight += MoveRight;
         }
+
+        if (spline != null) 
+            RebuildLengthCache();
         
+        _currentSpeed = moveSpeed * speedMultiplier;
+
+        //Setup cam
+        if (currentTeam == Team.Team1)
+            CameraManager.Instance.LeftPlayer = gameObject;
+        else if (currentTeam == Team.Team2)
+            CameraManager.Instance.RightPlayer = gameObject;
+
         StartMovement();
     }
 
     void OnDestroy()
     {
-        if (EventManager.Instance != null)
+        if (eventManager != null)
         {
-            EventManager.Instance.OnStart -= StartMovement;
-            EventManager.Instance.OnAccelerate -= Accelerate;
-            EventManager.Instance.OnMoveLeft -= MoveLeft;
-            EventManager.Instance.OnMoveRight -= MoveRight;
+            eventManager.OnStart -= StartMovement;
+            eventManager.OnAccelerate -= Accelerate;
+            eventManager.OnMoveLeft -= MoveLeft;
+            eventManager.OnMoveRight -= MoveRight;
         }
     }
 
-    void FixedUpdate()
+    public void RebuildLengthCache()
     {
-        if (isStarted)
+        if (spline == null)
         {
-            // Ground check
-            RaycastHit hit;
-            Vector3 rayStart = transform.position + Vector3.up * 0.2f;
-            grounded = Physics.Raycast(rayStart, Vector3.down, out hit, groundCheckDistance, groundMask);
-            Vector3 groundNormal = grounded ? hit.normal : Vector3.up;
-            lastGroundNormal = groundNormal;
-
-            // Descente
-            Vector3 downhill = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
-            if (downhill.sqrMagnitude < 0.0001f)
-                downhill = Vector3.ProjectOnPlane(transform.forward, groundNormal).normalized;
-
-            Vector3 tangent = Vector3.ProjectOnPlane(rb.linearVelocity, groundNormal).normalized;
-            if (tangent.sqrMagnitude < 0.01f)
-                tangent = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
-
-            Vector3 right = Vector3.Cross(tangent, groundNormal).normalized;
-
-            float targetSpeed = baseSpeed * speedMultiplier;
-            currentSpeed = Mathf.Lerp(currentSpeed, targetSpeed, 1f - Mathf.Exp(-acceleration * Time.fixedDeltaTime));
-
-            Vector3 forwardVel = tangent * currentSpeed;
-            Vector3 lateralVel = right * lateralInput * lateralSpeed;
-
-            Vector3 targetVel = forwardVel + lateralVel;
-            Vector3 normalComp = Vector3.Project(rb.linearVelocity, groundNormal);
-
-            rb.linearVelocity = targetVel + normalComp;
-
-            if (!grounded)
-                rb.linearVelocity += Physics.gravity * Time.fixedDeltaTime;
-            else
-                rb.AddForce(-groundNormal * stickToGroundForce * Time.fixedDeltaTime, ForceMode.VelocityChange);
-
-            OrientToSlope(groundNormal, downhill);   
+            _cachedLength = 0f; 
+            return;
         }
+        
+        _cachedLength = spline.CalculateLength();
+        if (drawDebug)
+            Debug.Log($"[Spline] cachedLength = {_cachedLength}");
     }
 
-    void OrientToSlope(Vector3 groundNormal, Vector3 downhill)
+    void Update()
     {
-        Vector3 newUp = Vector3.Slerp(transform.up, groundNormal, 1f - Mathf.Exp(-orientSpeed * Time.deltaTime));
-        transform.up = newUp;
+        if (!_isStarted || spline == null) return;
 
-        Vector3 horizontalVel = rb.linearVelocity - Vector3.Project(rb.linearVelocity, transform.up);
-        if (horizontalVel.sqrMagnitude > 0.001f)
+        if (_cachedLength <= 0f)
         {
-            Quaternion targetRot = Quaternion.LookRotation(horizontalVel.normalized, transform.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 1f - Mathf.Exp(-forwardLookSpeed * Time.deltaTime));
+            if (drawDebug) Debug.LogWarning("[PlayerController] spline length is <= 0. RebuildLengthCache() or check your spline points.");
+            return;
         }
-        else if (downhill.sqrMagnitude > 0.001f)
+
+        float targetSpeed = moveSpeed * Mathf.Max(minSpeedMultiplier, speedMultiplier);
+        _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, 1f - Mathf.Exp(-acceleration * Time.deltaTime));
+
+        float deltaNormalized = (_currentSpeed * Time.deltaTime) /_cachedLength;
+        _splinePos = _splinePos + deltaNormalized;
+
+        if (loop)
+            _splinePos = Mathf.Repeat(_splinePos, 1f);
+        else
+            _splinePos = Mathf.Clamp01(_splinePos);
+
+        Vector3 pos = spline.EvaluatePosition(_splinePos);
+        float3 tanF3 = spline.EvaluateTangent(_splinePos);
+        float3 upF3 = spline.EvaluateUpVector(_splinePos);
+
+        Vector3 tangent = (Vector3)math.normalize(tanF3);
+        Vector3 up = (Vector3)math.normalize(upF3);
+
+        Vector3 right = Vector3.Cross(up, tangent).normalized;
+        Vector3 offset = right * (_lateralInput * lateralRange);
+
+        // appliquer position + rotation
+        transform.position = pos + offset;
+        Quaternion targetRot = Quaternion.LookRotation(tangent, up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 1f - Mathf.Exp(-orientSpeed * Time.deltaTime));
+
+        if (drawDebug)
         {
-            Quaternion targetRot = Quaternion.LookRotation(downhill, transform.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 1f - Mathf.Exp(-forwardLookSpeed * Time.deltaTime));
+            Debug.DrawLine(pos, pos + tangent, Color.green);
+            Debug.DrawRay(pos, up * 0.5f, Color.blue);
+            Debug.Log($"deltaNormalized={deltaNormalized:F5} splinePos={_splinePos:F5}");
         }
     }
 
-    #region Public API (événements)
+    #region Public API (events)
 
     public void StartMovement()
     {
-        if (speedMultiplier <= 0f)
-            speedMultiplier = 1f;
-
-        currentSpeed = baseSpeed * speedMultiplier;
-        isStarted = true;
+        _isStarted = true;
     }
-    
+
     public void Accelerate(Team team, float amount)
     {
-        if (team != currentTeam)
+        if (team != currentTeam) 
             return;
-
-        speedMultiplier += Mathf.Max(0f, amount);
+        
+        float factor = 1f + Mathf.Max(-0.99f, amount);
+        speedMultiplier *= factor;
     }
 
     public void Decelerate(Team team, float amount)
     {
-        if (team != currentTeam)
+        if (team != currentTeam) 
             return;
-
-        speedMultiplier -= Mathf.Max(0f, amount);
-        speedMultiplier = Mathf.Max(0f, speedMultiplier);
+        
+        float factor = 1f + Mathf.Max(0f, amount);
+        speedMultiplier = Mathf.Max(minSpeedMultiplier, speedMultiplier / factor);
     }
 
     public void MoveLeft(Team team, float amount)
     {
         if (team != currentTeam)
             return;
-
-        lateralInput = Mathf.Clamp(lateralInput - amount, -maxLateralInput, maxLateralInput);
+        
+        _lateralInput = Mathf.Clamp(_lateralInput - amount, -maxLateralInput, maxLateralInput);
     }
 
     public void MoveRight(Team team, float amount)
     {
-        if (team != currentTeam)
-            return;
-
-        lateralInput = Mathf.Clamp(lateralInput + amount, -maxLateralInput, maxLateralInput);
+        if (team != currentTeam) return;
+        _lateralInput = Mathf.Clamp(_lateralInput + amount, -maxLateralInput, maxLateralInput);
     }
 
     public void SetLateralInput(float t)
     {
-        lateralInput = Mathf.Clamp(t, -maxLateralInput, maxLateralInput);
+        _lateralInput = Mathf.Clamp(t, -maxLateralInput, maxLateralInput);
     }
 
     public void AddLateralInput(float delta)
     {
-        SetLateralInput(lateralInput + delta);
+        SetLateralInput(_lateralInput + delta);
     }
-
-    public bool IsGrounded() => grounded;
 
     #endregion
-
-    void OnDrawGizmos()
-    {
-        if (!drawDebug) return;
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + transform.up * 1f);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position + Vector3.up * 0.2f, Vector3.down * groundCheckDistance);
-    }
 }
