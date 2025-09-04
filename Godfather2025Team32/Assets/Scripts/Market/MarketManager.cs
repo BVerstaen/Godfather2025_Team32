@@ -9,14 +9,6 @@ public class MarketItem
     public string itemId;
     public int price;
     public Sprite spriteToUnlock;
-
-    [Header("UI Buttons")]
-    public Button buyButtonTeam1;
-    public Button buyButtonTeam2;
-
-    [Header("Target SpriteRenderer")]
-    public Image targetImageTeam1;
-    public Image targetImageTeam2;
 }
 
 public class MarketManager : MonoBehaviour
@@ -36,9 +28,10 @@ public class MarketManager : MonoBehaviour
     private int moneyTeam1 = 0;
     private int moneyTeam2 = 0;
     private float timer = 0f;
-    
+
     [Header("Market Items")]
-    public List<MarketItem> items = new List<MarketItem>();
+    public List<MarketItem> itemTeam1 = new List<MarketItem>();
+    public List<MarketItem> itemTeam2 = new List<MarketItem>();
     
     private HashSet<string> unlockedItems = new HashSet<string>();
 
@@ -112,21 +105,6 @@ public class MarketManager : MonoBehaviour
     {
         return (team == Team.Team1) ? moneyTeam1 : moneyTeam2;
     }
-    
-    public void TryUnlockUI(MarketItem item, Team team)
-    {
-        if (TryUnlock(item.itemId, item.price, team))
-        {
-            if (item.targetImageTeam1 != null)
-                item.targetImageTeam1.sprite = item.spriteToUnlock;
-
-            if (item.targetImageTeam2 != null)
-                item.targetImageTeam2.sprite = item.spriteToUnlock;
-
-            if (item.buyButtonTeam1 != null) item.buyButtonTeam1.interactable = false;
-            if (item.buyButtonTeam2 != null) item.buyButtonTeam2.interactable = false;
-        }
-    }
 
     public bool TryUnlock(string itemId, int price, Team team)
     {
@@ -154,5 +132,21 @@ public class MarketManager : MonoBehaviour
     public bool IsUnlocked(string itemId)
     {
         return unlockedItems.Contains(itemId);
+    }
+
+    public MarketItem findMarketItemFromID(string ID)
+    {
+        foreach (MarketItem item in itemTeam1)
+        {
+            if (item.itemId == ID)
+                return item;
+        }
+        foreach (MarketItem item in itemTeam2)
+        {
+            if (item.itemId == ID)
+                return item;
+        }
+
+        return null;
     }
 }
