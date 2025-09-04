@@ -34,7 +34,7 @@ public class InputUI : MonoBehaviour
     [SerializeField] private float _joystickAnimationTurnSpeed;
 
     private float _joystickDirection;
-
+    private bool _bindToEvent;
     private RectTransform _rect => GetComponent<RectTransform>();
     private Coroutine _animationCoroutine;
     private Coroutine _joystickAnimationRoutine;
@@ -44,10 +44,14 @@ public class InputUI : MonoBehaviour
         EventManager.Instance.OnStartGigaChad += StartGigaChadUI;
         EventManager.Instance.OnNewInput += ChangeButton;
         EventManager.Instance.OnDisableImage += DisableImage;
+        _bindToEvent = true;
     }
 
     private void OnDisable()
     {
+        if (_bindToEvent)
+            return;
+
         EventManager.Instance.OnStartGigaChad -= StartGigaChadUI;
         EventManager.Instance.OnNewInput -= ChangeButton;
         EventManager.Instance.OnDisableImage -= DisableImage;
