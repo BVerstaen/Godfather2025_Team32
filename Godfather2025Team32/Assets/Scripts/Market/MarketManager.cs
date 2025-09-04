@@ -33,7 +33,8 @@ public class MarketManager : MonoBehaviour
     public List<MarketItem> itemTeam1 = new List<MarketItem>();
     public List<MarketItem> itemTeam2 = new List<MarketItem>();
     
-    private HashSet<string> unlockedItems = new HashSet<string>();
+    private HashSet<string> unlockedItemsTeam1 = new HashSet<string>();
+    private HashSet<string> unlockedItemsTeam2 = new HashSet<string>();
 
     void Awake()
     {
@@ -109,17 +110,18 @@ public class MarketManager : MonoBehaviour
     public bool TryUnlock(string itemId, int price, Team team)
     {
         int currentMoney = GetMoney(team);
+        HashSet<string> unlockedSet = (team == Team.Team1) ? unlockedItemsTeam1 : unlockedItemsTeam2;
 
-        if (unlockedItems.Contains(itemId))
+        if (unlockedSet.Contains(itemId))
         {
-            Debug.Log($"⚠️ {itemId} déjà débloqué !");
+            Debug.Log($"⚠️ {itemId} déjà débloqué par {team} !");
             return false;
         }
 
         if (currentMoney >= price)
         {
             AddMoney(-price, team);
-            unlockedItems.Add(itemId);
+            unlockedSet.Add(itemId);
 
             Debug.Log($"✅ {itemId} débloqué par {team} pour {price} !");
             return true;
@@ -129,9 +131,26 @@ public class MarketManager : MonoBehaviour
         return false;
     }
 
-    public bool IsUnlocked(string itemId)
+    public bool IsUnlocked(string itemId, Team team)
     {
-        return unlockedItems.Contains(itemId);
+        return (team == Team.Team1) ? unlockedItemsTeam1.Contains(itemId) : unlockedItemsTeam2.Contains(itemId);
+    }
+
+    public Sprite GetRandomUnlockedSprite(Team team)
+    {
+        HashSet<string> unlockedSet = (team == Team.Team1) ? unlockedItemsTeam1 : unlockedItemsTeam2;
+        List<Sprite> unlockedSprites = new List<Sprite>();
+
+        foreach (var item in items)
+        {
+            if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
+                unlockedSprites.Add(item.spriteToUnlock);
+        }
+
+        if (unlockedSprites.Count == 0)
+            return null;
+
+        return unlockedSprites[Random.Range(0, unlockedSprites.Count)];
     }
 
     public MarketItem findMarketItemFromID(string ID)
