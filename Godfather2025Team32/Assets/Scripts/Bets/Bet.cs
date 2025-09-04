@@ -10,5 +10,7 @@ public class Bet
         this.playerName = playerName;
         this.amount = amount;
         this.team = team;
+        
+        
     }
 }
