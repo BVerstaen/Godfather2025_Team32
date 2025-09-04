@@ -77,11 +77,14 @@ public class SequenceManager : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.Instance.OnStart -= GiveNewRandomSequence;
+        if (EventManager.Instance)
+        {
+            EventManager.Instance.OnStart -= GiveNewRandomSequence;
+            EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+        }
+        
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
-
-        EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
     }
 
     private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
