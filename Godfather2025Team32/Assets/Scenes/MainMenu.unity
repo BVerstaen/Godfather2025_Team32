@@ -1488,7 +1488,7 @@ MonoBehaviour:
   _markerPlayButton: {fileID: 1862999871}
   _playButton: {fileID: 345707965}
   _sceneTransitionUI: {fileID: 572374878}
-  _SceneToSwitch: 
+  _SceneToSwitch: GameScene
   _speed: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
