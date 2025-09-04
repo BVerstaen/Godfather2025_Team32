@@ -25,6 +25,8 @@ public class EventManager : MonoBehaviour
     public event Action<Team, SequenceDifficulty> OnChangeDifficulty;
 
     public event Action<Team, SequenceSO> OnStartGigaChad;
+    public event Action<Team> OnEndGigaChad;
+
     public event Action<Team, PlayerSide, Buttons> OnNewInput;
     public event Action<Team, PlayerSide> OnDisableImage;
 
@@ -95,6 +97,7 @@ public class EventManager : MonoBehaviour
             _team1SequenceManager.OnEnterGigaChadMode -= GigaChadMode;
             _team1SequenceManager.OnNewInput -= SendChangeButton;
             _team1SequenceManager.OnWaitGigaChad -= SendDisableImage;
+            _team1SequenceManager.OnExitGigaChadMode += ExitGigaChadMode;
         }
 
         if (_team2SequenceManager != null)
@@ -104,6 +107,7 @@ public class EventManager : MonoBehaviour
             _team2SequenceManager.OnEnterGigaChadMode -= GigaChadMode;
             _team2SequenceManager.OnNewInput -= SendChangeButton;
             _team2SequenceManager.OnWaitGigaChad -= SendDisableImage;
+            _team1SequenceManager.OnExitGigaChadMode -= ExitGigaChadMode;
         }
     }
 
@@ -119,6 +123,8 @@ public class EventManager : MonoBehaviour
         
         print("CHADDDDDDDDDDDDDDDDDDDDD");
     }
+
+    private void ExitGigaChadMode(Team team) => OnEndGigaChad?.Invoke(team);
 
     private void CorrectLeftInput(Team team)
     {
