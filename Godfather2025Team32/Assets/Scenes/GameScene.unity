@@ -1275,7 +1275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 1
-  itemID: Gold_P1
+  itemID: Gold_P2
   Image: {fileID: 499930718}
   PriceText: {fileID: 481853530}
   BuyButton: {fileID: 499930717}
@@ -1891,7 +1891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8011045557903005051, guid: 096ba1dd681b70b4fa3df5f16fc9b163, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8102002296308513162, guid: 096ba1dd681b70b4fa3df5f16fc9b163, type: 3}
       propertyPath: m_Name
@@ -1940,6 +1940,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5112599629908673497, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+      propertyPath: _chadSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7eb7eee6c84e0c94c8ca8bcb395b8cc1, type: 3}
     - target: {fileID: 5782836596794672893, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -2419,7 +2423,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7596414468894635598, guid: b0c001461c1d97448b2341aeb757fe87, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7931961117376776290, guid: b0c001461c1d97448b2341aeb757fe87, type: 3}
       propertyPath: m_AnchorMax.x
@@ -5703,7 +5707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 2
-  itemID: Gold_P2
+  itemID: Franko_P2
   Image: {fileID: 1966206977}
   PriceText: {fileID: 221453186}
   BuyButton: {fileID: 1966206976}
@@ -6236,6 +6240,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5112599629908673497, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+      propertyPath: _chadSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c26ab6c865f986940bca69d4b06e0ae9, type: 3}
     - target: {fileID: 5112599629908673497, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: _nullosSprite
       value: 
