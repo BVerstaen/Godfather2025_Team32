@@ -6538,11 +6538,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7300599195893527832, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: _stickDistance.y
-      value: 5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 7300599195893527832, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: _stickDistance.z
-      value: -5
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 7300599195893527832, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: _maxPlayerDistance
