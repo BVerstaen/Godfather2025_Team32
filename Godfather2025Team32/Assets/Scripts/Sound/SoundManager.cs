@@ -43,6 +43,7 @@ public class SoundManager : MonoBehaviour
     
     public void PlayInfiniteLoop(SoundEnum soundEnum)
     {
+        if (_dicoInfiniteAudioSources.ContainsKey(soundEnum)) return;
         AudioClip audioClip = GetAudioCLip(soundEnum);
         AudioSource audioSource = GetAnAudioFromPool();
         audioSource.clip = audioClip;
@@ -53,6 +54,7 @@ public class SoundManager : MonoBehaviour
 
     public void StopInfiniteLoop(SoundEnum soundEnum)
     {
+        if (!_dicoInfiniteAudioSources.ContainsKey(soundEnum)) return;
         AudioSource audioSource = _dicoInfiniteAudioSources[soundEnum];
         _dicoInfiniteAudioSources.Remove(soundEnum);
         PutAudioSourceInPool(audioSource);

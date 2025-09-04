@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -42,6 +41,7 @@ public class GameManager : MonoBehaviour
         _pointsTeam1 = 0;
         _pointsTeam2 = 0;
         _hasGameEnded = false;
+        SoundManager.Instance.PlayInfiniteLoop(SoundEnum.JeromMusicBot);
     }
 
     public void SetRoundWinner(Team team)
@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
 
         if(_currentRound == _numberOfRounds)
         {
+            SoundManager.Instance.StopInfiniteLoop(SoundEnum.JeromMusicBot);
             SceneTransitionUI.Instance.LoadSceneWithTransition(podiumSceneName);
         }
         else
