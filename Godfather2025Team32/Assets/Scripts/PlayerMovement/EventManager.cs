@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using static ButtonsInputs;
@@ -33,7 +34,6 @@ public class EventManager : MonoBehaviour
     private SequenceManager _team1SequenceManager;
     private SequenceManager _team2SequenceManager;
 
-    private int _playersConnected = 0;
 
     public SequenceManager Team1SequenceManager
     {
@@ -47,13 +47,7 @@ public class EventManager : MonoBehaviour
             _team1SequenceManager.OnNewInput += SendChangeButton;
             _team1SequenceManager.OnWaitGigaChad += SendDisableImage;
 
-            _playersConnected++;
             OnLeftPlayerPrepared?.Invoke();
-            if (_playersConnected == 2)
-            {
-                TriggerStart();
-                GameManager.Instance.ResetGame();
-            }
         }
     }
     
@@ -69,17 +63,20 @@ public class EventManager : MonoBehaviour
             _team2SequenceManager.OnNewInput += SendChangeButton;
             _team2SequenceManager.OnWaitGigaChad += SendDisableImage;
 
-            _playersConnected++;
+            //Start when second player is connected
+            //Assume 2nd player is last to be connected
             OnRightPlayerPrepared?.Invoke();
-            if (_playersConnected == 2)
-            {
-                TriggerStart();
-                GameManager.Instance.ResetGame();
-            }
+            GameManager.Instance.ResetGame();
+            TriggerStart();
         }
     }
 
-    public void TriggerStart() => OnStart?.Invoke();
+    public void TriggerStart() => StartCoroutine(WaitAndTrigger());
+    private IEnumerator WaitAndTrigger()
+    {
+        yield return new WaitForSeconds(.1f);
+        OnStart?.Invoke();
+    }
     public void TriggerAccelerate(Team team, float amount) => OnAccelerate?.Invoke(team, amount);
     public void TriggerMoveLeft(Team team) => OnMoveLeft?.Invoke(team);
     public void TriggerMoveRight(Team team) => OnMoveRight?.Invoke(team);
