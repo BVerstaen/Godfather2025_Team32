@@ -11,6 +11,8 @@ public class PlayerAnimation : MonoBehaviour
 
     [Header("Sprites")]
     [SerializeField] private Sprite _nullosSprite;
+    [SerializeField] private Sprite _LeftFinishedSprite;
+    [SerializeField] private Sprite _RightFinishedSprite;
 
     [SerializeField] private Sprite _chadSprite;
 
@@ -23,6 +25,8 @@ public class PlayerAnimation : MonoBehaviour
     {
         EventManager.Instance.OnEndGigaChad += ApplyNullosSprite;
         EventManager.Instance.OnStartGigaChad += ApplyRandomChadSprite;
+
+        EventManager.Instance.
     }
 
     private void OnDisable()

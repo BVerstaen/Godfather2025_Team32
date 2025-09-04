@@ -54,6 +54,9 @@ public class SequenceManager : MonoBehaviour
     public Action<Team> OnCorrectLeftInput;
     public Action<Team> OnCorrectRightInput;
 
+    public Action<Team> OnLeftFinished;
+    public Action<Team> OnRightFinished;
+
     public Action<Team, SequenceSO> OnEnterGigaChadMode;
     public Action<Team> OnExitGigaChadMode;
 

@@ -33,6 +33,9 @@ public class EventManager : MonoBehaviour
     public event Action OnLeftPlayerPrepared;
     public event Action OnRightPlayerPrepared;
 
+    public event Action<Team> OnLeftPlayerFinished;
+    public event Action<Team> OnRightPlayerFinished;
+
     private SequenceManager _team1SequenceManager;
     private SequenceManager _team2SequenceManager;
 
@@ -118,7 +121,7 @@ public class EventManager : MonoBehaviour
 
     private void GigaChadMode(Team team, SequenceSO sequence)
     {
-        TriggerAccelerate(team, 2);
+        TriggerAccelerate(team, 10);
         OnStartGigaChad?.Invoke(team, sequence);
         
         print("CHADDDDDDDDDDDDDDDDDDDDD");
@@ -129,13 +132,11 @@ public class EventManager : MonoBehaviour
     private void CorrectLeftInput(Team team)
     {
         TriggerMoveLeft(team);
-        print("LLLLLLLLLLLEEEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFFTTTTTTTTTTTTTTTTT");
     }
 
     private void CorrectRightInput(Team team)
     {
         TriggerMoveRight(team);
-        print("RRRRRRRRRRRRRIIIIIIIIIIIIIIIIIIIGGGGGGGGGGGGGGGHHHHHHHHHHHHHHHHHTTTTTTTTTTTTTT");
     }
 
     public void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
@@ -152,4 +153,6 @@ public class EventManager : MonoBehaviour
     {
         OnNewInput?.Invoke(team, side, buttons);
     }
+
+    
 }
