@@ -55,12 +55,11 @@ public class SequenceManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("EnableSequence");
         //ControllerManager.Instance.AddSequenceManager(this);
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
 
-        EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
+        //EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
     }
 
     private void OnDisable()
@@ -68,7 +67,7 @@ public class SequenceManager : MonoBehaviour
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
 
-        EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+        //EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
     }
 
     private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
@@ -125,9 +124,6 @@ public class SequenceManager : MonoBehaviour
 
     private void ButtonPressed(PlayerSide side, Buttons buttons)
     {
-        Debug.Log("pressed");
-        Debug.Log(gameObject.transform.parent.name);
-
         bool isLeft = side == PlayerSide.Left;
 
         if ((isLeft && _hasLeftFinishedSequence) || (!isLeft && _hasRightFinishedSequence))

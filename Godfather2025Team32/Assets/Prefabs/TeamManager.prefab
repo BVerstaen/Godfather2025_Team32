@@ -108,8 +108,13 @@ MonoBehaviour:
   - Down
   - Left
   - Right
+  _sticksInputActionNames:
+  - Horizontal
+  - Vertical
   _playerInput: {fileID: 3675366219755279545}
   _buttonsInputs: {fileID: 5693283897170652203}
+  _sticksInputs: {fileID: 6409681948303984100}
+  _sequenceManager: {fileID: 7644050996708904406}
 --- !u!1 &6441697565286351118
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,10 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057dd83e441d4704dbfbd06f45dda8fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _horizontalLeftStickInput: {fileID: -9108893638685509329, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
-  _verticalLeftStickInput: {fileID: -6473236278862191231, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
-  _horizontalRightStickInput: {fileID: 7320176622611919992, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
-  _verticalRightStickInput: {fileID: -4099114623905555677, guid: 2c49cba18071a6049877f2f5724acb2b, type: 3}
 --- !u!114 &5693283897170652203
 MonoBehaviour:
   m_ObjectHideFlags: 0

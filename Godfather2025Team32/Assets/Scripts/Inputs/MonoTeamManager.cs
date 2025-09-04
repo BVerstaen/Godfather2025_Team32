@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static ButtonsInputs;
+using static CircularMovementDetector;
 
 public class MonoTeamManager : MonoBehaviour
 {
@@ -9,9 +10,14 @@ public class MonoTeamManager : MonoBehaviour
 
     [SerializeField] private InputActionAsset _inputActionAssetPrefab;
     [SerializeField] private string[] _inputActionNames;
+    [SerializeField] private string[] _sticksInputActionNames;
 
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private ButtonsInputs _buttonsInputs;
+    [SerializeField] private CircularMovementDetector _sticksInputs;
+
+    [SerializeField] private SequenceManager _sequenceManager;
+    public SequenceManager SequenceManager { get { return _sequenceManager; } }
 
     private InputActionAsset _currentInputActionAsset;
 
@@ -39,6 +45,7 @@ public class MonoTeamManager : MonoBehaviour
     private void OnEnable()
     {
         _buttonsInputs.dicoInputActions = GetButtonsActionsReferences();
+        _sticksInputs.dicoSticksActions = GetSticksInputActions();
     }
 
     public Dictionary<PlayerSide, Dictionary<Buttons, InputAction>> GetButtonsActionsReferences()
@@ -77,5 +84,35 @@ public class MonoTeamManager : MonoBehaviour
         dicoInputActions[PlayerSide.Right] = dicoInputActionsRight;
 
         return dicoInputActions;
+    }
+
+    private Dictionary<PlayerSide, Dictionary<StickDirection, InputAction>> GetSticksInputActions()
+    {
+        Dictionary<PlayerSide, Dictionary<StickDirection, InputAction>> dicoSticksActions = new Dictionary<PlayerSide, Dictionary<StickDirection, InputAction>>();
+
+        Dictionary<StickDirection, InputAction> dicoLeftSticks = new Dictionary<StickDirection, InputAction>();
+        Dictionary<StickDirection, InputAction> dicoRightSticks = new Dictionary<StickDirection, InputAction>();
+
+        string inputName;
+        InputAction currentAction;
+        StickDirection currentDirection;
+        int length = _sticksInputActionNames.Length;
+        for (int i = 0; i < length; i++)
+        {
+            currentDirection = (StickDirection)i;
+
+            inputName = _leftSideName + _sticksInputActionNames[i];
+            currentAction = _currentInputActionAsset.FindAction(inputName);
+            dicoLeftSticks[currentDirection] = currentAction;
+
+            inputName = _rightSideName + _sticksInputActionNames[i];
+            currentAction = _currentInputActionAsset.FindAction(inputName);
+            dicoRightSticks[currentDirection] = currentAction;
+        }
+
+        dicoSticksActions[PlayerSide.Left] = dicoLeftSticks;
+        dicoSticksActions[PlayerSide.Right] = dicoRightSticks;
+
+        return dicoSticksActions;
     }
 }
