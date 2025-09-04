@@ -1,16 +1,14 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static ButtonsInputs;
 
 public class CircularMovementDetector : MonoBehaviour
 {
-    [Header("Left stick Inputs")]
-    [SerializeField] private InputActionReference _horizontalLeftStickInput;
-    [SerializeField] private InputActionReference _verticalLeftStickInput;
+    public Dictionary<PlayerSide, Dictionary<StickDirection, InputAction>> dicoSticksActions;
 
-    [Header("Right stick Inputs")]
-    [SerializeField] private InputActionReference _horizontalRightStickInput;
-    [SerializeField] private InputActionReference _verticalRightStickInput;
+    public enum StickDirection { Horizontal, Vertical }
 
     public enum RotationDirection
     {
@@ -43,8 +41,6 @@ public class CircularMovementDetector : MonoBehaviour
     {
         _leftStickData.Type = StickType.LeftStick;
         _rightStickData.Type = StickType.RightStick;
-        PlayerInput input = GetComponent<PlayerInput>();
-        Debug.Log(input.playerIndex);
     }
 
     void Update()
@@ -59,13 +55,13 @@ public class CircularMovementDetector : MonoBehaviour
         float x, y;
         if (stickData.Type == StickType.LeftStick)
         {
-            x = _horizontalLeftStickInput.action.ReadValue<float>();
-            y = _verticalLeftStickInput.action.ReadValue<float>();
+            x = dicoSticksActions[PlayerSide.Left][StickDirection.Horizontal].ReadValue<float>();
+            y = dicoSticksActions[PlayerSide.Left][StickDirection.Vertical].ReadValue<float>();
         }
         else
         {
-            x = _horizontalRightStickInput.action.ReadValue<float>();
-            y = _verticalRightStickInput.action.ReadValue<float>();
+            x = dicoSticksActions[PlayerSide.Right][StickDirection.Horizontal].ReadValue<float>();
+            y = dicoSticksActions[PlayerSide.Right][StickDirection.Vertical].ReadValue<float>();
         }
         Vector2 input = new Vector2(x, y);
 
@@ -98,8 +94,8 @@ public class CircularMovementDetector : MonoBehaviour
 
                 if (stickData.TotalAngle >= 360f)
                 {
-                    //Debug.Log("Mouvement circulaire détecté !");
-                    //Debug.Log($"{stickData.Type} - {stickData.CurrentDirection}");
+                    Debug.Log("Mouvement circulaire détecté !");
+                    Debug.Log($"{stickData.Type} - {stickData.CurrentDirection}");
                     OnDetectCircularMovement?.Invoke(stickData.Type, stickData.CurrentDirection);
                     stickData.TotalAngle = 0;
                     stickData.CurrentDirection = 0;

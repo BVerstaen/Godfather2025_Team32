@@ -8,13 +8,17 @@ using Random = UnityEngine.Random;
 
 public class SequenceManager : MonoBehaviour
 {
+
     [Header("References")]
+    [SerializeField] private MonoTeamManager _teamManager;
     [SerializeField] private ButtonsInputs _buttonInputs;
     [SerializeField] private CircularMovementDetector _circularMovementDetector;
 
     [Header("Sequence")]
     [SerializeField] private List<SequenceSO> _possibleSequences;
     [SerializeField] private int _numberOfSequences;
+    [Space(5)]
+    [SerializeField] private SequenceDifficulty _currentDifficulty;
 
     [Header("Giga chad")]
     [SerializeField] private float _gigaChadDuration;
@@ -23,6 +27,8 @@ public class SequenceManager : MonoBehaviour
 
     private SequenceSO _leftSideSequence;
     private SequenceSO _rightSideSequence;
+    
+    private Team _currentTeam { get => _teamManager.CurrentTeam; }
 
     private int _leftSideCurrentInput; //Quel sequence est joué
     private int _leftSideCurrentRepetition; //Combien de fois l'input a été répétée
@@ -40,26 +46,38 @@ public class SequenceManager : MonoBehaviour
 
     public SequenceSO GigaChadSequence { get => _leftSideSequence; }
 
-    public Action OnCorrectLeftInput;
-    public Action OnCorrectRightInput;
+    public Action<Team> OnCorrectLeftInput;
+    public Action<Team> OnCorrectRightInput;
 
-    public Action OnEnterGigaChadMode;
-    public Action OnExitGigaChadMode;
+    public Action<Team, SequenceSO> OnEnterGigaChadMode;
+    public Action<Team> OnExitGigaChadMode;
 
-    public Action<PlayerSide, Buttons> OnNewInput;
-    public Action<PlayerSide> OnWaitGigaChad;
+    public Action<Team, PlayerSide, Buttons> OnNewInput;
+    public Action<Team, PlayerSide> OnWaitGigaChad;
 
     private void OnEnable()
     {
         //ControllerManager.Instance.AddSequenceManager(this);
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
+
+        //EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
     }
 
     private void OnDisable()
     {
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
+
+        //EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+    }
+
+    private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
+    {
+        if (_teamManager.CurrentTeam != team)
+            return;
+
+        _currentDifficulty = difficulty;
     }
 
     private void Awake()
@@ -70,6 +88,23 @@ public class SequenceManager : MonoBehaviour
     private void GiveNewRandomSequence()
     {
         SequenceSO newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
+        int guardWhile = 0;
+        //Select from difficulty
+        while(newSequence.Difficulty != _currentDifficulty)
+        {
+            newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
+
+            guardWhile++;
+            if(guardWhile >= 100)
+            {
+                Debug.Log("Couldn't find from difficulty");
+                newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
+                break;
+            }
+
+        }
+
+
         _leftSideSequence = newSequence;
         _rightSideSequence = newSequence;
 
@@ -85,14 +120,12 @@ public class SequenceManager : MonoBehaviour
         _rightSideCurrentIndex = 0;
         _hasRightFinishedSequence = false;
 
-        OnNewInput?.Invoke(PlayerSide.Left, _leftSideSequence.ButtonSequenceList[0].ButtonsSequences[0]);
-        OnNewInput?.Invoke(PlayerSide.Right, _rightSideSequence.ButtonSequenceList[0].ButtonsSequences[0]);
+        OnNewInput?.Invoke(_currentTeam, PlayerSide.Left, _leftSideSequence.ButtonSequenceList[0].ButtonsSequences[0]);
+        OnNewInput?.Invoke(_currentTeam, PlayerSide.Right, _rightSideSequence.ButtonSequenceList[0].ButtonsSequences[0]);
     }
 
     private void ButtonPressed(PlayerSide side, Buttons buttons)
     {
-        Debug.Log(gameObject.transform.parent.name);
-
         bool isLeft = side == PlayerSide.Left;
 
         if ((isLeft && _hasLeftFinishedSequence) || (!isLeft && _hasRightFinishedSequence))
@@ -127,7 +160,7 @@ public class SequenceManager : MonoBehaviour
                         Debug.Log($"{side} sequence finished");
                         currentIndex = 0;
                         hasFinishedSequence = true;
-                        OnWaitGigaChad?.Invoke(side);
+                        OnWaitGigaChad?.Invoke(_currentTeam, side);
                         CheckToLaunchGigaChad();
                         return;
                     }
@@ -136,7 +169,7 @@ public class SequenceManager : MonoBehaviour
 
             //Update UI
             Sequence newSequence = sequenceList[currentIndex];
-            OnNewInput?.Invoke(side, newSequence.ButtonsSequences[currentInput]);
+            OnNewInput?.Invoke(_currentTeam, side, newSequence.ButtonsSequences[currentInput]);
         }
     }
 
@@ -147,7 +180,7 @@ public class SequenceManager : MonoBehaviour
             return;
 
         Debug.Log("Enter Giga Chad !");
-        OnEnterGigaChadMode?.Invoke();
+        OnEnterGigaChadMode?.Invoke(_currentTeam, GigaChadSequence);
         _gigaChadCoroutine = StartCoroutine(GigaChadRoutine());
         _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
         _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
@@ -173,7 +206,7 @@ public class SequenceManager : MonoBehaviour
             _rightInactiveCoolDown = null;
         }
 
-        OnExitGigaChadMode?.Invoke();
+        OnExitGigaChadMode?.Invoke(_currentTeam);
         GiveNewRandomSequence();
     }
 
