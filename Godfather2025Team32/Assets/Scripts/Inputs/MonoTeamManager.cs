@@ -22,6 +22,15 @@ public class MonoTeamManager : MonoBehaviour
         private set { _playerIndex = value; } 
     }
 
+    public Team CurrentTeam
+    {
+        get
+        {
+            return PlayerIndex == 0 ? Team.Team1 : Team.Team2;
+        }
+    }
+
+
     private string _leftSideName = "Left";
     private string _rightSideName = "Right";
 

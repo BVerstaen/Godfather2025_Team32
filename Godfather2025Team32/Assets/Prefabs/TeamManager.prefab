@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc2d1c1e23072f6418fb98d97a6e9347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentTeam: 0
+  _teamManager: {fileID: 7886278540450834313}
   _buttonInputs: {fileID: 5693283897170652203}
   _circularMovementDetector: {fileID: 6409681948303984100}
   _possibleSequences:

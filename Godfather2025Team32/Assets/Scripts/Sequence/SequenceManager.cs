@@ -8,9 +8,9 @@ using Random = UnityEngine.Random;
 
 public class SequenceManager : MonoBehaviour
 {
-    [SerializeField] private Team currentTeam;
 
     [Header("References")]
+    [SerializeField] private MonoTeamManager _teamManager;
     [SerializeField] private ButtonsInputs _buttonInputs;
     [SerializeField] private CircularMovementDetector _circularMovementDetector;
 
@@ -42,16 +42,6 @@ public class SequenceManager : MonoBehaviour
     private Coroutine _leftInactiveCoolDown;
     private Coroutine _rightInactiveCoolDown;
 
-    public Team CurrentTeam 
-    { 
-        get 
-        {
-            return _buttonInputs.PlayerIndex == 0 ? Team.Team1 : Team.Team2;
-        } 
-    }
-
-    public SequenceDifficulty CurrentDifficulty { get => _currentDifficulty; set => _currentDifficulty = value; }
-
     public SequenceSO GigaChadSequence { get => _leftSideSequence; }
 
     public Action OnCorrectLeftInput;
@@ -70,7 +60,7 @@ public class SequenceManager : MonoBehaviour
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
 
-        //EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
+        EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
     }
 
     private void OnDisable()
@@ -78,15 +68,15 @@ public class SequenceManager : MonoBehaviour
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
 
-        //EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+        EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
     }
 
     private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
     {
-        if (currentTeam != team)
+        if (_teamManager.CurrentTeam != team)
             return;
 
-        CurrentDifficulty = difficulty;
+        _currentDifficulty = difficulty;
     }
 
     private void Awake()
@@ -99,7 +89,7 @@ public class SequenceManager : MonoBehaviour
         SequenceSO newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
         int guardWhile = 0;
         //Select from difficulty
-        while(newSequence.Difficulty != CurrentDifficulty)
+        while(newSequence.Difficulty != _currentDifficulty)
         {
             newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
 
