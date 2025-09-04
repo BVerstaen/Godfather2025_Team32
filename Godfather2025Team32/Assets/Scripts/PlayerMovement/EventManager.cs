@@ -15,10 +15,10 @@ public class EventManager : MonoBehaviour
     public event Action<Team, float> OnAccelerate;
 
     [HideInInspector]
-    public event Action<Team, float> OnMoveLeft;
+    public event Action<Team> OnMoveLeft;
 
     [HideInInspector]
-    public event Action<Team, float> OnMoveRight;
+    public event Action<Team> OnMoveRight;
 
     [HideInInspector]
     public event Action<Team, SequenceDifficulty> OnChangeDifficulty;
@@ -60,8 +60,8 @@ public class EventManager : MonoBehaviour
 
     public void TriggerStart() => OnStart?.Invoke();
     public void TriggerAccelerate(Team team, float amount) => OnAccelerate?.Invoke(team, amount);
-    public void TriggerMoveLeft(Team team, float amount) => OnMoveLeft?.Invoke(team, amount);
-    public void TriggerMoveRight(Team team, float amount) => OnMoveRight?.Invoke(team, amount);
+    public void TriggerMoveLeft(Team team) => OnMoveLeft?.Invoke(team);
+    public void TriggerMoveRight(Team team) => OnMoveRight?.Invoke(team);
 
     private void Awake()
     {
@@ -98,17 +98,20 @@ public class EventManager : MonoBehaviour
     {
         TriggerAccelerate(team, 10);
         OnStartGigaChad?.Invoke(team, sequence);
+        
         print("CHADDDDDDDDDDDDDDDDDDDDD");
     }
 
     private void CorrectLeftInput(Team team)
     {
-        throw new NotImplementedException();
+        TriggerMoveLeft(team);
+        print("LLLLLLLLLLLEEEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFFTTTTTTTTTTTTTTTTT");
     }
 
     private void CorrectRightInput(Team team)
     {
-        throw new NotImplementedException();
+        TriggerMoveRight(team);
+        print("RRRRRRRRRRRRRIIIIIIIIIIIIIIIIIIIGGGGGGGGGGGGGGGHHHHHHHHHHHHHHHHHTTTTTTTTTTTTTT");
     }
 
     public void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
