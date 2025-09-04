@@ -12,6 +12,8 @@ public class PlayerAnimation : MonoBehaviour
     [Header("Sprites")]
     [SerializeField] private Sprite _nullosSprite;
 
+    [SerializeField] private Sprite _chadSprite;
+
     void Awake()
     {
         ApplyNullosSprite(_playerController.currentTeam);
@@ -42,5 +44,12 @@ public class PlayerAnimation : MonoBehaviour
         if (_playerController.currentTeam != team)
             return;
 
+        Sprite newSprite;
+        newSprite = MarketManager.Instance.GetRandomUnlockedSprite(team);
+
+        if (newSprite)
+            _sr.sprite = newSprite;
+        else
+            _sr.sprite = _chadSprite;
     }
 }

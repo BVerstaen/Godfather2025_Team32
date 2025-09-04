@@ -40,7 +40,8 @@ public class MarketManager : MonoBehaviour
     [Header("Market Items")]
     public List<MarketItem> items = new List<MarketItem>();
     
-    private HashSet<string> unlockedItems = new HashSet<string>();
+    private HashSet<string> unlockedItemsTeam1 = new HashSet<string>();
+    private HashSet<string> unlockedItemsTeam2 = new HashSet<string>();
 
     void Awake()
     {
@@ -117,31 +118,35 @@ public class MarketManager : MonoBehaviour
     {
         if (TryUnlock(item.itemId, item.price, team))
         {
-            if (item.targetImageTeam1 != null)
+            if (team == Team.Team1 && item.targetImageTeam1 != null)
                 item.targetImageTeam1.sprite = item.spriteToUnlock;
 
-            if (item.targetImageTeam2 != null)
+            if (team == Team.Team2 && item.targetImageTeam2 != null)
                 item.targetImageTeam2.sprite = item.spriteToUnlock;
 
-            if (item.buyButtonTeam1 != null) item.buyButtonTeam1.interactable = false;
-            if (item.buyButtonTeam2 != null) item.buyButtonTeam2.interactable = false;
+            if (team == Team.Team1 && item.buyButtonTeam1 != null)
+                item.buyButtonTeam1.interactable = false;
+
+            if (team == Team.Team2 && item.buyButtonTeam2 != null)
+                item.buyButtonTeam2.interactable = false;
         }
     }
 
     public bool TryUnlock(string itemId, int price, Team team)
     {
         int currentMoney = GetMoney(team);
+        HashSet<string> unlockedSet = (team == Team.Team1) ? unlockedItemsTeam1 : unlockedItemsTeam2;
 
-        if (unlockedItems.Contains(itemId))
+        if (unlockedSet.Contains(itemId))
         {
-            Debug.Log($"⚠️ {itemId} déjà débloqué !");
+            Debug.Log($"⚠️ {itemId} déjà débloqué par {team} !");
             return false;
         }
 
         if (currentMoney >= price)
         {
             AddMoney(-price, team);
-            unlockedItems.Add(itemId);
+            unlockedSet.Add(itemId);
 
             Debug.Log($"✅ {itemId} débloqué par {team} pour {price} !");
             return true;
@@ -151,8 +156,25 @@ public class MarketManager : MonoBehaviour
         return false;
     }
 
-    public bool IsUnlocked(string itemId)
+    public bool IsUnlocked(string itemId, Team team)
     {
-        return unlockedItems.Contains(itemId);
+        return (team == Team.Team1) ? unlockedItemsTeam1.Contains(itemId) : unlockedItemsTeam2.Contains(itemId);
+    }
+
+    public Sprite GetRandomUnlockedSprite(Team team)
+    {
+        HashSet<string> unlockedSet = (team == Team.Team1) ? unlockedItemsTeam1 : unlockedItemsTeam2;
+        List<Sprite> unlockedSprites = new List<Sprite>();
+
+        foreach (var item in items)
+        {
+            if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
+                unlockedSprites.Add(item.spriteToUnlock);
+        }
+
+        if (unlockedSprites.Count == 0)
+            return null;
+
+        return unlockedSprites[Random.Range(0, unlockedSprites.Count)];
     }
 }
