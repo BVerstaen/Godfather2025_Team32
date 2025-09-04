@@ -48,6 +48,9 @@ public class SequenceManager : MonoBehaviour
 
     public SequenceSO GigaChadSequence { get => _leftSideSequence; }
 
+    public Action OnChangeToNullosSprite;
+    public Action OnChangeToChadSprite;
+
     public Action<Team> OnCorrectLeftInput;
     public Action<Team> OnCorrectRightInput;
 
