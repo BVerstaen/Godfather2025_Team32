@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            EventManager.Instance.gameStarted = false;
             SceneTransitionUI.Instance.LoadSceneWithTransition(gameSceneName);
         }
     }
