@@ -45,16 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseIncomePerSecond: 1
-  multiplierActiveTeam1: 1
+  multiplierActiveTeam1: 0
   multiplierActiveTeam2: 0
   multiplier: 1000000
   moneyTextTeam1: {fileID: 0}
   moneyTextTeam2: {fileID: 0}
-  items:
-  - itemId: 
-    price: 0
-    spriteToUnlock: {fileID: 0}
-    buyButtonTeam1: {fileID: 0}
-    buyButtonTeam2: {fileID: 0}
-    targetImageTeam1: {fileID: 0}
-    targetImageTeam2: {fileID: 0}
+  itemTeam1: []
+  itemTeam2: []

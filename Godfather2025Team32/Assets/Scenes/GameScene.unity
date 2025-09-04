@@ -310,6 +310,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3224468973833472324, guid: 3dfe5894285376540a299343953d0300, type: 3}
+      propertyPath: multiplierActiveTeam1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3224468973833472324, guid: 3dfe5894285376540a299343953d0300, type: 3}
       propertyPath: itemTeam1.Array.data[0].price
       value: 10000000
       objectReference: {fileID: 0}
