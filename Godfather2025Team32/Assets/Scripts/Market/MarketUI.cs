@@ -17,6 +17,9 @@ public class MarketUI : MonoBehaviour
         {
             Image.sprite = marketItem.spriteToUnlock;
             PriceText.text = marketItem.price.ToString();
+
+            if (MarketManager.Instance.IsUnlocked(itemID, team))
+                BuyButton.interactable = false;
         }
     }
 
