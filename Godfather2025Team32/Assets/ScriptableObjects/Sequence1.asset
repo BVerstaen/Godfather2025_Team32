@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627f2780dd932ca49b59e58521fc0255, type: 3}
   m_Name: Sequence1
   m_EditorClassIdentifier: 
+  Difficulty: 0
   ButtonSequenceList:
   - ButtonsSequences: 03000000
-    NumberOfRepeats: 5
+    NumberOfRepeats: 1
   - ButtonsSequences: 02000000
-    NumberOfRepeats: 3
-  - ButtonsSequences: 00000000
-    NumberOfRepeats: 5
+    NumberOfRepeats: 1
   LeftGigaChadRotation: -1
   RightGigaChadRotation: 1

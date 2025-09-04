@@ -5,20 +5,25 @@ using UnityEngine.Splines;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Spline")]
+   [Header("Spline")]
     public SplineContainer spline;
     public float moveSpeed = 12f;
     public float acceleration = 4f;
     public bool loop = true;
     
     [Header("Speed Multiplier (acceleration)")]
-    [Tooltip("Multiplicateur appliqué à moveSpeed. Ex: 1 = normal, 1.2 = +20%")]
     public float speedMultiplier = 1f;
     public float minSpeedMultiplier = 0.1f;
 
     [Header("Lateral")]
     public float lateralRange = 2f;
     public float maxLateralInput = 1f;
+    public float lateralReturnSpeed = 1f;
+    
+    [Header("Balance (déséquilibre)")]
+    public BalanceManager balanceManager;
+    public float balanceEffect = 1f;
+    public float balanceLerpTime = 0.12f;
 
     [Header("Orientation")]
     public float orientSpeed = 8f;
@@ -32,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     private float _splinePos = 0f;
     private float _lateralInput = 0f;
+    private float _lateralInputTarget = 0f;
     private float _currentSpeed;
     private bool _isStarted = false;
 
@@ -41,7 +47,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _rb.isKinematic = true;
+        _rb.isKinematic = true; // on suit la spline, pas la physique (changer si besoin)
     }
 
     void Start()
@@ -50,8 +56,6 @@ public class PlayerController : MonoBehaviour
         {
             eventManager.OnStart += StartMovement;
             eventManager.OnAccelerate += Accelerate;
-            eventManager.OnMoveLeft += MoveLeft;
-            eventManager.OnMoveRight += MoveRight;
         }
 
         if (spline != null) 
@@ -67,27 +71,20 @@ public class PlayerController : MonoBehaviour
         {
             eventManager.OnStart -= StartMovement;
             eventManager.OnAccelerate -= Accelerate;
-            eventManager.OnMoveLeft -= MoveLeft;
-            eventManager.OnMoveRight -= MoveRight;
         }
     }
 
     public void RebuildLengthCache()
     {
-        if (spline == null)
-        {
-            _cachedLength = 0f; 
-            return;
-        }
-        
+        if (spline == null) { _cachedLength = 0f; return; }
         _cachedLength = spline.CalculateLength();
-        if (drawDebug)
-            Debug.Log($"[Spline] cachedLength = {_cachedLength}");
+        if (drawDebug) Debug.Log($"[Spline] cachedLength = {_cachedLength}");
     }
 
     void Update()
     {
-        if (!_isStarted || spline == null) return;
+        if (!_isStarted || spline == null)
+            return;
 
         if (_cachedLength <= 0f)
         {
@@ -98,12 +95,12 @@ public class PlayerController : MonoBehaviour
         float targetSpeed = moveSpeed * Mathf.Max(minSpeedMultiplier, speedMultiplier);
         _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, 1f - Mathf.Exp(-acceleration * Time.deltaTime));
 
-        float deltaNormalized = (_currentSpeed * Time.deltaTime) /_cachedLength;
-        _splinePos = _splinePos + deltaNormalized;
-
-        if (loop)
+        float deltaNormalized = (_currentSpeed * Time.deltaTime) / _cachedLength;
+        _splinePos += deltaNormalized;
+        
+        if (loop) 
             _splinePos = Mathf.Repeat(_splinePos, 1f);
-        else
+        else 
             _splinePos = Mathf.Clamp01(_splinePos);
 
         Vector3 pos = spline.EvaluatePosition(_splinePos);
@@ -112,12 +109,23 @@ public class PlayerController : MonoBehaviour
 
         Vector3 tangent = (Vector3)math.normalize(tanF3);
         Vector3 up = (Vector3)math.normalize(upF3);
-
         Vector3 right = Vector3.Cross(up, tangent).normalized;
-        Vector3 offset = right * (_lateralInput * lateralRange);
 
-        // appliquer position + rotation
-        transform.position = pos + offset;
+        _lateralInput = Mathf.MoveTowards(_lateralInput, _lateralInputTarget, lateralReturnSpeed * Time.deltaTime);
+
+        float balance = 0f;
+        if (balanceManager)
+            balance = balanceManager.GetImbalance(currentTeam);
+
+        float balanceOffset = balance * lateralRange * balanceEffect;
+        float lateralOffsetValue = (_lateralInput * lateralRange) + balanceOffset;
+
+        Vector3 targetOffset = right * lateralOffsetValue;
+        Vector3 desiredPos = pos + targetOffset;
+
+        float t = (balanceLerpTime > 0f) ? (1f - Mathf.Exp(-Time.deltaTime / Mathf.Max(0.0001f, balanceLerpTime))) : 1f;
+        transform.position = Vector3.Lerp(transform.position, desiredPos, t);
+
         Quaternion targetRot = Quaternion.LookRotation(tangent, up);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 1f - Mathf.Exp(-orientSpeed * Time.deltaTime));
 
@@ -125,7 +133,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.DrawLine(pos, pos + tangent, Color.green);
             Debug.DrawRay(pos, up * 0.5f, Color.blue);
-            Debug.Log($"deltaNormalized={deltaNormalized:F5} splinePos={_splinePos:F5}");
+            Debug.DrawRay(pos, right * 0.5f, Color.red);
+            Debug.Log($"deltaNormalized={deltaNormalized:F5} splinePos={_splinePos:F5} lateralIn={_lateralInput:F2} target={_lateralInputTarget:F2} balance={balance:F2}");
         }
     }
 
@@ -136,46 +145,44 @@ public class PlayerController : MonoBehaviour
         _isStarted = true;
     }
 
+    /// <summary>Accélère multiplicativement (amount = 0.2 => +20%)</summary>
     public void Accelerate(Team team, float amount)
     {
-        if (team != currentTeam) 
-            return;
-        
+        if (team != currentTeam) return;
         float factor = 1f + Mathf.Max(-0.99f, amount);
         speedMultiplier *= factor;
     }
 
+    /// <summary>Décélère multiplicativement (amount = 0.2 => /1.2)</summary>
     public void Decelerate(Team team, float amount)
     {
-        if (team != currentTeam) 
-            return;
-        
+        if (team != currentTeam) return;
         float factor = 1f + Mathf.Max(0f, amount);
         speedMultiplier = Mathf.Max(minSpeedMultiplier, speedMultiplier / factor);
     }
 
+    /// <summary>Appelé par l'EventManager/SequenceManager : ajoute une poussée latérale target</summary>
     public void MoveLeft(Team team, float amount)
     {
-        if (team != currentTeam)
-            return;
-        
-        _lateralInput = Mathf.Clamp(_lateralInput - amount, -maxLateralInput, maxLateralInput);
+        if (team != currentTeam) return;
+        _lateralInputTarget = Mathf.Clamp(_lateralInputTarget - amount, -maxLateralInput, maxLateralInput);
     }
 
     public void MoveRight(Team team, float amount)
     {
         if (team != currentTeam) return;
-        _lateralInput = Mathf.Clamp(_lateralInput + amount, -maxLateralInput, maxLateralInput);
+        _lateralInputTarget = Mathf.Clamp(_lateralInputTarget + amount, -maxLateralInput, maxLateralInput);
     }
 
     public void SetLateralInput(float t)
     {
-        _lateralInput = Mathf.Clamp(t, -maxLateralInput, maxLateralInput);
+        _lateralInputTarget = Mathf.Clamp(t, -maxLateralInput, maxLateralInput);
     }
 
+    /// <summary>Ajouter un delta à la target</summary>
     public void AddLateralInput(float delta)
     {
-        SetLateralInput(_lateralInput + delta);
+        SetLateralInput(_lateralInputTarget + delta);
     }
 
     #endregion

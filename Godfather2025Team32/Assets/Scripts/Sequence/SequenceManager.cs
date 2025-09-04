@@ -142,6 +142,11 @@ public class SequenceManager : MonoBehaviour
 
         if (buttons == currentSequence.ButtonsSequences[currentInput])
         {
+            if(isLeft)
+                OnCorrectLeftInput?.Invoke(_currentTeam);
+            else
+                OnCorrectRightInput?.Invoke(_currentTeam);
+            
             currentInput++;
             if (currentInput >= currentSequence.ButtonsSequences.Count) // Finished input list
             {
