@@ -7,7 +7,7 @@
             "id": "24f02e65-c620-48e0-93cc-29e7ce41268c",
             "actions": [
                 {
-                    "name": "LeftStickVertical",
+                    "name": "LeftVertical",
                     "type": "Value",
                     "id": "9501be38-57a4-45bf-8fc6-afc08665b3ac",
                     "expectedControlType": "Axis",
@@ -16,7 +16,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "LeftStickHorizontal",
+                    "name": "LeftHorizontal",
                     "type": "Value",
                     "id": "6aab68aa-c935-44cb-8124-e652f068f875",
                     "expectedControlType": "Axis",
@@ -25,7 +25,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "RightStickHorizontal",
+                    "name": "RightHorizontal",
                     "type": "Value",
                     "id": "f1b18382-cba8-48e5-9af2-f2c6b422853c",
                     "expectedControlType": "Axis",
@@ -34,7 +34,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "RightStickVertical",
+                    "name": "RightVertical",
                     "type": "Value",
                     "id": "3447d09a-f340-4379-9ba4-add1ccbd61bd",
                     "expectedControlType": "Axis",
@@ -159,7 +159,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickVertical",
+                    "action": "LeftVertical",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -170,7 +170,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickVertical",
+                    "action": "LeftVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -181,7 +181,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickVertical",
+                    "action": "LeftVertical",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -192,7 +192,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickVertical",
+                    "action": "LeftVertical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -203,7 +203,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickVertical",
+                    "action": "LeftVertical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -214,7 +214,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickHorizontal",
+                    "action": "LeftHorizontal",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -225,7 +225,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickHorizontal",
+                    "action": "LeftHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -236,7 +236,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickHorizontal",
+                    "action": "LeftHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -247,7 +247,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickHorizontal",
+                    "action": "LeftHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -258,7 +258,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LeftStickHorizontal",
+                    "action": "LeftHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -269,7 +269,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RightStickHorizontal",
+                    "action": "RightHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -280,7 +280,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RightStickHorizontal",
+                    "action": "RightHorizontal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -291,7 +291,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RightStickVertical",
+                    "action": "RightVertical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -302,7 +302,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "RightStickVertical",
+                    "action": "RightVertical",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
