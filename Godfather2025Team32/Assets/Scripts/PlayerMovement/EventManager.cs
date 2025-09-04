@@ -12,20 +12,20 @@ public class EventManager : MonoBehaviour
     public event Action OnStart;
 
     [HideInInspector]
-    public event Action<float> OnAccelerate;
+    public event Action<Team, float> OnAccelerate;
 
     [HideInInspector]
-    public event Action<float> OnMoveLeft;
+    public event Action<Team, float> OnMoveLeft;
 
     [HideInInspector]
-    public event Action<float> OnMoveRight;
+    public event Action<Team, float> OnMoveRight;
 
     [HideInInspector]
     public event Action<Team, SequenceDifficulty> OnChangeDifficulty;
 
-    public event Action<SequenceSO> OnStartGigaChad;
-    public event Action<PlayerSide, Buttons> OnNewInput;
-    public event Action<PlayerSide> OnDisableImage;
+    public event Action<Team, SequenceSO> OnStartGigaChad;
+    public event Action<Team, PlayerSide, Buttons> OnNewInput;
+    public event Action<Team, PlayerSide> OnDisableImage;
 
     private SequenceManager _team1SequenceManager;
     private SequenceManager _team2SequenceManager;
@@ -59,11 +59,11 @@ public class EventManager : MonoBehaviour
     }
 
     public void TriggerStart() => OnStart?.Invoke();
-    public void TriggerAccelerate(float amount) => OnAccelerate?.Invoke(amount);
-    public void TriggerMoveLeft(float amount) => OnMoveLeft?.Invoke(amount);
-    public void TriggerMoveRight(float amount) => OnMoveRight?.Invoke(amount);
+    public void TriggerAccelerate(Team team, float amount) => OnAccelerate?.Invoke(team, amount);
+    public void TriggerMoveLeft(Team team, float amount) => OnMoveLeft?.Invoke(team, amount);
+    public void TriggerMoveRight(Team team, float amount) => OnMoveRight?.Invoke(team, amount);
 
-    private void Start()
+    private void Awake()
     {
         Instance = this;
     }
@@ -94,19 +94,19 @@ public class EventManager : MonoBehaviour
         Instance = null;
     }
 
-    private void GigaChadMode(SequenceSO sequence)
+    private void GigaChadMode(Team team, SequenceSO sequence)
     {
-        TriggerAccelerate(10);
-        OnStartGigaChad?.Invoke(sequence);
+        TriggerAccelerate(team, 10);
+        OnStartGigaChad?.Invoke(team, sequence);
         print("CHADDDDDDDDDDDDDDDDDDDDD");
     }
 
-    private void CorrectLeftInput()
+    private void CorrectLeftInput(Team team)
     {
         throw new NotImplementedException();
     }
 
-    private void CorrectRightInput()
+    private void CorrectRightInput(Team team)
     {
         throw new NotImplementedException();
     }
@@ -116,13 +116,13 @@ public class EventManager : MonoBehaviour
         OnChangeDifficulty?.Invoke(team, difficulty);
     }
 
-    private void SendDisableImage(ButtonsInputs.PlayerSide side)
+    private void SendDisableImage(Team team, ButtonsInputs.PlayerSide side)
     {
-        OnDisableImage?.Invoke(side);
+        OnDisableImage?.Invoke(team, side);
     }
 
-    private void SendChangeButton(ButtonsInputs.PlayerSide side, ButtonsInputs.Buttons buttons)
+    private void SendChangeButton(Team team,  ButtonsInputs.PlayerSide side, ButtonsInputs.Buttons buttons)
     {
-        OnNewInput?.Invoke(side, buttons);
+        OnNewInput?.Invoke(team, side, buttons);
     }
 }

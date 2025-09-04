@@ -56,8 +56,11 @@ public class InputUI : MonoBehaviour
         _rect.localScale = new Vector2(newScale, newScale);
     }
 
-    private void ChangeButton(PlayerSide side, Buttons newButton)
+    private void ChangeButton(Team team, PlayerSide side, Buttons newButton)
     {
+        if (team != _currentTeam)
+            return;
+
         if (side != _currentSide)
             return;
 
@@ -72,16 +75,22 @@ public class InputUI : MonoBehaviour
         }
     }
 
-    private void DisableImage(PlayerSide side)
+    private void DisableImage(Team team, PlayerSide side)
     {
+        if (team != _currentTeam)
+            return;
+
         if (side != _currentSide)
             return;
 
         _spriteImage.enabled = false;
     }
 
-    private void StartGigaChadUI(SequenceSO sequence)
+    private void StartGigaChadUI(Team team, SequenceSO sequence)
     {
+        if (team != _currentTeam)
+            return;
+
         _spriteImage.enabled = true;
         switch (_currentSide)
         {
