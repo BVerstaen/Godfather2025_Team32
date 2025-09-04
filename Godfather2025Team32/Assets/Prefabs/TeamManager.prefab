@@ -52,7 +52,7 @@ MonoBehaviour:
   _numberOfSequences: 1
   _currentDifficulty: 0
   _gigaChadDuration: 5
-  _firstinactiveCoolDown: 1
+  _firstinactiveCoolDown: 3
   _inactiveTimeDelay: 0.5
 --- !u!1 &2520987449586416166
 GameObject:

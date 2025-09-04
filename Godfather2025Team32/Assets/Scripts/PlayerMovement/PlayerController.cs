@@ -68,8 +68,6 @@ public class PlayerController : MonoBehaviour
             CameraManager.Instance.LeftPlayer = gameObject;
         else if (currentTeam == Team.Team2)
             CameraManager.Instance.RightPlayer = gameObject;
-
-        StartMovement();
     }
 
     void OnDestroy()

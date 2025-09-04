@@ -27,8 +27,13 @@ public class EventManager : MonoBehaviour
     public event Action<Team, PlayerSide, Buttons> OnNewInput;
     public event Action<Team, PlayerSide> OnDisableImage;
 
+    public event Action OnLeftPlayerPrepared;
+    public event Action OnRightPlayerPrepared;
+
     private SequenceManager _team1SequenceManager;
     private SequenceManager _team2SequenceManager;
+
+    private int _playersConnected = 0;
 
     public SequenceManager Team1SequenceManager
     {
@@ -41,6 +46,14 @@ public class EventManager : MonoBehaviour
             _team1SequenceManager.OnEnterGigaChadMode += GigaChadMode;
             _team1SequenceManager.OnNewInput += SendChangeButton;
             _team1SequenceManager.OnWaitGigaChad += SendDisableImage;
+
+            _playersConnected++;
+            OnLeftPlayerPrepared?.Invoke();
+            if (_playersConnected == 2)
+            {
+                TriggerStart();
+                GameManager.Instance.ResetGame();
+            }
         }
     }
     
@@ -55,6 +68,14 @@ public class EventManager : MonoBehaviour
             _team2SequenceManager.OnEnterGigaChadMode += GigaChadMode;
             _team2SequenceManager.OnNewInput += SendChangeButton;
             _team2SequenceManager.OnWaitGigaChad += SendDisableImage;
+
+            _playersConnected++;
+            OnRightPlayerPrepared?.Invoke();
+            if (_playersConnected == 2)
+            {
+                TriggerStart();
+                GameManager.Instance.ResetGame();
+            }
         }
     }
 

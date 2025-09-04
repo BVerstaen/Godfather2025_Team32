@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -28,6 +29,8 @@ public class MonoTeamManager : MonoBehaviour
         private set { _playerIndex = value; } 
     }
 
+    public bool HasStarted { get; set; }
+
     public Team CurrentTeam
     {
         get
@@ -42,6 +45,11 @@ public class MonoTeamManager : MonoBehaviour
 
     //---------- FUNCTIONS ----------\\
 
+    private void Awake()
+    {
+        ControllerManager.Instance.NewMonoTeamManager(this);
+    }
+
     private void OnEnable()
     {
         _buttonsInputs.dicoInputActions = GetButtonsActionsReferences();
@@ -52,7 +60,17 @@ public class MonoTeamManager : MonoBehaviour
             EventManager.Instance.Team1SequenceManager = SequenceManager;
         else if (CurrentTeam == Team.Team2)
             EventManager.Instance.Team2SequenceManager = SequenceManager;
+
+        EventManager.Instance.OnStart += SetHasStarted;
     }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnStart -= SetHasStarted;
+    }
+
+    private void SetHasStarted() => HasStarted = true;
+
 
     public Dictionary<PlayerSide, Dictionary<Buttons, InputAction>> GetButtonsActionsReferences()
     {
