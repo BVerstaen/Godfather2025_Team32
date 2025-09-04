@@ -289,18 +289,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88443d2ec451f2348bde9028021bab66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 12
-  speedMultiplier: 2
+  spline: {fileID: 0}
+  moveSpeed: 12
   acceleration: 4
-  lateralSpeed: 4
+  loop: 0
+  speedMultiplier: 2
+  minSpeedMultiplier: 0.1
+  lateralRange: 2
   maxLateralInput: 10
-  groundCheckDistance: 1.2
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  stickToGroundForce: 5
+  lateralReturnSpeed: 1
+  balanceManager: {fileID: 0}
+  balanceEffect: 1
+  balanceLerpTime: 0.12
   orientSpeed: 10
-  forwardLookSpeed: 8
   drawDebug: 1
-  eventManager: {fileID: 0}
   currentTeam: 1
