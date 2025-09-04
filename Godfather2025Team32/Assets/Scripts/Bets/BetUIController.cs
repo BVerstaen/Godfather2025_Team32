@@ -175,7 +175,6 @@ public class BetUIController : MonoBehaviour
             }
             else
             {
-                // fallback : set first text found
                 var textsTMP = go.GetComponentsInChildren<TMP_Text>();
                 if (textsTMP != null && textsTMP.Length > 0)
                 {
