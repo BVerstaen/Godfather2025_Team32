@@ -1,26 +1,45 @@
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    public static CameraManager Instance;
+
     //---------- VARIABLES ----------\\
 
     [SerializeField] private Camera _centralCamera;
     [SerializeField] private Camera _leftCamera;
     [SerializeField] private Camera _rightCamera;
-    [SerializeField] private GameObject _leftPlayer;
-    [SerializeField] private GameObject _rightPlayer;
     [SerializeField] private float _maxPlayerDistance;
     //[SerializeField] private Vector3 _offSetPos;
+    
     private Vector3 _offSetPos;
+    private GameObject _leftPlayer;
+    private GameObject _rightPlayer;
+
+    public GameObject LeftPlayer { set => _leftPlayer = value; }
+    public GameObject RightPlayer { set => _rightPlayer = value; }
+    
 
     private bool _isCameraSplit = false;
 
     //---------- FUNCTIONS ----------\\
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (_leftPlayer != null || _rightPlayer != null)
+            return;
+
         Vector3 playersPos = (_rightPlayer.transform.position + _leftPlayer.transform.position) * 0.5f;
         _offSetPos = _centralCamera.transform.position - playersPos;
         _leftCamera.gameObject.SetActive(false);
@@ -38,6 +57,9 @@ public class CameraManager : MonoBehaviour
 
     private void CheckPlayersPos()
     {
+        if (_leftPlayer != null || _rightPlayer != null)
+            return;
+
         Vector3 playersVector = _rightPlayer.transform.position - _leftPlayer.transform.position;
         float playersDistance = playersVector.magnitude;
         bool shouldSplit = playersDistance >= _maxPlayerDistance;
@@ -57,6 +79,9 @@ public class CameraManager : MonoBehaviour
 
     private void MergeCamera()
     {
+        if (_leftPlayer != null || _rightPlayer != null)
+            return;
+
         _leftCamera.gameObject.SetActive(false);
         _rightCamera.gameObject.SetActive(false);
         _centralCamera.gameObject.SetActive(true);
@@ -64,6 +89,9 @@ public class CameraManager : MonoBehaviour
 
     private void SplitCamera()
     {
+        if (_leftPlayer != null || _rightPlayer != null)
+            return;
+
         _leftCamera.gameObject.SetActive(true);
         _rightCamera.gameObject.SetActive(true);
         _centralCamera.gameObject.SetActive(false);
@@ -71,6 +99,9 @@ public class CameraManager : MonoBehaviour
 
     private void MoveCentralCamera()
     {
+        if (_leftPlayer != null || _rightPlayer != null)
+            return;
+
         Vector3 cameraPos = _offSetPos;
         Vector3 playersOffSet = _rightPlayer.transform.position + _leftPlayer.transform.position;
         cameraPos += playersOffSet*0.5f;
@@ -79,6 +110,9 @@ public class CameraManager : MonoBehaviour
 
     private void MoveSplitCameras()
     {
+        if (_leftPlayer != null || _rightPlayer != null)
+            return;
+
         Vector3 leftPos = _leftPlayer.transform.position + _offSetPos;
         Vector3 rightPos = _rightPlayer.transform.position + _offSetPos;
         _leftCamera.transform.position = leftPos;
