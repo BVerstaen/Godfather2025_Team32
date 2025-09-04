@@ -12,7 +12,7 @@ public class PrepareUI : MonoBehaviour
 
     private void Start()
     {
-        _roundText.text = "Round : " + GameManager.Instance.CurrentRound;
+        _roundText.text = "Round : " + (GameManager.Instance.CurrentRound + 1);
         EventManager.Instance.OnLeftPlayerPrepared += DisableLeftText;
         EventManager.Instance.OnRightPlayerPrepared += DisableRightText;
         EventManager.Instance.OnStart += DisableCanvas;
