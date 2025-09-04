@@ -48,6 +48,36 @@ MonoBehaviour:
   _allSoundStructs:
   - sound: 0
     audioClip: {fileID: 8300000, guid: ec72d0738936f4b4191d1b0fa56065dd, type: 3}
+  - sound: 1
+    audioClip: {fileID: 0}
+  - sound: 2
+    audioClip: {fileID: 0}
+  - sound: 3
+    audioClip: {fileID: 0}
+  - sound: 4
+    audioClip: {fileID: 0}
+  - sound: 5
+    audioClip: {fileID: 0}
+  - sound: 6
+    audioClip: {fileID: 0}
+  - sound: 7
+    audioClip: {fileID: 0}
+  - sound: 8
+    audioClip: {fileID: 0}
+  - sound: 9
+    audioClip: {fileID: 0}
+  - sound: 10
+    audioClip: {fileID: 0}
+  - sound: 11
+    audioClip: {fileID: 0}
+  - sound: 12
+    audioClip: {fileID: 0}
+  - sound: 13
+    audioClip: {fileID: 0}
+  - sound: 14
+    audioClip: {fileID: 0}
+  - sound: 14
+    audioClip: {fileID: 8300000, guid: ec72d0738936f4b4191d1b0fa56065dd, type: 3}
   _numAudioSourcesInPool: 10
   _audioSourcesParent: {fileID: 2008822995234325974}
 --- !u!1 &2008822995234325974

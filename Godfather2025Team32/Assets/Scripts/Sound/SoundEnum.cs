@@ -1,5 +1,19 @@
 public enum SoundEnum
 {
     JeromMusicBot,
-    BetClosed
+    BetClosed,
+    Wave,
+    PublicYeah,
+    PublicWow,
+    PublicBouh,
+    PublicGogogo,
+    PublicBordel,
+    CelebratingYummy,
+    CelebratingAmazing,
+    CelebratingByeBye,
+    CelebratingChadWin,
+    Countdown,
+    ChadTheme,
+    Validating,
+    ChadTransfo
 }

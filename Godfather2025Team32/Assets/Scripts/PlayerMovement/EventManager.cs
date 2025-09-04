@@ -38,6 +38,8 @@ public class EventManager : MonoBehaviour
 
     private SequenceManager _team1SequenceManager;
     private SequenceManager _team2SequenceManager;
+    
+    public bool gameStarted = false;
 
 
     public SequenceManager Team1SequenceManager
@@ -73,6 +75,8 @@ public class EventManager : MonoBehaviour
             OnRightPlayerPrepared?.Invoke();
             GameManager.Instance.ResetGame();
             TriggerStart();
+            
+            gameStarted = true;
         }
     }
 
