@@ -58,6 +58,13 @@ public class PlayerController : MonoBehaviour
             RebuildLengthCache();
         
         _currentSpeed = moveSpeed * speedMultiplier;
+
+        //Setup cam
+        if (currentTeam == Team.Team1)
+            CameraManager.Instance.LeftPlayer = gameObject;
+        else if (currentTeam == Team.Team2)
+            CameraManager.Instance.RightPlayer = gameObject;
+
         StartMovement();
     }
 
