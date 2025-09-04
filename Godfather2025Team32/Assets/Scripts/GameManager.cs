@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
         _hasGameEnded = false;
     }
 
+    public bool IsFirstRound() => _currentRound == 0;
+
     public void SetRoundWinner(Team team)
     {
         if (team == Team.Team1)
