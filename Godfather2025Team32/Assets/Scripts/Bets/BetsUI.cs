@@ -10,6 +10,7 @@ public class BetsUI : MonoBehaviour
     {
         if (!GameManager.Instance.IsFirstRound())
         {
+            _controllerManager.SetActive(true);
             _mainCanvas.SetActive(false);
             return;
         }
