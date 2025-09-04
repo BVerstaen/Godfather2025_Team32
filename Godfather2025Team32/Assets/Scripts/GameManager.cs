@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     public int CurrentRound { get => _currentRound; }
 
+    [SerializeField] private float _publicBrouhaProba = 1f / 10f;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,6 +32,13 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Update()
+    {
+        if (SoundManager.Instance.IsSoundPlaying(SoundEnum.PublicBordel)) 
+            if (Random.value < _publicBrouhaProba) 
+                SoundManager.Instance.PlaySound(SoundEnum.PublicBordel);
     }
 
     public void ResetGame()

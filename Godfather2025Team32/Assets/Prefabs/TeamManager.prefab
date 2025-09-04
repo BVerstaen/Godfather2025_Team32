@@ -54,6 +54,8 @@ MonoBehaviour:
   _gigaChadDuration: 5
   _firstinactiveCoolDown: 3
   _inactiveTimeDelay: 0.5
+  _publicFailProba: 0.25
+  _possiblesSoundsEnterChad: 0400000003000000060000000b0000000a0000000900000008000000
 --- !u!1 &2520987449586416166
 GameObject:
   m_ObjectHideFlags: 0

@@ -60,6 +60,9 @@ public class SequenceManager : MonoBehaviour
     public Action<Team, PlayerSide, Buttons> OnNewInput;
     public Action<Team, PlayerSide> OnWaitGigaChad;
 
+    [SerializeField] private float _publicFailProba = 1f/4f;
+    [SerializeField] private List<SoundEnum> _possiblesSoundsEnterChad;
+
     private void OnEnable()
     {
         EventManager.Instance.OnStart += GiveNewRandomSequence;
@@ -180,6 +183,12 @@ public class SequenceManager : MonoBehaviour
             //Update UI
             Sequence newSequence = sequenceList[currentIndex];
             OnNewInput?.Invoke(_currentTeam, side, newSequence.ButtonsSequences[currentInput]);
+        } else
+        {
+            if (Random.Range(0f, 1f) < _publicFailProba)
+            {
+                SoundManager.Instance.PlaySound(SoundEnum.PublicBouh);
+            }
         }
     }
 
@@ -194,7 +203,8 @@ public class SequenceManager : MonoBehaviour
         _gigaChadCoroutine = StartCoroutine(GigaChadRoutine());
         _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
         _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
-
+        SoundManager.Instance.PlaySound(SoundEnum.ChadTransfo);
+        SoundManager.Instance.PlayRandomSound(_possiblesSoundsEnterChad);
     }
 
     private void EndGigaChad()
@@ -218,6 +228,7 @@ public class SequenceManager : MonoBehaviour
 
         OnExitGigaChadMode?.Invoke(_currentTeam);
         GiveNewRandomSequence();
+        SoundManager.Instance.PlaySound(SoundEnum.Wave);
     }
 
     private IEnumerator GigaChadRoutine()
