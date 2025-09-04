@@ -171,7 +171,7 @@ public class BetUIController : MonoBehaviour
             {
                 entry.Setup(bet.playerName, bet.amount, bet.team, OnRemoveEntry);
                 var rt = go.GetComponent<RectTransform>();
-                SetEntryHeight(rt, 90f);
+                SetEntryHeight(rt, 120f);
             }
             else
             {

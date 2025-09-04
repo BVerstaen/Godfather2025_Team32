@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
         SoundManager.Instance.PlayInfiniteLoop(SoundEnum.JeromMusicBot);
     }
 
+    public bool IsFirstRound() => _currentRound == 0;
+
     public void SetRoundWinner(Team team)
     {
         if (team == Team.Team1)

@@ -1,4 +1,5 @@
 public enum SoundEnum
 {
-    JeromMusicBot
+    JeromMusicBot,
+    BetClosed
 }
