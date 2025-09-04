@@ -51,7 +51,13 @@ public class PlayerController : MonoBehaviour
             EventManager.Instance.OnMoveLeft += MoveLeft;
             EventManager.Instance.OnMoveRight += MoveRight;
         }
-        
+
+        //Setup cam
+        if (currentTeam == Team.Team1)
+            CameraManager.Instance.LeftPlayer = gameObject;
+        else if (currentTeam == Team.Team2)
+            CameraManager.Instance.RightPlayer = gameObject;
+
         StartMovement();
     }
 
