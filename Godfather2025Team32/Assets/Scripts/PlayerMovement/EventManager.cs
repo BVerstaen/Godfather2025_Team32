@@ -128,11 +128,6 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        Instance = null;
-    }
-
     private void GigaChadMode(Team team, SequenceSO sequence)
     {
         TriggerAccelerate(team, 10);

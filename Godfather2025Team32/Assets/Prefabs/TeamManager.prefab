@@ -52,7 +52,7 @@ MonoBehaviour:
   _numberOfSequences: 1
   _currentDifficulty: 0
   _gigaChadDuration: 5
-  _firstinactiveCoolDown: 3
+  _firstinactiveCoolDown: 1.5
   _inactiveTimeDelay: 0.5
   _publicFailProba: 0.25
   _possiblesSoundsEnterChad: 0400000003000000060000000b0000000a0000000900000008000000

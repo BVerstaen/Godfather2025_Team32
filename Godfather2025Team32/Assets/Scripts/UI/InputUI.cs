@@ -34,6 +34,7 @@ public class InputUI : MonoBehaviour
     [SerializeField] private float _joystickAnimationTurnSpeed;
 
     private float _joystickDirection;
+    private int _direction = 1;
     private bool _bindToEvent;
     private RectTransform _rect => GetComponent<RectTransform>();
     private Coroutine _animationCoroutine;
@@ -61,7 +62,7 @@ public class InputUI : MonoBehaviour
     {
         float newScale = _buttonSizeAnimationCurve.Evaluate(Mathf.PingPong(Time.time * _buttonAnimationSpeed, 1));
         newScale = Mathf.Lerp(1, _buttonAnimationMaxSize, newScale);
-        _rect.localScale = new Vector2(newScale, newScale);
+        _rect.localScale = new Vector2(_direction * newScale, newScale);
     }
 
     private void ChangeButton(Team team, PlayerSide side, Buttons newButton)
@@ -81,6 +82,7 @@ public class InputUI : MonoBehaviour
 
 
         _spriteImage.enabled = true;
+        _direction = 1;
         foreach (SpriteToImage spriteToButton in _spriteList)
         {
             if (newButton == spriteToButton.Button)
@@ -113,27 +115,27 @@ public class InputUI : MonoBehaviour
         {
             case PlayerSide.Left:
                 direction = sequence.LeftGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? 1 : -1;
-                _joystickAnimationRoutine = StartCoroutine(JoystickImageAnimation(direction));
+                _direction = direction;
+                _joystickAnimationRoutine = StartCoroutine(JoystickImageAnimation());
                 break;
 
             case PlayerSide.Right:
                 direction = sequence.RightGigaChadRotation == CircularMovementDetector.RotationDirection.Clockwise ? 1 : -1;
-                _joystickAnimationRoutine = StartCoroutine(JoystickImageAnimation(direction));
+                _direction = direction;
+                _joystickAnimationRoutine = StartCoroutine(JoystickImageAnimation());
                 break;
         }
     }
 
-    private IEnumerator JoystickImageAnimation(int direction)
+    private IEnumerator JoystickImageAnimation()
     {
-        int spriteIndex = direction == 1 ? 0 : (_joystickTurnSpriteList.Count - 1);
+        int spriteIndex = 0 ;
         while (true)
         {
             _spriteImage.sprite = _joystickTurnSpriteList[spriteIndex];
             
-            spriteIndex += direction;
-            if (spriteIndex < 0)
-                spriteIndex = _joystickTurnSpriteList.Count - 1;
-            else if (spriteIndex == _joystickTurnSpriteList.Count)
+            spriteIndex++;
+            if (spriteIndex == _joystickTurnSpriteList.Count)
                 spriteIndex = 0;
             yield return new WaitForSeconds(_joystickAnimationTurnSpeed);
         }

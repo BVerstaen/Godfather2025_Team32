@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
         _pointsTeam2 = 0;
         _hasGameEnded = false;
         SoundManager.Instance.PlayInfiniteLoop(SoundEnum.JeromMusicBot);
-        CameraManager.Instance.PlaceCameras();
     }
 
     public bool IsFirstRound() => _currentRound == 0;

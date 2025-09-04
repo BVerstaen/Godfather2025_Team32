@@ -48,6 +48,13 @@ public class MarketManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.OnStartGigaChad += ToggleMultiplierOn;
+        EventManager.Instance.OnEndGigaChad += ToggleMultiplierOff;
+
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
@@ -86,12 +93,14 @@ public class MarketManager : MonoBehaviour
         moneyTeam2 += income;
     }
 
+    private void ToggleMultiplierOn(Team team, SequenceSO sO) => ToggleMultiplier(true, team);
+    private void ToggleMultiplierOff(Team team) => ToggleMultiplier(false, team);
     public void ToggleMultiplier(bool state, Team team)
     {
         if (team == Team.Team1)
-            multiplierActiveTeam1 = state;
-        else
             multiplierActiveTeam2 = state;
+        else
+            multiplierActiveTeam1 = state;
     }
 
     public void AddMoney(int amount, Team team)

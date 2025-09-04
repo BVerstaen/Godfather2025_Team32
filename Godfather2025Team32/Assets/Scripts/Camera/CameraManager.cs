@@ -49,6 +49,16 @@ public class CameraManager : MonoBehaviour
         _rightCamera.gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.OnStart += PlaceCameras;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnStart -= PlaceCameras;
+    }
+
     // Update is called once per frame
     void Update()
     {
