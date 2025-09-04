@@ -3,8 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class VictoryZone : MonoBehaviour
 {
-    [Tooltip("Nom de la scène du podium")]
-    public string podiumSceneName = "PodiumScene";
+    [SerializeField] private int _numberOfPlayers = 1;
 
     private int _playerFinish = 0;
 
@@ -15,13 +14,8 @@ public class VictoryZone : MonoBehaviour
         {
             _playerFinish++;
 
-            if (_playerFinish == 1)
-                GameManager.Instance.SetWinner(player.currentTeam);
-            
-            if (_playerFinish == 1)
-                SceneTransitionUI.Instance.LoadSceneWithTransition(podiumSceneName);
-            
-            //Destroy(other.gameObject);
+            if (_playerFinish == _numberOfPlayers)
+                GameManager.Instance.SetRoundWinner(player.currentTeam);
         }
     }
 }
