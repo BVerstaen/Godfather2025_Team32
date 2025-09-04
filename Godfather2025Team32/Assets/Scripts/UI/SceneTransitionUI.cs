@@ -5,7 +5,7 @@ using TMPro;
 
 public class SceneTransitionUI : MonoBehaviour
 {
-    public static SceneTransitionUI Instance;
+public static SceneTransitionUI Instance;
 
     [Header("UI Elements")]
     public CanvasGroup loadingScreen;
@@ -39,42 +39,49 @@ public class SceneTransitionUI : MonoBehaviour
     {
         loadingScreen.gameObject.SetActive(true);
 
-        // Fade in
-        yield return Fade(0f, 1f);
+        yield return
+            Fade(0f, 1f);
 
-        // Async load
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
 
-        while (!op.isDone)
+        while (op.progress < 0.9f)
         {
             float progress = Mathf.Clamp01(op.progress / 0.9f);
-            if (loadingText != null)
+            if (loadingText)
                 loadingText.text = "Loading... " + (progress * 100f).ToString("F0") + "%";
-
-            if (op.progress >= 0.9f)
-                op.allowSceneActivation = true;
 
             yield return null;
         }
 
-        // Hold sur l’écran une fois la scène chargée
-        yield return new WaitForSeconds(holdDuration);
+        if (loadingText)
+            loadingText.text = "Loading... 100%";
 
-        // Fade out
-        yield return Fade(1f, 0f);
+        yield return 
+            new WaitForSeconds(holdDuration);
+
+        op.allowSceneActivation = true;
+
+        yield return
+            null;
+
+        yield return 
+            Fade(1f, 0f);
+
         loadingScreen.gameObject.SetActive(false);
     }
 
     private IEnumerator Fade(float from, float to)
     {
         float elapsed = 0f;
+        
         while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
             loadingScreen.alpha = Mathf.Lerp(from, to, elapsed / fadeDuration);
             yield return null;
         }
+        
         loadingScreen.alpha = to;
     }
 }
