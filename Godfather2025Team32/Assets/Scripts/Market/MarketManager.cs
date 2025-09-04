@@ -1,0 +1,158 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+[System.Serializable]
+public class MarketItem
+{
+    public string itemId;
+    public int price;
+    public Sprite spriteToUnlock;
+
+    [Header("UI Buttons")]
+    public Button buyButtonTeam1;
+    public Button buyButtonTeam2;
+
+    [Header("Target SpriteRenderer")]
+    public Image targetImageTeam1;
+    public Image targetImageTeam2;
+}
+
+public class MarketManager : MonoBehaviour
+{
+    public static MarketManager Instance { get; private set; }
+
+    [Header("Money Settings")]
+    public int baseIncomePerSecond = 10;
+    public bool multiplierActiveTeam1 = false;
+    public bool multiplierActiveTeam2 = false;
+    public float multiplier = 2f;
+
+    [Header("UI")]
+    public TextMeshProUGUI moneyTextTeam1;
+    public TextMeshProUGUI moneyTextTeam2;
+
+    private int moneyTeam1 = 0;
+    private int moneyTeam2 = 0;
+    private float timer = 0f;
+    
+    [Header("Market Items")]
+    public List<MarketItem> items = new List<MarketItem>();
+    
+    private HashSet<string> unlockedItems = new HashSet<string>();
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer >= 1f)
+        {
+            timer -= 1f;
+            GainIncome();
+        }
+
+        if (moneyTextTeam1)
+            moneyTextTeam1.text = $" {moneyTeam1}";
+        else
+            moneyTextTeam1 = GameObject.FindGameObjectWithTag("Money1").GetComponent<TextMeshProUGUI>();
+        
+        if (moneyTextTeam2)
+            moneyTextTeam2.text = $" {moneyTeam2}";
+        else
+            moneyTextTeam2 = GameObject.FindGameObjectWithTag("Money2").GetComponent<TextMeshProUGUI>();
+    }
+
+    void GainIncome()
+    {
+        int income = baseIncomePerSecond;
+
+        if (multiplierActiveTeam1)
+        {
+            income = Mathf.RoundToInt(income * multiplier);
+        }
+        moneyTeam1 += income;
+
+        income = baseIncomePerSecond;
+        if (multiplierActiveTeam2)
+        {
+            income = Mathf.RoundToInt(income * multiplier);
+        }
+        moneyTeam2 += income;
+    }
+
+    public void ToggleMultiplier(bool state, Team team)
+    {
+        if (team == Team.Team1)
+            multiplierActiveTeam1 = state;
+        else
+            multiplierActiveTeam2 = state;
+    }
+
+    public void AddMoney(int amount, Team team)
+    {
+        if (team == Team.Team1)
+            moneyTeam1 += amount;
+        else
+            moneyTeam2 += amount;
+    }
+
+    public int GetMoney(Team team)
+    {
+        return (team == Team.Team1) ? moneyTeam1 : moneyTeam2;
+    }
+    
+    public void TryUnlockUI(MarketItem item, Team team)
+    {
+        if (TryUnlock(item.itemId, item.price, team))
+        {
+            if (item.targetImageTeam1 != null)
+                item.targetImageTeam1.sprite = item.spriteToUnlock;
+
+            if (item.targetImageTeam2 != null)
+                item.targetImageTeam2.sprite = item.spriteToUnlock;
+
+            if (item.buyButtonTeam1 != null) item.buyButtonTeam1.interactable = false;
+            if (item.buyButtonTeam2 != null) item.buyButtonTeam2.interactable = false;
+        }
+    }
+
+    public bool TryUnlock(string itemId, int price, Team team)
+    {
+        int currentMoney = GetMoney(team);
+
+        if (unlockedItems.Contains(itemId))
+        {
+            Debug.Log($"⚠️ {itemId} déjà débloqué !");
+            return false;
+        }
+
+        if (currentMoney >= price)
+        {
+            AddMoney(-price, team);
+            unlockedItems.Add(itemId);
+
+            Debug.Log($"✅ {itemId} débloqué par {team} pour {price} !");
+            return true;
+        }
+
+        Debug.Log($"❌ Pas assez d'argent pour débloquer {itemId} !");
+        return false;
+    }
+
+    public bool IsUnlocked(string itemId)
+    {
+        return unlockedItems.Contains(itemId);
+    }
+}
