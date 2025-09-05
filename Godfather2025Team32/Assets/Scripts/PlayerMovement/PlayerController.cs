@@ -61,9 +61,9 @@ public class PlayerController : MonoBehaviour
         _currentSpeed = moveSpeed * speedMultiplier;
 
         //Setup cam
-        if (currentTeam == Team.Team1)
+        if (CameraManager.Instance && currentTeam == Team.Team1)
             CameraManager.Instance.LeftPlayer = gameObject;
-        else if (currentTeam == Team.Team2)
+        else if (CameraManager.Instance && currentTeam == Team.Team2)
             CameraManager.Instance.RightPlayer = gameObject;
     }
 
