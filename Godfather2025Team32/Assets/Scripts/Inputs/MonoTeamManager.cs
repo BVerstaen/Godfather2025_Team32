@@ -66,7 +66,8 @@ public class MonoTeamManager : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.Instance.OnStart -= SetHasStarted;
+        if(EventManager.Instance)
+            EventManager.Instance.OnStart -= SetHasStarted;
     }
 
     private void SetHasStarted() => HasStarted = true;

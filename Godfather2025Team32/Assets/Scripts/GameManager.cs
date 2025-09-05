@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour
         {
             EventManager.Instance.gameStarted = false;
             SceneTransitionUI.Instance.LoadSceneWithTransition(gameSceneName);
+            CameraManager.Instance.PlaceCameras();
         }
     }
 }

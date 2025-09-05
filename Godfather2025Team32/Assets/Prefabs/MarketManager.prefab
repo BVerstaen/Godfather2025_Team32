@@ -45,16 +45,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseIncomePerSecond: 1
-  multiplierActiveTeam1: 1
+  multiplierActiveTeam1: 0
   multiplierActiveTeam2: 0
   multiplier: 1000000
   moneyTextTeam1: {fileID: 0}
   moneyTextTeam2: {fileID: 0}
-  items:
-  - itemId: 
-    price: 0
-    spriteToUnlock: {fileID: 0}
-    buyButtonTeam1: {fileID: 0}
-    buyButtonTeam2: {fileID: 0}
-    targetImageTeam1: {fileID: 0}
-    targetImageTeam2: {fileID: 0}
+  itemTeam1:
+  - itemId: Gold_P1
+    price: 20000000
+    spriteToUnlock: {fileID: 21300000, guid: 68daa76ac4718b34ca1c5764a4130dfe, type: 3}
+  - itemId: Franko_P1
+    price: 50000000
+    spriteToUnlock: {fileID: 21300000, guid: 07799428911ed9f468b10e20c9a084e4, type: 3}
+  - itemId: Portal_P1
+    price: 10000000
+    spriteToUnlock: {fileID: 21300000, guid: 702d7efa3d9dd714c85ed374bd11ce28, type: 3}
+  - itemId: ChadSurf_P1
+    price: 10000000
+    spriteToUnlock: {fileID: 21300000, guid: 2defbc6ac75545844a13cd1360b3fdaf, type: 3}
+  itemTeam2:
+  - itemId: Gold_P2
+    price: 20000000
+    spriteToUnlock: {fileID: 21300000, guid: 3b18bfcd2a400f9438766084fb7df4cd, type: 3}
+  - itemId: Franko_P2
+    price: 50000000
+    spriteToUnlock: {fileID: 21300000, guid: 0152242aa62a13f42a46718d84de6109, type: 3}
+  - itemId: Portal_P2
+    price: 10000000
+    spriteToUnlock: {fileID: 21300000, guid: c1980ccb3150020489eaae294858489f, type: 3}
+  - itemId: ChadSurf_P2
+    price: 10000000
+    spriteToUnlock: {fileID: 21300000, guid: 4cfc1c3386ea65748b85e4479c0e937c, type: 3}

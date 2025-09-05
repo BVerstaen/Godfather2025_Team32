@@ -27,7 +27,7 @@ public class SequenceManager : MonoBehaviour
 
     private SequenceSO _leftSideSequence;
     private SequenceSO _rightSideSequence;
-    
+
     private Team _currentTeam { get => _teamManager.CurrentTeam; }
 
     private bool _hasStarted;
@@ -54,13 +54,16 @@ public class SequenceManager : MonoBehaviour
     public Action<Team> OnCorrectLeftInput;
     public Action<Team> OnCorrectRightInput;
 
+    public Action<Team> OnLeftFinished;
+    public Action<Team> OnRightFinished;
+
     public Action<Team, SequenceSO> OnEnterGigaChadMode;
     public Action<Team> OnExitGigaChadMode;
 
     public Action<Team, PlayerSide, Buttons> OnNewInput;
     public Action<Team, PlayerSide> OnWaitGigaChad;
 
-    [SerializeField] private float _publicFailProba = 1f/4f;
+    [SerializeField] private float _publicFailProba = 1f / 4f;
     [SerializeField] private List<SoundEnum> _possiblesSoundsEnterChad;
 
     private void OnEnable()
@@ -74,11 +77,14 @@ public class SequenceManager : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.Instance.OnStart -= GiveNewRandomSequence;
+        if (EventManager.Instance)
+        {
+            EventManager.Instance.OnStart -= GiveNewRandomSequence;
+            EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+        }
+        
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
-
-        EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
     }
 
     private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
@@ -95,12 +101,12 @@ public class SequenceManager : MonoBehaviour
         SequenceSO newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
         int guardWhile = 0;
         //Select from difficulty
-        while(newSequence.Difficulty != _currentDifficulty)
+        while (newSequence.Difficulty != _currentDifficulty)
         {
             newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
 
             guardWhile++;
-            if(guardWhile >= 100)
+            if (guardWhile >= 100)
             {
                 Debug.Log("Couldn't find from difficulty");
                 newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
@@ -150,11 +156,11 @@ public class SequenceManager : MonoBehaviour
 
         if (buttons == currentSequence.ButtonsSequences[currentInput])
         {
-            if(isLeft)
+            if (isLeft)
                 OnCorrectLeftInput?.Invoke(_currentTeam);
             else
                 OnCorrectRightInput?.Invoke(_currentTeam);
-            
+
             currentInput++;
             if (currentInput >= currentSequence.ButtonsSequences.Count) // Finished input list
             {
@@ -173,6 +179,12 @@ public class SequenceManager : MonoBehaviour
                         Debug.Log($"{side} sequence finished");
                         currentIndex = 0;
                         hasFinishedSequence = true;
+
+                        if (isLeft)
+                            OnLeftFinished?.Invoke(_currentTeam);
+                        else
+                            OnRightFinished?.Invoke(_currentTeam);
+
                         OnWaitGigaChad?.Invoke(_currentTeam, side);
                         CheckToLaunchGigaChad();
                         return;
@@ -183,7 +195,8 @@ public class SequenceManager : MonoBehaviour
             //Update UI
             Sequence newSequence = sequenceList[currentIndex];
             OnNewInput?.Invoke(_currentTeam, side, newSequence.ButtonsSequences[currentInput]);
-        } else
+        }
+        else
         {
             if (Random.Range(0f, 1f) < _publicFailProba)
             {
@@ -209,7 +222,7 @@ public class SequenceManager : MonoBehaviour
 
     private void EndGigaChad()
     {
-        if(_gigaChadCoroutine != null)
+        if (_gigaChadCoroutine != null)
         {
             StopCoroutine(_gigaChadCoroutine);
         }

@@ -48,6 +48,13 @@ public class MarketManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.OnStartGigaChad += ToggleMultiplierOn;
+        EventManager.Instance.OnEndGigaChad += ToggleMultiplierOff;
+
+    }
+
     void Update()
     {
         timer += Time.deltaTime;
@@ -86,12 +93,14 @@ public class MarketManager : MonoBehaviour
         moneyTeam2 += income;
     }
 
+    private void ToggleMultiplierOn(Team team, SequenceSO sO) => ToggleMultiplier(true, team);
+    private void ToggleMultiplierOff(Team team) => ToggleMultiplier(false, team);
     public void ToggleMultiplier(bool state, Team team)
     {
         if (team == Team.Team1)
-            multiplierActiveTeam1 = state;
-        else
             multiplierActiveTeam2 = state;
+        else
+            multiplierActiveTeam1 = state;
     }
 
     public void AddMoney(int amount, Team team)
@@ -141,15 +150,21 @@ public class MarketManager : MonoBehaviour
         HashSet<string> unlockedSet = (team == Team.Team1) ? unlockedItemsTeam1 : unlockedItemsTeam2;
         List<Sprite> unlockedSprites = new List<Sprite>();
 
-        foreach (var item in itemTeam1)
+        if(team == Team.Team1)
         {
-            if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
-                unlockedSprites.Add(item.spriteToUnlock);
+            foreach (var item in itemTeam1)
+            {
+                if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
+                    unlockedSprites.Add(item.spriteToUnlock);
+            }
         }
-        foreach (var item in itemTeam2)
+        else if(team == Team.Team2)
         {
-            if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
-                unlockedSprites.Add(item.spriteToUnlock);
+            foreach (var item in itemTeam2)
+            {
+                if (unlockedSet.Contains(item.itemId) && item.spriteToUnlock != null)
+                    unlockedSprites.Add(item.spriteToUnlock);
+            }
         }
 
         if (unlockedSprites.Count == 0)
