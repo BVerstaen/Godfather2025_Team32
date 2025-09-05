@@ -37,11 +37,51 @@ public class BettingUIManager : MonoBehaviour
     [SerializeField]
     private bool debug = false;
 
+    [Header("Player")]
+    [SerializeField] private Transform _player1;
+    [SerializeField] private Transform _player2;
+    [SerializeField] private Transform _Endtrigger;
+
     // internal
     Dictionary<string, GameObject> _icons = new Dictionary<string, GameObject>();
     List<BetData> _bets = new List<BetData>();
     Team? _currentLeaderTeam = null;
     int _totalPot = 0;
+
+    private void OnEnable()
+    {
+        EventManager.Instance.OnStart += ALEd;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnStart -= ALEd;
+    }
+
+    private void ALEd()
+    {
+        foreach (var bet in BetManager.Instance.GetBets(Team.Team1))
+        {
+            BetData newBet = new BetData();
+            newBet.playerName = bet.playerName;
+            newBet.amount = bet.amount;
+
+            newBet.team = Team.Team1;
+            AddBet(newBet);
+        }
+
+        foreach (var bet in BetManager.Instance.GetBets(Team.Team2))
+        {
+            BetData newBet = new BetData();
+            newBet.playerName = bet.playerName;
+            newBet.amount = bet.amount;
+
+            newBet.team = Team.Team2;
+            AddBet(newBet);
+        }
+
+        RefreshUI();
+    }
 
     void Start()
     {
@@ -59,28 +99,7 @@ public class BettingUIManager : MonoBehaviour
             
             UpdateLeaderTeam(Team.Team1);
         }
-        
-        
-        foreach (var bet in BetManager.Instance.GetBets(Team.Team1))
-        {
-            BetData newBet = new BetData();
-            newBet.playerName = bet.playerName;
-            newBet.amount = bet.amount;
-            
-            bet.team = Team.Team1;
-            AddBet(newBet);
-        }
-        
-        foreach (var bet in BetManager.Instance.GetBets(Team.Team2))
-        {
-            BetData newBet = new BetData();
-            newBet.playerName = bet.playerName;
-            newBet.amount = bet.amount;
-            
-            bet.team = Team.Team2;
-            AddBet(newBet);
-        }
-        
+       
         RefreshUI();
     }
 
@@ -132,6 +151,13 @@ public class BettingUIManager : MonoBehaviour
                 }
             }
         }
+
+        float distanceP1 = Vector3.Distance(_player1.position, _Endtrigger.position);
+        float distanceP2 = Vector3.Distance(_player2.position, _Endtrigger.position);
+        if (distanceP1 < distanceP2)
+            UpdateLeaderTeam(Team.Team1);
+        else
+            UpdateLeaderTeam(Team.Team2);
     }
 
     public void AddBet(BetData bet)

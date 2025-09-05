@@ -1304,6 +1304,18 @@ PrefabInstance:
       propertyPath: debug
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 58806768818967891, guid: 6357f94f17c800244bda4c867f624d22, type: 3}
+      propertyPath: _player1
+      value: 
+      objectReference: {fileID: 770619972}
+    - target: {fileID: 58806768818967891, guid: 6357f94f17c800244bda4c867f624d22, type: 3}
+      propertyPath: _player2
+      value: 
+      objectReference: {fileID: 2126710703}
+    - target: {fileID: 58806768818967891, guid: 6357f94f17c800244bda4c867f624d22, type: 3}
+      propertyPath: _Endtrigger
+      value: 
+      objectReference: {fileID: 2012129140}
     - target: {fileID: 4329930158276563707, guid: 6357f94f17c800244bda4c867f624d22, type: 3}
       propertyPath: m_Name
       value: Bets_Icons_Canvas
@@ -1897,6 +1909,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+--- !u!4 &770619972 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5782836596794672893, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+  m_PrefabInstance: {fileID: 770619971}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &908922093
 GameObject:
   m_ObjectHideFlags: 0
@@ -8357,6 +8374,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a28d11886ca7df742ad45bf64ffbc0d5, type: 3}
+--- !u!4 &2012129140 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 426563018034911071, guid: a28d11886ca7df742ad45bf64ffbc0d5, type: 3}
+  m_PrefabInstance: {fileID: 2012129139}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2018314724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8729,6 +8751,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+--- !u!4 &2126710703 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5782836596794672893, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
+  m_PrefabInstance: {fileID: 2126710702}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
