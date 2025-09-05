@@ -5,21 +5,27 @@ using UnityEngine.Splines;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-   [Header("Spline")]
+ [Header("Spline")]
     public SplineContainer spline;
-    public float moveSpeed = 12f;
-    public float acceleration = 4f;
     public bool loop = true;
-    
-    [Header("Speed Multiplier (acceleration)")]
-    public float speedMultiplier = 1f;
+
+    [Header("Speed")]
+    public float moveSpeed = 12f;          // m/s de base
+    public float acceleration = 4f;        // lerp vers target
+    public float speedMultiplier = 1f;     // boost multiplicatif
     public float minSpeedMultiplier = 0.1f;
+
+    [Header("Sub-steps (anti-skip)")]
+    [Tooltip("Distance max en mètres par sous-pas de mouvement.")]
+    public float maxMetersPerStep = 0.5f;  // plus petit = plus précis
+    [Tooltip("Limite de sous-pas par frame (sécurité perf).")]
+    public int maxSubStepsPerFrame = 50;
 
     [Header("Lateral")]
     public float lateralRange = 2f;
     public float maxLateralInput = 1f;
     public float lateralReturnSpeed = 1f;
-    
+
     [Header("Balance (déséquilibre)")]
     public BalanceManager balanceManager;
     public float balanceEffect = 1f;
@@ -31,22 +37,23 @@ public class PlayerController : MonoBehaviour
     [Header("Debug / Helpers")]
     public bool drawDebug = false;
 
-    [Header("Events")]
+    [Header("Team")]
     public Team currentTeam = Team.None;
 
-    private float _splinePos = 0f;
+    // --- internes ---
+    private float _pathLength = 0f;          // longueur totale (m)
+    private float _distanceOnPath = 0f;      // distance courante (m)
+    private float _currentSpeed;             // m/s lissé
     private float _lateralInput = 0f;
     private float _lateralInputTarget = 0f;
-    private float _currentSpeed;
     private bool _isStarted = false;
 
-    private float _cachedLength = 0f;
     private Rigidbody _rb;
 
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _rb.isKinematic = true; // on suit la spline, pas la physique (changer si besoin)
+        _rb.isKinematic = true;
     }
 
     void Start()
@@ -55,77 +62,104 @@ public class PlayerController : MonoBehaviour
         EventManager.Instance.OnAccelerate += Accelerate;
         EventManager.Instance.OnDecelerate += Decelerate;
 
-        if (spline != null) 
-            RebuildLengthCache();
-        
+        RebuildLengthCache();
         _currentSpeed = moveSpeed * speedMultiplier;
 
-        //Setup cam
-        if (CameraManager.Instance && currentTeam == Team.Team1)
-            CameraManager.Instance.LeftPlayer = gameObject;
-        else if (CameraManager.Instance && currentTeam == Team.Team2)
-            CameraManager.Instance.RightPlayer = gameObject;
+        // (optionnel) Setup cam selon l’équipe
+        if (currentTeam == Team.Team1) CameraManager.Instance.LeftPlayer = gameObject;
+        else if (currentTeam == Team.Team2) CameraManager.Instance.RightPlayer = gameObject;
     }
 
     void OnDestroy()
     {
-        EventManager.Instance.OnStart -= StartMovement;
-        EventManager.Instance.OnAccelerate -= Accelerate;
-        EventManager.Instance.OnDecelerate -= Decelerate;
+        if (EventManager.Instance != null)
+        {
+            EventManager.Instance.OnStart -= StartMovement;
+            EventManager.Instance.OnAccelerate -= Accelerate;
+            EventManager.Instance.OnDecelerate -= Decelerate;
+        }
     }
 
     public void RebuildLengthCache()
     {
-        if (spline == null) { _cachedLength = 0f; return; }
-        _cachedLength = spline.CalculateLength();
-        if (drawDebug) Debug.Log($"[Spline] cachedLength = {_cachedLength}");
+        if (spline == null) { _pathLength = 0f; return; }
+        _pathLength = spline.CalculateLength();  // longueur en mètres
+        if (drawDebug) Debug.Log($"[Spline] length = {_pathLength:F2} m");
+        _distanceOnPath = Mathf.Repeat(_distanceOnPath, Mathf.Max(_pathLength, 0.0001f));
     }
 
     void Update()
     {
-        if (!_isStarted || spline == null)
-            return;
+        if (!_isStarted || spline == null || _pathLength <= 0f) return;
 
-        if (_cachedLength <= 0f)
-        {
-            if (drawDebug) Debug.LogWarning("[PlayerController] spline length is <= 0. RebuildLengthCache() or check your spline points.");
-            return;
-        }
-
+        // 1) Vitesse lissée
         float targetSpeed = moveSpeed * Mathf.Max(minSpeedMultiplier, speedMultiplier);
         _currentSpeed = Mathf.Lerp(_currentSpeed, targetSpeed, 1f - Mathf.Exp(-acceleration * Time.deltaTime));
 
-        float deltaNormalized = (_currentSpeed * Time.deltaTime) / _cachedLength;
-        _splinePos += deltaNormalized;
-        
-        if (loop) 
-            _splinePos = Mathf.Repeat(_splinePos, 1f);
-        else 
-            _splinePos = Mathf.Clamp01(_splinePos);
+        // 2) Distance à parcourir ce frame
+        float frameDist = _currentSpeed * Time.deltaTime;
+        if (frameDist <= 0f) { SampleApplyAtDistance(_distanceOnPath); return; }
 
-        Vector3 pos = spline.EvaluatePosition(_splinePos);
-        float3 tanF3 = spline.EvaluateTangent(_splinePos);
-        float3 upF3 = spline.EvaluateUpVector(_splinePos);
+        // 3) Sous-pas anti-skip
+        float step = Mathf.Max(0.001f, Mathf.Min(maxMetersPerStep, frameDist));
+        int steps = Mathf.Clamp(Mathf.CeilToInt(frameDist / step), 1, maxSubStepsPerFrame);
+        step = frameDist / steps; // réajusté
 
-        Vector3 tangent = (Vector3)math.normalize(tanF3);
-        Vector3 up = (Vector3)math.normalize(upF3);
-        Vector3 right = Vector3.Cross(up, tangent).normalized;
-
+        // 4) Lateral vers target
         _lateralInput = Mathf.MoveTowards(_lateralInput, _lateralInputTarget, lateralReturnSpeed * Time.deltaTime);
 
+        // 5) Balance (déséquilibre)
         float balance = 0f;
-        if (balanceManager)
-            balance = balanceManager.GetImbalance(currentTeam);
-
+        if (balanceManager) balance = balanceManager.GetImbalance(currentTeam);
         float balanceOffset = balance * lateralRange * balanceEffect;
-        float lateralOffsetValue = (_lateralInput * lateralRange) + balanceOffset;
 
-        Vector3 targetOffset = right * lateralOffsetValue;
-        Vector3 desiredPos = pos + targetOffset;
+        // 6) Avance par sous-pas + applique la pose à CHAQUE sous-pas
+        for (int i = 0; i < steps; i++)
+        {
+            _distanceOnPath += step;
 
+            if (loop)
+            {
+                _distanceOnPath = Mathf.Repeat(_distanceOnPath, _pathLength);
+            }
+            else
+            {
+                if (_distanceOnPath >= _pathLength)
+                {
+                    _distanceOnPath = _pathLength;
+                    // on est au bout: on applique et on sort
+                    SampleApplyAtDistance(_distanceOnPath, _lateralInput, balanceOffset);
+                    break;
+                }
+            }
+
+            SampleApplyAtDistance(_distanceOnPath, _lateralInput, balanceOffset);
+        }
+    }
+
+    // Échantillonne la spline à une distance (m) et applique position + rotation
+    private void SampleApplyAtDistance(float distMeters, float lateralInput = 0f, float balanceOffset = 0f)
+    {
+        if (_pathLength <= 0f) return;
+
+        float u = Mathf.Clamp01(distMeters / _pathLength); // 0..1
+        Vector3 pos = spline.EvaluatePosition(u);
+        float3 tanF3 = spline.EvaluateTangent(u);
+        float3 upF3  = spline.EvaluateUpVector(u);
+
+        Vector3 tangent = ((Vector3)math.normalize(tanF3));
+        Vector3 up = ((Vector3)math.normalize(upF3));
+        Vector3 right = Vector3.Cross(up, tangent).normalized;
+
+        // décalage latéral
+        float lateralOffsetValue = (lateralInput * lateralRange) + balanceOffset;
+        Vector3 desiredPos = pos + right * lateralOffsetValue;
+
+        // lissage optionnel du recentrage/balance (position uniquement)
         float t = (balanceLerpTime > 0f) ? (1f - Mathf.Exp(-Time.deltaTime / Mathf.Max(0.0001f, balanceLerpTime))) : 1f;
         transform.position = Vector3.Lerp(transform.position, desiredPos, t);
 
+        // orientation
         Quaternion targetRot = Quaternion.LookRotation(tangent, up);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 1f - Mathf.Exp(-orientSpeed * Time.deltaTime));
 
@@ -134,7 +168,6 @@ public class PlayerController : MonoBehaviour
             Debug.DrawLine(pos, pos + tangent, Color.green);
             Debug.DrawRay(pos, up * 0.5f, Color.blue);
             Debug.DrawRay(pos, right * 0.5f, Color.red);
-            Debug.Log($"deltaNormalized={deltaNormalized:F5} splinePos={_splinePos:F5} lateralIn={_lateralInput:F2} target={_lateralInputTarget:F2} balance={balance:F2}");
         }
     }
 

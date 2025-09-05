@@ -3445,6 +3445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1071f09fc78f7614e9eebc723a87157f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStarted: 0
 --- !u!1 &715414821
 GameObject:
   m_ObjectHideFlags: 0
@@ -9537,11 +9538,11 @@ SceneRoots:
   - {fileID: 3534914192946273981}
   - {fileID: 2097014982325822327}
   - {fileID: 347608133}
-  - {fileID: 419579416}
   - {fileID: 252814543}
   - {fileID: 4474722439716545590}
   - {fileID: 6185929494067103975}
   - {fileID: 129555945}
   - {fileID: 688417051}
   - {fileID: 1328607384}
+  - {fileID: 419579416}
   - {fileID: 992094236}
