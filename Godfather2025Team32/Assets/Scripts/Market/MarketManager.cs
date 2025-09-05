@@ -82,11 +82,11 @@ public class MarketManager : MonoBehaviour
     private void GetMoneyIncome()
     {
         float income = baseIncomePerSecond;
-
         if (multiplierActiveTeam1)
         {
             income *= multiplier;
         }
+        
         moneyTeam1 += income * Time.deltaTime;
 
         income = baseIncomePerSecond;
@@ -94,17 +94,18 @@ public class MarketManager : MonoBehaviour
         {
             income *= multiplier;
         }
+        
         moneyTeam2 += income * Time.deltaTime;
     }
 
     void GainIncome()
     {
         int income = baseIncomePerSecond;
-
         if (multiplierActiveTeam1)
         {
             income = Mathf.RoundToInt(income * multiplier);
         }
+        
         moneyTeam1 += income;
 
         income = baseIncomePerSecond;
@@ -112,17 +113,20 @@ public class MarketManager : MonoBehaviour
         {
             income = Mathf.RoundToInt(income * multiplier);
         }
+        
         moneyTeam2 += income;
     }
 
     private void ToggleMultiplierOn(Team team, SequenceSO sO) => ToggleMultiplier(true, team);
+    
     private void ToggleMultiplierOff(Team team) => ToggleMultiplier(false, team);
+    
     public void ToggleMultiplier(bool state, Team team)
     {
         if (team == Team.Team1)
-            multiplierActiveTeam2 = state;
-        else
             multiplierActiveTeam1 = state;
+        else
+            multiplierActiveTeam2 = state;
     }
 
     public void AddMoney(int amount, Team team)
