@@ -63,8 +63,8 @@ public class GameManager : MonoBehaviour
             _pointsTeam2++;
 
         _currentRound++;
-
-        if(_currentRound == _numberOfRounds)
+        
+        if (_currentRound == _numberOfRounds)
         {
             SoundManager.Instance.StopInfiniteLoop(SoundEnum.JeromMusicBot);
             SceneTransitionUI.Instance.LoadSceneWithTransition(podiumSceneName);
@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour
         {
             EventManager.Instance.gameStarted = false;
             SceneTransitionUI.Instance.LoadSceneWithTransition(gameSceneName);
-            CameraManager.Instance.PlaceCameras();
         }
     }
 }

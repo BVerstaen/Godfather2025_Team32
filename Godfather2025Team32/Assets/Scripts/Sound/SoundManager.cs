@@ -41,7 +41,7 @@ public class SoundManager : MonoBehaviour
         audioSource.Play();
         audioSource.loop = true;
         _dicoInfiniteAudioSources[soundEnum] = audioSource;
-        Debug.Log("Start sound loop " +  soundEnum);
+        //Debug.Log("Start sound loop " +  soundEnum);
     }
 
     public void StopInfiniteLoop(SoundEnum soundEnum)
@@ -50,7 +50,7 @@ public class SoundManager : MonoBehaviour
         AudioSource audioSource = _dicoInfiniteAudioSources[soundEnum];
         _dicoInfiniteAudioSources.Remove(soundEnum);
         PutAudioSourceInPool(audioSource);
-        Debug.Log("Stop sound loop " +  soundEnum);
+        //Debug.Log("Stop sound loop " +  soundEnum);
     }
 
     private AudioClip GetAudioCLip(SoundEnum soundEnum)
@@ -71,7 +71,7 @@ public class SoundManager : MonoBehaviour
         audioSource.loop = false;
         _currentSoundsPlaying.Add(soundEnum);
         AudioSourceCoroutine(audioSource, soundEnum);
-        Debug.Log("Play sound " +  soundEnum);
+        //Debug.Log("Play sound " +  soundEnum);
     }
 
     public void PlayRandomSound(List<SoundEnum> soundsEnum)
