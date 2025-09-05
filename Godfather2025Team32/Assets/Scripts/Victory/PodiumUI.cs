@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PodiumUI : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class PodiumUI : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject winnerPlayerPrefab;
+
+    [Header("Victory Images")]
+    [SerializeField] private MeshRenderer _winnerPanel;
+    [SerializeField] private Material _player1Material;
+    [SerializeField] private Material _player2Material;
 
     void Start()
     {
@@ -34,6 +40,8 @@ public class PodiumUI : MonoBehaviour
                 SpawnWinnerUI(kvp.Key, kvp.Value);
             }
         }
+
+        _winnerPanel.material = GameManager.Instance.WinnerTeam == Team.Team1 ? _player1Material : _player2Material;
     }
 
     private void SpawnWinnerUI(string playerName, int payout)

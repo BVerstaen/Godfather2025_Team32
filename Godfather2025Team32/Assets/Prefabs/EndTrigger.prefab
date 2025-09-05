@@ -66,4 +66,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02429789f7f14f14db7fc9f9d5cc6239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  podiumSceneName: PodiumScene
+  _numberOfPlayers: 2
