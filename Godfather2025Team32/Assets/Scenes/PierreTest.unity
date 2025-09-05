@@ -1012,43 +1012,43 @@ MonoBehaviour:
     m_Knots:
     - Position:
         x: -3.879819
-        y: -0.099990845
+        y: 0.75
         z: 0.4000244
       TangentIn:
         x: -0
         y: -0
-        z: -5.785268
+        z: -5.797661
       TangentOut:
         x: 0
         y: 0
-        z: 5.785268
+        z: 5.797661
       Rotation:
         value:
-          x: 0.18412502
-          y: -0.0006047075
-          z: -0.000057666242
-          w: 0.9829026
+          x: 0.186811
+          y: -0.0006038939
+          z: -0.00005583453
+          w: 0.9823957
     - Position:
         x: -3.949819
-        y: -21.039993
+        y: -20.529999
         z: 54.330017
       TangentIn:
-        x: 0.80003357
-        y: 1.2104111
-        z: -9.19104
+        x: 0
+        y: 0
+        z: -9.430863
       TangentOut:
-        x: -2.6977959
-        y: -5.1335144
-        z: 27.150604
+        x: 0
+        y: 0
+        z: 27.76304
       Rotation:
         value:
-          x: 0.10369072
-          y: 0.035083458
-          z: 0.0059813904
-          w: 0.99397266
+          x: 0.19575293
+          y: -0.0140211675
+          z: 0.0021526567
+          w: 0.98055065
     - Position:
         x: -3.899819
-        y: -64.89
+        y: -63.219994
         z: 160.22002
       TangentIn:
         x: 0
@@ -1975,13 +1975,13 @@ MonoBehaviour:
       TangentOut:
         x: 0
         y: 0
-        z: 11.611762
+        z: 19.866781
       Rotation:
         value:
-          x: -0.17272133
-          y: 0.8068461
-          z: 0.047839727
-          w: -0.56291926
+          x: -0.17615663
+          y: 0.8133429
+          z: 0.04390306
+          w: -0.5527339
     - Position:
         x: -26.08982
         y: -608.4
@@ -2417,7 +2417,7 @@ MonoBehaviour:
     m_MetaData:
     - Mode: 0
       Tension: 0.5
-    - Mode: 4
+    - Mode: 3
       Tension: 0.5
     - Mode: 3
       Tension: 0.5
@@ -3445,6 +3445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1071f09fc78f7614e9eebc723a87157f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStarted: 0
 --- !u!1 &715414821
 GameObject:
   m_ObjectHideFlags: 0
