@@ -25,8 +25,8 @@ public class MarketManager : MonoBehaviour
     public TextMeshProUGUI moneyTextTeam1;
     public TextMeshProUGUI moneyTextTeam2;
 
-    private int moneyTeam1 = 0;
-    private int moneyTeam2 = 0;
+    private float moneyTeam1 = 0;
+    private float moneyTeam2 = 0;
     private float timer = 0f;
 
     [Header("Market Items")]
@@ -52,27 +52,49 @@ public class MarketManager : MonoBehaviour
     {
         EventManager.Instance.OnStartGigaChad += ToggleMultiplierOn;
         EventManager.Instance.OnEndGigaChad += ToggleMultiplierOff;
-
     }
 
     void Update()
     {
-        timer += Time.deltaTime;
+        /*timer += Time.deltaTime;
         if (timer >= 1f)
         {
             timer -= 1f;
             GainIncome();
+        }*/
+
+        if (!GameManager.Instance.HasGameEnded)
+        {
+            GetMoneyIncome();
         }
 
         if (moneyTextTeam1)
-            moneyTextTeam1.text = $" {moneyTeam1}";
+            moneyTextTeam1.text = $" {Mathf.RoundToInt(moneyTeam1)}";
         else
             moneyTextTeam1 = GameObject.FindGameObjectWithTag("Money1").GetComponent<TextMeshProUGUI>();
         
         if (moneyTextTeam2)
-            moneyTextTeam2.text = $" {moneyTeam2}";
+            moneyTextTeam2.text = $" {Mathf.RoundToInt(moneyTeam2)}";
         else
             moneyTextTeam2 = GameObject.FindGameObjectWithTag("Money2").GetComponent<TextMeshProUGUI>();
+    }
+
+    private void GetMoneyIncome()
+    {
+        float income = baseIncomePerSecond;
+
+        if (multiplierActiveTeam1)
+        {
+            income *= multiplier;
+        }
+        moneyTeam1 += income * Time.deltaTime;
+
+        income = baseIncomePerSecond;
+        if (multiplierActiveTeam2)
+        {
+            income *= multiplier;
+        }
+        moneyTeam2 += income * Time.deltaTime;
     }
 
     void GainIncome()
@@ -113,7 +135,7 @@ public class MarketManager : MonoBehaviour
 
     public int GetMoney(Team team)
     {
-        return (team == Team.Team1) ? moneyTeam1 : moneyTeam2;
+        return Mathf.RoundToInt((team == Team.Team1) ? moneyTeam1 : moneyTeam2);
     }
 
     public bool TryUnlock(string itemId, int price, Team team)

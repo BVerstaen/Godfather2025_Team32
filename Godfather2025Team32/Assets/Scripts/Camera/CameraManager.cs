@@ -33,11 +33,13 @@ public class CameraManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        EventManager.Instance.OnStart += PlaceCameras;
     }
 
     private void OnDestroy()
     {
         Instance = null;
+        EventManager.Instance.OnStart -= PlaceCameras;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
