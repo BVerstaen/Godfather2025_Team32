@@ -2285,7 +2285,7 @@ MonoBehaviour:
   winnerText: {fileID: 1137578065}
   winnerPanel: {fileID: 1278341956}
   winnerPanelContent: {fileID: 691190016}
-  winnerPlayerPrefab: {fileID: 0}
+  winnerPlayerPrefab: {fileID: 1264054138}
   _winnerPanel: {fileID: 974633740}
   _player1Material: {fileID: 2100000, guid: ba144a5088bd08c4b84692f3120feef9, type: 2}
   _player2Material: {fileID: 2100000, guid: 73725d43e94c7d640b245762806a0241, type: 2}

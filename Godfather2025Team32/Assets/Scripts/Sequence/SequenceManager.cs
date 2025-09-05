@@ -65,6 +65,9 @@ public class SequenceManager : MonoBehaviour
 
     [SerializeField] private float _publicFailProba = 1f / 4f;
     [SerializeField] private List<SoundEnum> _possiblesSoundsEnterChad;
+    [SerializeField] private List<SoundEnum> _possibleBouh;
+    [SerializeField] private List<SoundEnum> _possibleSoundFall;
+    [SerializeField] private float _waveProba = 1f / 10f;
 
     private void OnEnable()
     {
@@ -85,6 +88,17 @@ public class SequenceManager : MonoBehaviour
         
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
+    }
+
+    private void Update()
+    {
+        if (!SoundManager.Instance.IsSoundPlaying(SoundEnum.Wave))
+        {
+            if (Random.value < _publicFailProba)
+            {
+                SoundManager.Instance.PlaySound(SoundEnum.Wave);
+            }
+        }
     }
 
     private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
@@ -200,7 +214,7 @@ public class SequenceManager : MonoBehaviour
         {
             if (Random.Range(0f, 1f) < _publicFailProba)
             {
-                SoundManager.Instance.PlaySound(SoundEnum.PublicBouh);
+                SoundManager.Instance.PlayRandomSound(_possibleBouh);
             }
         }
     }
@@ -241,7 +255,7 @@ public class SequenceManager : MonoBehaviour
 
         OnExitGigaChadMode?.Invoke(_currentTeam);
         GiveNewRandomSequence();
-        SoundManager.Instance.PlaySound(SoundEnum.Wave);
+        SoundManager.Instance.PlayRandomSound(_possibleSoundFall);
     }
 
     private IEnumerator GigaChadRoutine()

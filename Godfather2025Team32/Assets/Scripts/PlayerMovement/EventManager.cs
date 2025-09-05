@@ -7,7 +7,7 @@ using static SequenceSO;
 
 public class EventManager : MonoBehaviour
 {
-    private const float ACCELERATION_VALUE = 10f;
+    private const float ACCELERATION_VALUE = 5f;
 
     public static EventManager Instance;
 
