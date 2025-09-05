@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class MarketItem
@@ -25,8 +27,8 @@ public class MarketManager : MonoBehaviour
     public TextMeshProUGUI moneyTextTeam1;
     public TextMeshProUGUI moneyTextTeam2;
 
-    private float moneyTeam1 = 0;
-    private float moneyTeam2 = 0;
+    private double moneyTeam1 = 0;
+    private double moneyTeam2 = 0;
     private float timer = 0f;
 
     [Header("Market Items")]
@@ -48,12 +50,6 @@ public class MarketManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void OnEnable()
-    {
-        EventManager.Instance.OnStartGigaChad += ToggleMultiplierOn;
-        EventManager.Instance.OnEndGigaChad += ToggleMultiplierOff;
-    }
-
     void Update()
     {
         /*timer += Time.deltaTime;
@@ -69,17 +65,16 @@ public class MarketManager : MonoBehaviour
         }
 
         if (moneyTextTeam1)
-            moneyTextTeam1.text = $" {Mathf.RoundToInt(moneyTeam1)}";
+            moneyTextTeam1.text = $" {Mathf.RoundToInt(Convert.ToInt64(moneyTeam1))}";
         else
-            moneyTextTeam1 = GameObject.FindGameObjectWithTag("Money1").GetComponent<TextMeshProUGUI>();
+            moneyTextTeam1 = GameObject.FindGameObjectWithTag("Money2").GetComponent<TextMeshProUGUI>();
 
         if (moneyTextTeam2)
         {
-            moneyTextTeam2.text = $" {Mathf.RoundToInt(moneyTeam2)}";
-            print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");   
+            moneyTextTeam2.text = $" {Mathf.RoundToInt(Convert.ToInt64(moneyTeam2))}";
         }
         else
-            moneyTextTeam2 = GameObject.FindGameObjectWithTag("Money2").GetComponent<TextMeshProUGUI>();
+            moneyTextTeam2 = GameObject.FindGameObjectWithTag("Money1").GetComponent<TextMeshProUGUI>();
     }
 
     private void GetMoneyIncome()
@@ -89,8 +84,9 @@ public class MarketManager : MonoBehaviour
         {
             income *= multiplier;
         }
-        
+
         moneyTeam1 += income * Time.deltaTime;
+        print(income * Time.deltaTime + " - " + moneyTeam1);
 
         income = baseIncomePerSecond;
         if (multiplierActiveTeam2)
@@ -120,9 +116,9 @@ public class MarketManager : MonoBehaviour
         moneyTeam2 += income;
     }
 
-    private void ToggleMultiplierOn(Team team, SequenceSO sO) => ToggleMultiplier(true, team);
+    public void ToggleMultiplierOn(Team team, SequenceSO sO) => ToggleMultiplier(true, team);
     
-    private void ToggleMultiplierOff(Team team) => ToggleMultiplier(false, team);
+    public void ToggleMultiplierOff(Team team) => ToggleMultiplier(false, team);
     
     public void ToggleMultiplier(bool state, Team team)
     {
@@ -142,7 +138,7 @@ public class MarketManager : MonoBehaviour
 
     public int GetMoney(Team team)
     {
-        return Mathf.RoundToInt((team == Team.Team1) ? moneyTeam1 : moneyTeam2);
+        return Mathf.RoundToInt((team == Team.Team1) ? Convert.ToInt64(moneyTeam1) : Convert.ToInt64(moneyTeam2));
     }
 
     public bool TryUnlock(string itemId, int price, Team team)
