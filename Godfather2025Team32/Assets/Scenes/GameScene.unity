@@ -443,6 +443,51 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &313035560
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 313035562}
+  - component: {fileID: 313035561}
+  m_Layer: 0
+  m_Name: Controller Activator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &313035561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313035560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c45e7626fbb0df947a5d84d63dfb3992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _obj: {fileID: 1127636792}
+--- !u!4 &313035562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 313035560}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 37.624596, y: -663.2994, z: 574.35895}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &317879324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,7 +1777,7 @@ PrefabInstance:
     - target: {fileID: 6662274195356026445, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: spline
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1022677606}
     - target: {fileID: 6662274195356026445, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: drawDebug
       value: 0
@@ -4499,7 +4544,7 @@ PrefabInstance:
     - target: {fileID: 6502638078370697000, guid: 8a5ca58f47e9e6241b22210d427887bb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1127636792}
+      objectReference: {fileID: 313035560}
     - target: {fileID: 6502638078370697000, guid: 8a5ca58f47e9e6241b22210d427887bb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetActive
@@ -8560,7 +8605,7 @@ PrefabInstance:
     - target: {fileID: 6662274195356026445, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: spline
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1295131305}
     - target: {fileID: 6662274195356026445, guid: 4635bf9e51a58f846a0d5367cd1f96f8, type: 3}
       propertyPath: drawDebug
       value: 0
@@ -8599,3 +8644,4 @@ SceneRoots:
   - {fileID: 1176387401}
   - {fileID: 2018314724}
   - {fileID: 665065265}
+  - {fileID: 313035562}
