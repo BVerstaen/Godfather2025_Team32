@@ -60,8 +60,6 @@ public class BetManager : MonoBehaviour
     public int ResolveWinner(string winnerName)
     {
         int total = GetTotalPot();
-        ClearBets();
-        
         return total;
     }
 
@@ -83,16 +81,15 @@ public class BetManager : MonoBehaviour
         Dictionary<string, int> payouts = new Dictionary<string, int>();
 
         int totalPot = GetTotalPot();
-
         List<Bet> winnerBets = GetBets(winner);
+
         int totalWinnerBets = 0;
         foreach (var b in winnerBets)
             totalWinnerBets += b.amount;
 
         if (totalWinnerBets == 0)
         {
-            Debug.Log("⚠️ Aucun gagnant !");
-            ClearBets();
+            Debug.LogWarning("⚠️ Aucun gagnant trouvé pour l'équipe " + winner);
             return payouts;
         }
 
@@ -106,7 +103,6 @@ public class BetManager : MonoBehaviour
         }
 
         ClearBets();
-
         return payouts;
     }
 }
