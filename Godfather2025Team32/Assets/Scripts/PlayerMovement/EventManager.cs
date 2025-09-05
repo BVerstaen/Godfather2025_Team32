@@ -137,6 +137,8 @@ public class EventManager : MonoBehaviour
     private void GigaChadMode(Team team, SequenceSO sequence)
     {
         TriggerAccelerate(team, ACCELERATION_VALUE);
+
+        MarketManager.Instance.ToggleMultiplierOn(team, sequence);
         OnStartGigaChad?.Invoke(team, sequence);
         
         print("CHADDDDDDDDDDDDDDDDDDDDD");
@@ -145,6 +147,7 @@ public class EventManager : MonoBehaviour
     private void ExitGigaChadMode(Team team)
     {
         OnDecelerate?.Invoke(team, ACCELERATION_VALUE);
+        MarketManager.Instance.ToggleMultiplierOff(team);
         OnEndGigaChad?.Invoke(team);
     }
 
