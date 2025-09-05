@@ -72,9 +72,12 @@ public class MarketManager : MonoBehaviour
             moneyTextTeam1.text = $" {Mathf.RoundToInt(moneyTeam1)}";
         else
             moneyTextTeam1 = GameObject.FindGameObjectWithTag("Money1").GetComponent<TextMeshProUGUI>();
-        
+
         if (moneyTextTeam2)
+        {
             moneyTextTeam2.text = $" {Mathf.RoundToInt(moneyTeam2)}";
+            print("zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");   
+        }
         else
             moneyTextTeam2 = GameObject.FindGameObjectWithTag("Money2").GetComponent<TextMeshProUGUI>();
     }
