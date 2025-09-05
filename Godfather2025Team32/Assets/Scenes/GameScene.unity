@@ -302,6 +302,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3224468973833472324, guid: 3dfe5894285376540a299343953d0300, type: 3}
+      propertyPath: multiplierActiveTeam1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3224468973833472324, guid: 3dfe5894285376540a299343953d0300, type: 3}
       propertyPath: items.Array.data[0].spriteToUnlock
       value: 
       objectReference: {fileID: 21300000, guid: 68daa76ac4718b34ca1c5764a4130dfe, type: 3}
@@ -4476,7 +4480,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 105
   m_TargetDisplay: 0
 --- !u!224 &1238590280
 RectTransform:
@@ -5926,7 +5930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

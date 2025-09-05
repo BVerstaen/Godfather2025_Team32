@@ -9,6 +9,8 @@ public class BetManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        DontDestroyOnLoad(this);
     }
 
     private List<Bet> bets = new List<Bet>();
