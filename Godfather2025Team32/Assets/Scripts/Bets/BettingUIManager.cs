@@ -60,6 +60,27 @@ public class BettingUIManager : MonoBehaviour
             UpdateLeaderTeam(Team.Team1);
         }
         
+        
+        foreach (var bet in BetManager.Instance.GetBets(Team.Team1))
+        {
+            BetData newBet = new BetData();
+            newBet.playerName = bet.playerName;
+            newBet.amount = bet.amount;
+            
+            bet.team = Team.Team1;
+            AddBet(newBet);
+        }
+        
+        foreach (var bet in BetManager.Instance.GetBets(Team.Team2))
+        {
+            BetData newBet = new BetData();
+            newBet.playerName = bet.playerName;
+            newBet.amount = bet.amount;
+            
+            bet.team = Team.Team2;
+            AddBet(newBet);
+        }
+        
         RefreshUI();
     }
 
