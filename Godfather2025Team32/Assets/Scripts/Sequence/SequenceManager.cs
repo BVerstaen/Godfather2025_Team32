@@ -27,8 +27,10 @@ public class SequenceManager : MonoBehaviour
 
     private SequenceSO _leftSideSequence;
     private SequenceSO _rightSideSequence;
-    
+
     private Team _currentTeam { get => _teamManager.CurrentTeam; }
+
+    private bool _hasStarted;
 
     private int _leftSideCurrentInput; //Quel sequence est joué
     private int _leftSideCurrentRepetition; //Combien de fois l'input a été répétée
@@ -46,8 +48,14 @@ public class SequenceManager : MonoBehaviour
 
     public SequenceSO GigaChadSequence { get => _leftSideSequence; }
 
+    public Action OnChangeToNullosSprite;
+    public Action OnChangeToChadSprite;
+
     public Action<Team> OnCorrectLeftInput;
     public Action<Team> OnCorrectRightInput;
+
+    public Action<Team> OnLeftFinished;
+    public Action<Team> OnRightFinished;
 
     public Action<Team, SequenceSO> OnEnterGigaChadMode;
     public Action<Team> OnExitGigaChadMode;
@@ -55,21 +63,28 @@ public class SequenceManager : MonoBehaviour
     public Action<Team, PlayerSide, Buttons> OnNewInput;
     public Action<Team, PlayerSide> OnWaitGigaChad;
 
+    [SerializeField] private float _publicFailProba = 1f / 4f;
+    [SerializeField] private List<SoundEnum> _possiblesSoundsEnterChad;
+
     private void OnEnable()
     {
-        //ControllerManager.Instance.AddSequenceManager(this);
+        EventManager.Instance.OnStart += GiveNewRandomSequence;
         _buttonInputs.OnButtonPressed += ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement += OnCircularMovement;
 
-        //EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
+        EventManager.Instance.OnChangeDifficulty += ChangeDifficulty;
     }
 
     private void OnDisable()
     {
+        if (EventManager.Instance)
+        {
+            EventManager.Instance.OnStart -= GiveNewRandomSequence;
+            EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
+        }
+        
         _buttonInputs.OnButtonPressed -= ButtonPressed;
         _circularMovementDetector.OnDetectCircularMovement -= OnCircularMovement;
-
-        //EventManager.Instance.OnChangeDifficulty -= ChangeDifficulty;
     }
 
     private void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
@@ -80,22 +95,18 @@ public class SequenceManager : MonoBehaviour
         _currentDifficulty = difficulty;
     }
 
-    private void Awake()
-    {
-        GiveNewRandomSequence();
-    }
 
     private void GiveNewRandomSequence()
     {
         SequenceSO newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
         int guardWhile = 0;
         //Select from difficulty
-        while(newSequence.Difficulty != _currentDifficulty)
+        while (newSequence.Difficulty != _currentDifficulty)
         {
             newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
 
             guardWhile++;
-            if(guardWhile >= 100)
+            if (guardWhile >= 100)
             {
                 Debug.Log("Couldn't find from difficulty");
                 newSequence = _possibleSequences[Random.Range(0, _possibleSequences.Count)];
@@ -126,6 +137,9 @@ public class SequenceManager : MonoBehaviour
 
     private void ButtonPressed(PlayerSide side, Buttons buttons)
     {
+        if (!_teamManager.HasStarted)
+            return;
+
         bool isLeft = side == PlayerSide.Left;
 
         if ((isLeft && _hasLeftFinishedSequence) || (!isLeft && _hasRightFinishedSequence))
@@ -142,11 +156,11 @@ public class SequenceManager : MonoBehaviour
 
         if (buttons == currentSequence.ButtonsSequences[currentInput])
         {
-            if(isLeft)
+            if (isLeft)
                 OnCorrectLeftInput?.Invoke(_currentTeam);
             else
                 OnCorrectRightInput?.Invoke(_currentTeam);
-            
+
             currentInput++;
             if (currentInput >= currentSequence.ButtonsSequences.Count) // Finished input list
             {
@@ -165,6 +179,12 @@ public class SequenceManager : MonoBehaviour
                         Debug.Log($"{side} sequence finished");
                         currentIndex = 0;
                         hasFinishedSequence = true;
+
+                        if (isLeft)
+                            OnLeftFinished?.Invoke(_currentTeam);
+                        else
+                            OnRightFinished?.Invoke(_currentTeam);
+
                         OnWaitGigaChad?.Invoke(_currentTeam, side);
                         CheckToLaunchGigaChad();
                         return;
@@ -175,6 +195,13 @@ public class SequenceManager : MonoBehaviour
             //Update UI
             Sequence newSequence = sequenceList[currentIndex];
             OnNewInput?.Invoke(_currentTeam, side, newSequence.ButtonsSequences[currentInput]);
+        }
+        else
+        {
+            if (Random.Range(0f, 1f) < _publicFailProba)
+            {
+                SoundManager.Instance.PlaySound(SoundEnum.PublicBouh);
+            }
         }
     }
 
@@ -189,12 +216,13 @@ public class SequenceManager : MonoBehaviour
         _gigaChadCoroutine = StartCoroutine(GigaChadRoutine());
         _leftInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
         _rightInactiveCoolDown = StartCoroutine(InactiveCoolDown(_firstinactiveCoolDown));
-
+        SoundManager.Instance.PlaySound(SoundEnum.ChadTransfo);
+        SoundManager.Instance.PlayRandomSound(_possiblesSoundsEnterChad);
     }
 
     private void EndGigaChad()
     {
-        if(_gigaChadCoroutine != null)
+        if (_gigaChadCoroutine != null)
         {
             StopCoroutine(_gigaChadCoroutine);
         }
@@ -213,6 +241,7 @@ public class SequenceManager : MonoBehaviour
 
         OnExitGigaChadMode?.Invoke(_currentTeam);
         GiveNewRandomSequence();
+        SoundManager.Instance.PlaySound(SoundEnum.Wave);
     }
 
     private IEnumerator GigaChadRoutine()
@@ -224,6 +253,9 @@ public class SequenceManager : MonoBehaviour
 
     private void OnCircularMovement(CircularMovementDetector.StickType type, CircularMovementDetector.RotationDirection direction)
     {
+        if (!_teamManager.HasStarted)
+            return;
+
         if (!_hasLeftFinishedSequence || !_hasRightFinishedSequence)
             return;
 

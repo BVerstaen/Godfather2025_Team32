@@ -49,11 +49,40 @@ MonoBehaviour:
   _circularMovementDetector: {fileID: 6409681948303984100}
   _possibleSequences:
   - {fileID: 11400000, guid: 9a1ecb6c36fc7e24ba443639a25679fe, type: 2}
+  - {fileID: 11400000, guid: 32f7f72385ba1714487ecca800f2f912, type: 2}
+  - {fileID: 11400000, guid: 411efa401fc6b6644945f83bdb2c15b1, type: 2}
+  - {fileID: 11400000, guid: b35ac142f9e0a4141ab9b0d176b3de5e, type: 2}
+  - {fileID: 11400000, guid: da1e35a7ca0142b46a4a37b1ae45ee40, type: 2}
+  - {fileID: 11400000, guid: 9a9bd7787d430bb488cc1b4390f58253, type: 2}
+  - {fileID: 11400000, guid: 8a636b732fecb6047b501bcccf23c344, type: 2}
+  - {fileID: 11400000, guid: 505a1ce29c781404dbd8bf280be8725a, type: 2}
+  - {fileID: 11400000, guid: 8c77881590710a249b943afbeaf7f33f, type: 2}
+  - {fileID: 11400000, guid: a8b9c5a2b296fb8469f611d2fa86ff0c, type: 2}
+  - {fileID: 11400000, guid: 31af7c2953363e34d8b27accc1e79bed, type: 2}
+  - {fileID: 11400000, guid: a2c185ad739520241859a980b464e30e, type: 2}
+  - {fileID: 11400000, guid: 197aca9fd64172049bc5132b30433400, type: 2}
+  - {fileID: 11400000, guid: ca86870918055b642a8ce08b2c71203a, type: 2}
+  - {fileID: 11400000, guid: 517360e8c75bc9a4aadc77a042f9b1af, type: 2}
+  - {fileID: 11400000, guid: 735048c20ca50e54a90a0e431b2a649f, type: 2}
+  - {fileID: 11400000, guid: f087b0929efbbdb4da65511705e99ac8, type: 2}
+  - {fileID: 11400000, guid: 5801beff4f518c84ea25ea78a09c9a35, type: 2}
+  - {fileID: 11400000, guid: 0bb28e89a11c05d449d54f2e8385f0c5, type: 2}
+  - {fileID: 11400000, guid: 5ed7efa5f6f687147b27fda1064f1d35, type: 2}
+  - {fileID: 11400000, guid: 80da2bfe26af6f644bd7d9646e5df252, type: 2}
+  - {fileID: 11400000, guid: dd3bc772e92c64d4c8632d2d419a1931, type: 2}
+  - {fileID: 11400000, guid: 135e161030ec33b429ffc39aedebeaf0, type: 2}
+  - {fileID: 11400000, guid: 5077ed23331a6f24a9be5dea1deb73d0, type: 2}
+  - {fileID: 11400000, guid: 9c582fe0ba1257341b2ac2d5eda476b0, type: 2}
+  - {fileID: 11400000, guid: a725fb033d0f1504b9023f33eb576863, type: 2}
+  - {fileID: 11400000, guid: df7236439bd2d1544a5f7e06ab3c62c6, type: 2}
+  - {fileID: 11400000, guid: 04651ff6fa863d74abc48b9738b00da0, type: 2}
   _numberOfSequences: 1
   _currentDifficulty: 0
   _gigaChadDuration: 5
-  _firstinactiveCoolDown: 1
+  _firstinactiveCoolDown: 1.5
   _inactiveTimeDelay: 0.5
+  _publicFailProba: 0.25
+  _possiblesSoundsEnterChad: 0400000003000000060000000b0000000a0000000900000008000000
 --- !u!1 &2520987449586416166
 GameObject:
   m_ObjectHideFlags: 0

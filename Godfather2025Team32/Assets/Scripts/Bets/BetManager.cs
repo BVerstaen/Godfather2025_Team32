@@ -9,6 +9,8 @@ public class BetManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+
+        DontDestroyOnLoad(this);
     }
 
     private List<Bet> bets = new List<Bet>();
@@ -61,5 +63,50 @@ public class BetManager : MonoBehaviour
         ClearBets();
         
         return total;
+    }
+
+    public List<Bet> GetBets(Team team)
+    {
+        List<Bet> winnerBets = new List<Bet>();
+
+        foreach (var bet in bets)
+        {
+            if (bet.team == team)
+                winnerBets.Add(bet);
+        }
+        
+        return winnerBets;
+    }
+    
+    public Dictionary<string, int> DistributeWinnings(Team winner)
+    {
+        Dictionary<string, int> payouts = new Dictionary<string, int>();
+
+        int totalPot = GetTotalPot();
+
+        List<Bet> winnerBets = GetBets(winner);
+        int totalWinnerBets = 0;
+        foreach (var b in winnerBets)
+            totalWinnerBets += b.amount;
+
+        if (totalWinnerBets == 0)
+        {
+            Debug.Log("⚠️ Aucun gagnant !");
+            ClearBets();
+            return payouts;
+        }
+
+        foreach (var b in winnerBets)
+        {
+            float ratio = (float)b.amount / totalWinnerBets;
+            int payout = Mathf.RoundToInt(ratio * totalPot);
+
+            payouts[b.playerName] = payout;
+            Debug.Log($"💰 {b.playerName} gagne {payout} !");
+        }
+
+        ClearBets();
+
+        return payouts;
     }
 }

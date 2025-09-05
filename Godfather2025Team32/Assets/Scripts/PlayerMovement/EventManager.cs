@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using static ButtonsInputs;
@@ -6,6 +7,8 @@ using static SequenceSO;
 
 public class EventManager : MonoBehaviour
 {
+    private const float ACCELERATION_VALUE = 10f;
+
     public static EventManager Instance;
 
     [HideInInspector]
@@ -13,6 +16,8 @@ public class EventManager : MonoBehaviour
 
     [HideInInspector]
     public event Action<Team, float> OnAccelerate;
+
+    public event Action<Team, float> OnDecelerate;
 
     [HideInInspector]
     public event Action<Team> OnMoveLeft;
@@ -24,11 +29,22 @@ public class EventManager : MonoBehaviour
     public event Action<Team, SequenceDifficulty> OnChangeDifficulty;
 
     public event Action<Team, SequenceSO> OnStartGigaChad;
+    public event Action<Team> OnEndGigaChad;
+
     public event Action<Team, PlayerSide, Buttons> OnNewInput;
     public event Action<Team, PlayerSide> OnDisableImage;
 
+    public event Action OnLeftPlayerPrepared;
+    public event Action OnRightPlayerPrepared;
+
+    public event Action<Team> OnLeftPlayerFinished;
+    public event Action<Team> OnRightPlayerFinished;
+
     private SequenceManager _team1SequenceManager;
     private SequenceManager _team2SequenceManager;
+    
+    public bool gameStarted = false;
+
 
     public SequenceManager Team1SequenceManager
     {
@@ -41,6 +57,11 @@ public class EventManager : MonoBehaviour
             _team1SequenceManager.OnEnterGigaChadMode += GigaChadMode;
             _team1SequenceManager.OnNewInput += SendChangeButton;
             _team1SequenceManager.OnWaitGigaChad += SendDisableImage;
+            _team1SequenceManager.OnExitGigaChadMode += ExitGigaChadMode;
+            _team1SequenceManager.OnLeftFinished += LeftFinishedSequence;
+            _team1SequenceManager.OnRightFinished += RightFinishedSequence;
+
+            OnLeftPlayerPrepared?.Invoke();
         }
     }
     
@@ -55,11 +76,29 @@ public class EventManager : MonoBehaviour
             _team2SequenceManager.OnEnterGigaChadMode += GigaChadMode;
             _team2SequenceManager.OnNewInput += SendChangeButton;
             _team2SequenceManager.OnWaitGigaChad += SendDisableImage;
+            _team2SequenceManager.OnExitGigaChadMode += ExitGigaChadMode;
+            _team2SequenceManager.OnLeftFinished += LeftFinishedSequence;
+            _team2SequenceManager.OnRightFinished += RightFinishedSequence;
+
+            //Start when second player is connected
+            //Assume 2nd player is last to be connected
+            OnRightPlayerPrepared?.Invoke();
+            GameManager.Instance.ResetGame();
+            TriggerStart();
+            
+            gameStarted = true;
         }
     }
 
-    public void TriggerStart() => OnStart?.Invoke();
+    public void TriggerStart() => StartCoroutine(WaitAndTrigger());
+    private IEnumerator WaitAndTrigger()
+    {
+        yield return new WaitForSeconds(.1f);
+        OnStart?.Invoke();
+    }
+    
     public void TriggerAccelerate(Team team, float amount) => OnAccelerate?.Invoke(team, amount);
+    public void TriggerDecelerate(Team team, float amount) => OnDecelerate?.Invoke(team, amount);
     public void TriggerMoveLeft(Team team) => OnMoveLeft?.Invoke(team);
     public void TriggerMoveRight(Team team) => OnMoveRight?.Invoke(team);
 
@@ -77,6 +116,9 @@ public class EventManager : MonoBehaviour
             _team1SequenceManager.OnEnterGigaChadMode -= GigaChadMode;
             _team1SequenceManager.OnNewInput -= SendChangeButton;
             _team1SequenceManager.OnWaitGigaChad -= SendDisableImage;
+            _team1SequenceManager.OnExitGigaChadMode -= ExitGigaChadMode;
+            _team1SequenceManager.OnLeftFinished -= LeftFinishedSequence;
+            _team1SequenceManager.OnRightFinished -= RightFinishedSequence;
         }
 
         if (_team2SequenceManager != null)
@@ -86,32 +128,37 @@ public class EventManager : MonoBehaviour
             _team2SequenceManager.OnEnterGigaChadMode -= GigaChadMode;
             _team2SequenceManager.OnNewInput -= SendChangeButton;
             _team2SequenceManager.OnWaitGigaChad -= SendDisableImage;
+            _team2SequenceManager.OnExitGigaChadMode -= ExitGigaChadMode;
+            _team2SequenceManager.OnLeftFinished -= LeftFinishedSequence;
+            _team2SequenceManager.OnRightFinished -= RightFinishedSequence;
         }
-    }
-
-    private void OnDestroy()
-    {
-        Instance = null;
     }
 
     private void GigaChadMode(Team team, SequenceSO sequence)
     {
-        TriggerAccelerate(team, 10);
+        TriggerAccelerate(team, ACCELERATION_VALUE);
+
+        MarketManager.Instance.ToggleMultiplierOn(team, sequence);
         OnStartGigaChad?.Invoke(team, sequence);
         
         print("CHADDDDDDDDDDDDDDDDDDDDD");
     }
 
+    private void ExitGigaChadMode(Team team)
+    {
+        OnDecelerate?.Invoke(team, ACCELERATION_VALUE);
+        MarketManager.Instance.ToggleMultiplierOff(team);
+        OnEndGigaChad?.Invoke(team);
+    }
+
     private void CorrectLeftInput(Team team)
     {
         TriggerMoveLeft(team);
-        print("LLLLLLLLLLLEEEEEEEEEEEEEEEEEEFFFFFFFFFFFFFFFFTTTTTTTTTTTTTTTTT");
     }
 
     private void CorrectRightInput(Team team)
     {
         TriggerMoveRight(team);
-        print("RRRRRRRRRRRRRIIIIIIIIIIIIIIIIIIIGGGGGGGGGGGGGGGHHHHHHHHHHHHHHHHHTTTTTTTTTTTTTT");
     }
 
     public void ChangeDifficulty(Team team, SequenceDifficulty difficulty)
@@ -128,4 +175,15 @@ public class EventManager : MonoBehaviour
     {
         OnNewInput?.Invoke(team, side, buttons);
     }
+
+    private void LeftFinishedSequence(Team team)
+    {
+        OnLeftPlayerFinished?.Invoke(team);
+    }
+
+    private void RightFinishedSequence(Team team)
+    {
+        OnRightPlayerFinished?.Invoke(team);
+    }
+    
 }

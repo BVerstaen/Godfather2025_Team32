@@ -94,8 +94,8 @@ public class CircularMovementDetector : MonoBehaviour
 
                 if (stickData.TotalAngle >= 360f)
                 {
-                    Debug.Log("Mouvement circulaire détecté !");
-                    Debug.Log($"{stickData.Type} - {stickData.CurrentDirection}");
+                    //Debug.Log("Mouvement circulaire détecté !");
+                    //Debug.Log($"{stickData.Type} - {stickData.CurrentDirection}");
                     OnDetectCircularMovement?.Invoke(stickData.Type, stickData.CurrentDirection);
                     stickData.TotalAngle = 0;
                     stickData.CurrentDirection = 0;

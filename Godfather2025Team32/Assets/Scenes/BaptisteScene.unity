@@ -459,6 +459,50 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickAnimationTurnSpeed
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[0].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c3ddf64c77731f143a5c11b6c0ecb78d, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[1].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c8def6be826d6fa45a52ff2377428152, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[2].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d152f3320374ce543a955af777e40490, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[3].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4a1c6810a0fc09b4796bf95fb3bf7fe1, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[4].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0537afdd5643dc64598172f5ee71fefb, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[5].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6812004504e3f464880c91b4a4fbebbf, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickTurnSpriteList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 85c462b8581b7464d99ca6af99e5cab3, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[1]'
+      value: 
+      objectReference: {fileID: 21300000, guid: f1d6270e595598b4ab94931d3b765028, type: 3}
+    - target: {fileID: 172163786363971408, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[2]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 2db96439afae54243b3285819c0f5007, type: 3}
     - target: {fileID: 988419897503087251, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -471,6 +515,50 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickAnimationTurnSpeed
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[0].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b4d3402c3b4bd94ab949c68b0ee9936, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[1].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9ff3c9afc0e67344097e3c203f74a815, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[2].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d152f3320374ce543a955af777e40490, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[3].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4a1c6810a0fc09b4796bf95fb3bf7fe1, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[4].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0537afdd5643dc64598172f5ee71fefb, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[5].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6812004504e3f464880c91b4a4fbebbf, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickTurnSpriteList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 85c462b8581b7464d99ca6af99e5cab3, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[1]'
+      value: 
+      objectReference: {fileID: 21300000, guid: f1d6270e595598b4ab94931d3b765028, type: 3}
+    - target: {fileID: 1554741880964321849, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[2]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 2db96439afae54243b3285819c0f5007, type: 3}
     - target: {fileID: 2089306191329292507, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -483,6 +571,94 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickAnimationTurnSpeed
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[0].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c3ddf64c77731f143a5c11b6c0ecb78d, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[1].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c8def6be826d6fa45a52ff2377428152, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[2].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d152f3320374ce543a955af777e40490, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[3].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4a1c6810a0fc09b4796bf95fb3bf7fe1, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[4].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0537afdd5643dc64598172f5ee71fefb, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[5].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6812004504e3f464880c91b4a4fbebbf, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickTurnSpriteList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 85c462b8581b7464d99ca6af99e5cab3, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[1]'
+      value: 
+      objectReference: {fileID: 21300000, guid: f1d6270e595598b4ab94931d3b765028, type: 3}
+    - target: {fileID: 5430027916350248420, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[2]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 2db96439afae54243b3285819c0f5007, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickAnimationTurnSpeed
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[0].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5b4d3402c3b4bd94ab949c68b0ee9936, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[1].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9ff3c9afc0e67344097e3c203f74a815, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[2].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d152f3320374ce543a955af777e40490, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[3].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4a1c6810a0fc09b4796bf95fb3bf7fe1, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[4].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0537afdd5643dc64598172f5ee71fefb, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _spriteList.Array.data[5].Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6812004504e3f464880c91b4a4fbebbf, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: _joystickTurnSpriteList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 85c462b8581b7464d99ca6af99e5cab3, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[1]'
+      value: 
+      objectReference: {fileID: 21300000, guid: f1d6270e595598b4ab94931d3b765028, type: 3}
+    - target: {fileID: 6388157685884087228, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
+      propertyPath: '_joystickTurnSpriteList.Array.data[2]'
+      value: 
+      objectReference: {fileID: 21300000, guid: 2db96439afae54243b3285819c0f5007, type: 3}
     - target: {fileID: 7300599195893527832, guid: c58f6462813880c46b663c58b1dffa55, type: 3}
       propertyPath: _leftPlayer
       value: 

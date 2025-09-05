@@ -14,8 +14,10 @@ public class CameraManager : MonoBehaviour
     [Space]
     [SerializeField] private Vector3 _stickDistance;
     [SerializeField] private Vector3 _stickEulerAngles;
-    //[SerializeField] private Vector3 _offSetPos;
-    
+
+    [SerializeField] private float _centralCameraDistance = 1000;
+    [SerializeField] private float _centralCameraHeight = 10;
+
     private Vector3 _offSetPos;
     private GameObject _leftPlayer;
     private GameObject _rightPlayer;
@@ -31,11 +33,13 @@ public class CameraManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        EventManager.Instance.OnStart += PlaceCameras;
     }
 
     private void OnDestroy()
     {
         Instance = null;
+        EventManager.Instance.OnStart -= PlaceCameras;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -45,13 +49,22 @@ public class CameraManager : MonoBehaviour
         _rightCamera.gameObject.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.OnStart += PlaceCameras;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.OnStart -= PlaceCameras;
+    }
+
     // Update is called once per frame
     void Update()
     {
         CheckPlayersPos();
-        if (!_isCameraSplit) MoveCentralCamera();
-        else MoveSplitCameras();
-        //_leftPlayer.gameObject.transform.position += new Vector3(-0.5f, 0, 0);
+        /*if (!_isCameraSplit) MoveCentralCamera();
+        else MoveSplitCameras();*/
     }
 
     private void CheckPlayersPos()
@@ -96,16 +109,47 @@ public class CameraManager : MonoBehaviour
         _centralCamera.gameObject.SetActive(false);
     }
 
+    public void PlaceCameras()
+    {
+        PlaceCentralCamera();
+        PlaceSplitsCameras();
+    }
+
+    private void PlaceCentralCamera()
+    {
+        _centralCamera.transform.SetParent(_leftPlayer.transform);
+
+        _centralCamera.transform.position = _leftPlayer.transform.position + _stickDistance;
+    }
+
+    private void PlaceSplitsCameras()
+    {
+        _rightCamera.transform.SetParent(_rightPlayer.transform);
+        _leftCamera.transform.SetParent(_leftPlayer.transform);
+
+        _rightCamera.transform.position = _rightPlayer.transform.position + _stickDistance;
+        _leftCamera.transform.position = _leftPlayer.transform.position + _stickDistance;
+    }
+
     private void MoveCentralCamera()
     {
         if (_leftPlayer == null || _rightPlayer == null)
             return;
 
-        Vector3 cameraPos = _offSetPos;
+        /*Vector3 cameraPos = _offSetPos;
         Vector3 playersOffSet = _rightPlayer.transform.position + _leftPlayer.transform.position;
-        cameraPos += playersOffSet*0.5f;
-        _centralCamera.transform.position = cameraPos + _stickDistance;
+        cameraPos += playersOffSet * 0.5f;
+        _centralCamera.transform.position = cameraPos + _stickDistance;*/
+
+
+        Vector3 playerVector = _rightPlayer.transform.position - _leftPlayer.transform.position;
+        Vector3 midPoint = playerVector * 0.5f + _leftPlayer.transform.position;
+        //Vector3 perpendicular = playerVector.normalized * Vector3.right;
+        Vector3 perpendicular = new Vector3(0, -playerVector.y, 0).normalized;
+        Vector3 cameraPos = midPoint + perpendicular * _centralCameraDistance;
+        cameraPos.y += _centralCameraHeight;
         _centralCamera.transform.eulerAngles = _stickEulerAngles;
+        _centralCamera.transform.position = cameraPos;
     }
 
     private void MoveSplitCameras()

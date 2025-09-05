@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour
     public bool drawDebug = false;
 
     [Header("Events")]
-    public EventManager eventManager;
     public Team currentTeam = Team.None;
 
     private float _splinePos = 0f;
@@ -52,11 +51,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        if (eventManager != null)
-        {
-            eventManager.OnStart += StartMovement;
-            eventManager.OnAccelerate += Accelerate;
-        }
+        EventManager.Instance.OnStart += StartMovement;
+        EventManager.Instance.OnAccelerate += Accelerate;
+        EventManager.Instance.OnDecelerate += Decelerate;
 
         if (spline != null) 
             RebuildLengthCache();
@@ -68,17 +65,13 @@ public class PlayerController : MonoBehaviour
             CameraManager.Instance.LeftPlayer = gameObject;
         else if (CameraManager.Instance && currentTeam == Team.Team2)
             CameraManager.Instance.RightPlayer = gameObject;
-
-        StartMovement();
     }
 
     void OnDestroy()
     {
-        if (eventManager != null)
-        {
-            eventManager.OnStart -= StartMovement;
-            eventManager.OnAccelerate -= Accelerate;
-        }
+        EventManager.Instance.OnStart -= StartMovement;
+        EventManager.Instance.OnAccelerate -= Accelerate;
+        EventManager.Instance.OnDecelerate -= Decelerate;
     }
 
     public void RebuildLengthCache()

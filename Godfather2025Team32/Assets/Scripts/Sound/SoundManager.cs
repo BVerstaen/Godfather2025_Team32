@@ -14,6 +14,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private int _numAudioSourcesInPool = 10;
     private List<AudioSource> _freeAudioSources = new List<AudioSource>();
     [SerializeField] private GameObject _audioSourcesParent;
+    private Dictionary<SoundEnum, AudioSource> _dicoInfiniteAudioSources = new Dictionary<SoundEnum, AudioSource>();
+    private List<SoundEnum> _currentSoundsPlaying = new List<SoundEnum>();
 
     //---------- FUNCTIONS ----------\\
 
@@ -25,20 +27,32 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-    }
+        DontDestroyOnLoad(gameObject);
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
         SetPool();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
+    public void PlayInfiniteLoop(SoundEnum soundEnum)
+    {
+        if (_dicoInfiniteAudioSources.ContainsKey(soundEnum)) return;
+        AudioClip audioClip = GetAudioCLip(soundEnum);
+        AudioSource audioSource = GetAnAudioFromPool();
+        audioSource.clip = audioClip;
+        audioSource.Play();
+        audioSource.loop = true;
+        _dicoInfiniteAudioSources[soundEnum] = audioSource;
+        //Debug.Log("Start sound loop " +  soundEnum);
+    }
+
+    public void StopInfiniteLoop(SoundEnum soundEnum)
+    {
+        if (!_dicoInfiniteAudioSources.ContainsKey(soundEnum)) return;
+        AudioSource audioSource = _dicoInfiniteAudioSources[soundEnum];
+        _dicoInfiniteAudioSources.Remove(soundEnum);
+        PutAudioSourceInPool(audioSource);
+        //Debug.Log("Stop sound loop " +  soundEnum);
+    }
+
     private AudioClip GetAudioCLip(SoundEnum soundEnum)
     {
         foreach (SoundStruct soundStruct in _allSoundStructs)
@@ -54,13 +68,33 @@ public class SoundManager : MonoBehaviour
         AudioSource audioSource = GetAnAudioFromPool();
         audioSource.clip = audioClip;
         audioSource.Play();
-        AudioSourceCoroutine(audioSource);
-        
+        audioSource.loop = false;
+        _currentSoundsPlaying.Add(soundEnum);
+        AudioSourceCoroutine(audioSource, soundEnum);
+        //Debug.Log("Play sound " +  soundEnum);
     }
 
-    private IEnumerable AudioSourceCoroutine(AudioSource audioSource)
+    public void PlayRandomSound(List<SoundEnum> soundsEnum)
+    {
+        int index = Random.Range(0, soundsEnum.Count);
+        SoundEnum soundChoosed = soundsEnum[index];
+        PlaySound(soundChoosed);
+    }
+
+    private IEnumerable AudioSourceCoroutine(AudioSource audioSource, SoundEnum soundEnum)
     {
         yield return new WaitForSeconds(audioSource.clip.length);
+        PutAudioSourceInPool(audioSource);
+        _currentSoundsPlaying.Remove(soundEnum);
+    }
+
+    public bool IsSoundPlaying(SoundEnum soundEnum)
+    {
+        return _currentSoundsPlaying.Contains(soundEnum);
+    }
+
+    private void PutAudioSourceInPool(AudioSource audioSource)
+    {
         audioSource.Stop();
         audioSource.clip = null;
         _freeAudioSources.Add(audioSource);

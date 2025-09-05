@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 1117813949730540482}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.060983658, y: -0.0000009536743, z: -0.06069565}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -47,9 +47,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _allSoundStructs:
   - sound: 0
-    audioClip: {fileID: 8300000, guid: cb2af21143544c74b9730d97511069b9, type: 3}
+    audioClip: {fileID: 8300000, guid: ec72d0738936f4b4191d1b0fa56065dd, type: 3}
   - sound: 1
-    audioClip: {fileID: 8300000, guid: 19bf07fb4e32bad4ea84594001a5d797, type: 3}
+    audioClip: {fileID: 0}
+  - sound: 2
+    audioClip: {fileID: 0}
+  - sound: 3
+    audioClip: {fileID: 0}
+  - sound: 4
+    audioClip: {fileID: 0}
+  - sound: 5
+    audioClip: {fileID: 0}
+  - sound: 6
+    audioClip: {fileID: 0}
+  - sound: 7
+    audioClip: {fileID: 0}
+  - sound: 8
+    audioClip: {fileID: 0}
+  - sound: 9
+    audioClip: {fileID: 0}
+  - sound: 10
+    audioClip: {fileID: 0}
+  - sound: 11
+    audioClip: {fileID: 0}
+  - sound: 12
+    audioClip: {fileID: 0}
+  - sound: 13
+    audioClip: {fileID: 0}
+  - sound: 14
+    audioClip: {fileID: 0}
+  - sound: 14
+    audioClip: {fileID: 8300000, guid: ec72d0738936f4b4191d1b0fa56065dd, type: 3}
   _numAudioSourcesInPool: 10
   _audioSourcesParent: {fileID: 2008822995234325974}
 --- !u!1 &2008822995234325974
