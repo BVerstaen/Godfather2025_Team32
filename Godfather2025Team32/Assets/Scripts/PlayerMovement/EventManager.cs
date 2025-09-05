@@ -7,6 +7,8 @@ using static SequenceSO;
 
 public class EventManager : MonoBehaviour
 {
+    private const float ACCELERATION_VALUE = 10f;
+
     public static EventManager Instance;
 
     [HideInInspector]
@@ -14,6 +16,8 @@ public class EventManager : MonoBehaviour
 
     [HideInInspector]
     public event Action<Team, float> OnAccelerate;
+
+    public event Action<Team, float> OnDecelerate;
 
     [HideInInspector]
     public event Action<Team> OnMoveLeft;
@@ -92,7 +96,9 @@ public class EventManager : MonoBehaviour
         yield return new WaitForSeconds(.1f);
         OnStart?.Invoke();
     }
+    
     public void TriggerAccelerate(Team team, float amount) => OnAccelerate?.Invoke(team, amount);
+    public void TriggerDecelerate(Team team, float amount) => OnDecelerate?.Invoke(team, amount);
     public void TriggerMoveLeft(Team team) => OnMoveLeft?.Invoke(team);
     public void TriggerMoveRight(Team team) => OnMoveRight?.Invoke(team);
 
@@ -130,13 +136,17 @@ public class EventManager : MonoBehaviour
 
     private void GigaChadMode(Team team, SequenceSO sequence)
     {
-        TriggerAccelerate(team, 10);
+        TriggerAccelerate(team, ACCELERATION_VALUE);
         OnStartGigaChad?.Invoke(team, sequence);
         
         print("CHADDDDDDDDDDDDDDDDDDDDD");
     }
 
-    private void ExitGigaChadMode(Team team) => OnEndGigaChad?.Invoke(team);
+    private void ExitGigaChadMode(Team team)
+    {
+        OnDecelerate?.Invoke(team, ACCELERATION_VALUE);
+        OnEndGigaChad?.Invoke(team);
+    }
 
     private void CorrectLeftInput(Team team)
     {

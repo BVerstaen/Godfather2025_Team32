@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     {
         EventManager.Instance.OnStart += StartMovement;
         EventManager.Instance.OnAccelerate += Accelerate;
+        EventManager.Instance.OnDecelerate += Decelerate;
 
         if (spline != null) 
             RebuildLengthCache();
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         EventManager.Instance.OnStart -= StartMovement;
         EventManager.Instance.OnAccelerate -= Accelerate;
+        EventManager.Instance.OnDecelerate -= Decelerate;
     }
 
     public void RebuildLengthCache()
