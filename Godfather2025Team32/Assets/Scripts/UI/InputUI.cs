@@ -60,9 +60,51 @@ public class InputUI : MonoBehaviour
 
     private void Update()
     {
+        if (_animationCoroutine != null)
+            return;
+
         float newScale = _buttonSizeAnimationCurve.Evaluate(Mathf.PingPong(Time.time * _buttonAnimationSpeed, 1));
         newScale = Mathf.Lerp(1, _buttonAnimationMaxSize, newScale);
         _rect.localScale = new Vector2(_direction * newScale, newScale);
+    }
+
+    public void TriggerPressEffect()
+    {
+        if (_animationCoroutine != null)
+            StopCoroutine(_animationCoroutine);
+
+        _animationCoroutine = StartCoroutine(PressEffectRoutine());
+    }
+
+    private IEnumerator PressEffectRoutine()
+    {
+        float duration = 0.1f; // Durée de l'effet pressé
+        float elapsed = 0f;
+        Vector3 originalScale = _rect.localScale;
+        Vector3 targetScale = originalScale * 0.2f; // L'image devient plus petite (effet pressé)
+
+        // Shrink
+        while (elapsed < duration)
+        {
+            _rect.localScale = Vector3.Lerp(originalScale, targetScale, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        _rect.localScale = targetScale;
+
+        // Reset
+        elapsed = 0f;
+        while (elapsed < duration)
+        {
+            _rect.localScale = Vector3.Lerp(targetScale, originalScale, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        _rect.localScale = originalScale;
+
+        _animationCoroutine = null;
     }
 
     private void ChangeButton(Team team, PlayerSide side, Buttons newButton)
@@ -88,6 +130,7 @@ public class InputUI : MonoBehaviour
             if (newButton == spriteToButton.Button)
             {
                 _spriteImage.sprite = spriteToButton.Sprite;
+                TriggerPressEffect();
                 return;
             }
         }
